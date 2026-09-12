@@ -4,12 +4,12 @@ export const COUNTRIES: Country[] = [
   {
     "code": "jp",
     "name": "日本",
-    "ruby": "にほん",
+    "ruby": "にっぽん",
     "region": "asia",
     "trivia": [
       {
         "question": "日本の国旗の赤い丸は何を表している？",
-        "questionRuby": "にほんのこっきのあかいまるはなにをあらわしている？",
+        "questionRuby": "にっぽんのこっきのあかいまるはなにをあらわしている？",
         "options": [
           "太陽（日の出）",
           "梅干し",
