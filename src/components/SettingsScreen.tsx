@@ -1,43 +1,46 @@
 import React from "react";
 import type { GameMode, GameSettings, Region } from "../types";
 import { soundEffect } from "../utils/sound";
-import { Play, Volume2, VolumeX, Sparkles, Globe, Clock, Layers, HelpCircle } from "lucide-react";
+import { savePlayerName } from "../utils/ranking";
+import { Play, Volume2, VolumeX, Sparkles, Globe, Clock, Layers, HelpCircle, User, Trophy } from "lucide-react";
 
 interface SettingsModalProps {
   settings: GameSettings;
   onUpdateSettings: (newSettings: GameSettings) => void;
   onStartGame: () => void;
+  onViewRanking: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
   settings,
   onUpdateSettings,
   onStartGame,
+  onViewRanking,
 }) => {
-  const modes: { id: GameMode; label: string; sub: string; icon: string }[] = [
-    { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！", icon: "🎲" },
-    { id: "flag_to_name", label: "🚩 国旗あて", sub: "はたをみて くにをあてる", icon: "🚩" },
-    { id: "name_to_flag", label: "🔤 なまえあて", sub: "くになまえをみて はたをえらぶ", icon: "🔤" },
-    { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ", icon: "📖" },
+  const modes: { id: GameMode; label: string; sub: string }[] = [
+    { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
+    { id: "flag_to_name", label: "🚩 国旗あて", sub: "はたをみて くにをあてる" },
+    { id: "name_to_flag", label: "🔤 なまえあて", sub: "くになまえをみて はたをえらぶ" },
+    { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
   ];
 
-  const regions: { id: Region; label: string; icon: string }[] = [
-    { id: "all", label: "🌍 ぜんせかい", icon: "🌍" },
-    { id: "asia", label: "🌏 アジア", icon: "🌏" },
-    { id: "europe", label: "🏰 ヨーロッパ", icon: "🏰" },
-    { id: "africa", label: "🦁 アフリカ", icon: "🦁" },
-    { id: "north_america", label: "🗽 きた・ちゅうべい", icon: "🗽" },
-    { id: "south_america", label: "🦙 みなみアメリカ", icon: "🦙" },
-    { id: "oceania", label: "🦘 オセアニア", icon: "🦘" },
+  const regions: { id: Region; label: string }[] = [
+    { id: "all", label: "🌍 ぜんせかい" },
+    { id: "asia", label: "🌏 アジア" },
+    { id: "europe", label: "🏰 ヨーロッパ" },
+    { id: "africa", label: "🦁 アフリカ" },
+    { id: "north_america", label: "🗽 きた・ちゅうべい" },
+    { id: "south_america", label: "🦙 みなみアメリカ" },
+    { id: "oceania", label: "🦘 オセアニア" },
   ];
 
   const questionCounts = [5, 10, 20, 50, 100];
   const timeLimits = [
     { value: 3, label: "⚡ 3秒", desc: "ちょうスピード！" },
     { value: 5, label: "🔥 5秒", desc: "ハラハラ" },
-    { value: 10, label: "👍 10秒", desc: "ちょうどいい" },
+    { value: 10, label: "👍 10秒", desc: "スピード加点！" },
     { value: 15, label: "🌱 15秒", desc: "ゆったり" },
-    { value: 0, label: "♾️ なし", desc: "じっくりかんがえる" },
+    { value: 0, label: "♾️ なし", desc: "じっくり" },
   ];
 
   const handleSoundToggle = () => {
@@ -45,6 +48,12 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     soundEffect.setEnabled(next);
     if (next) soundEffect.playTap();
     onUpdateSettings({ ...settings, soundEnabled: next });
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    onUpdateSettings({ ...settings, playerName: name });
+    savePlayerName(name);
   };
 
   const handleStart = () => {
@@ -63,23 +72,55 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
               こっきクイズ
               <Sparkles className="w-5 h-5 text-amber-500 fill-amber-400 inline" />
             </h1>
-            <p className="text-xs font-bold text-indigo-500">たのしくあそんで せかいをしろう！</p>
+            <p className="text-xs font-bold text-indigo-500">すばやく答えてハイスコアをめざそう！</p>
           </div>
         </div>
-        <button
-          onClick={handleSoundToggle}
-          className="p-2.5 rounded-full bg-white shadow-sm border border-indigo-100 text-indigo-600 active:scale-95 transition-all"
-          aria-label="おんせいせってい"
-        >
-          {settings.soundEnabled ? <Volume2 className="w-6 h-6" /> : <VolumeX className="w-6 h-6 text-slate-400" />}
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onViewRanking();
+            }}
+            className="p-2.5 rounded-full bg-white shadow-xs border border-amber-200 text-amber-600 active:scale-95 transition-all"
+            aria-label="ランキングをみる"
+            title="ランキング"
+          >
+            <Trophy className="w-5 h-5" />
+          </button>
+          <button
+            onClick={handleSoundToggle}
+            className="p-2.5 rounded-full bg-white shadow-xs border border-indigo-100 text-indigo-600 active:scale-95 transition-all"
+            aria-label="おんせいせってい"
+          >
+            {settings.soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5 text-slate-400" />}
+          </button>
+        </div>
       </header>
 
       {/* メイン設定カード */}
-      <div className="w-full space-y-5 bg-white/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg border border-indigo-100">
+      <div className="w-full space-y-4 bg-white/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg border border-indigo-100">
+        {/* 0. なまえ入力 */}
+        <div className="bg-indigo-50/70 p-3.5 rounded-2xl border border-indigo-100">
+          <label className="flex items-center gap-1.5 text-xs font-black text-indigo-900 mb-1.5">
+            <User className="w-4 h-4 text-indigo-600" />
+            プレイヤーの なまえ（ニックネーム）
+          </label>
+          <input
+            type="text"
+            value={settings.playerName}
+            onChange={handleNameChange}
+            placeholder="例: たろう、はなこ"
+            maxLength={10}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-indigo-200 font-black text-slate-800 text-base placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 shadow-xs"
+          />
+          <span className="text-[10px] text-indigo-500 font-bold block mt-1">
+            ※ ランキングに なまえが のるよ！
+          </span>
+        </div>
+
         {/* 1. プレイモード選択 */}
         <div>
-          <label className="flex items-center gap-1.5 text-sm font-extrabold text-slate-700 mb-2.5">
+          <label className="flex items-center gap-1.5 text-xs font-black text-slate-700 mb-2">
             <Layers className="w-4 h-4 text-indigo-500" />
             あそびかた（プレイモード）
           </label>
@@ -95,21 +136,21 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                   }}
                   className={`p-3 rounded-2xl text-left border-2 transition-all flex flex-col justify-between active:scale-95 ${
                     selected
-                      ? "border-indigo-600 bg-indigo-50/80 text-indigo-950 shadow-sm"
+                      ? "border-indigo-600 bg-indigo-50/80 text-indigo-950 shadow-xs"
                       : "border-slate-100 bg-slate-50 text-slate-600 hover:border-slate-200"
                   }`}
                 >
-                  <span className="text-base font-black">{m.label}</span>
-                  <span className="text-[11px] font-semibold text-slate-500 mt-1">{m.sub}</span>
+                  <span className="text-sm font-black">{m.label}</span>
+                  <span className="text-[10px] font-semibold text-slate-500 mt-0.5">{m.sub}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* 2. 地域（エリア）フィルター */}
+        {/* 2. 地域フィルター */}
         <div>
-          <label className="flex items-center gap-1.5 text-sm font-extrabold text-slate-700 mb-2.5">
+          <label className="flex items-center gap-1.5 text-xs font-black text-slate-700 mb-2">
             <Globe className="w-4 h-4 text-emerald-500" />
             ちいき（エリア）
           </label>
@@ -123,9 +164,9 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                     soundEffect.playTap();
                     onUpdateSettings({ ...settings, region: r.id });
                   }}
-                  className={`py-2.5 px-3 rounded-2xl text-xs font-black border-2 transition-all text-left flex items-center gap-1.5 active:scale-95 ${
+                  className={`py-2 px-3 rounded-2xl text-xs font-black border-2 transition-all text-left flex items-center gap-1.5 active:scale-95 ${
                     selected
-                      ? "border-emerald-600 bg-emerald-50 text-emerald-950 shadow-sm"
+                      ? "border-emerald-600 bg-emerald-50 text-emerald-950 shadow-xs"
                       : "border-slate-100 bg-slate-50 text-slate-600"
                   }`}
                 >
@@ -138,7 +179,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
 
         {/* 3. もんだいすう */}
         <div>
-          <label className="flex items-center gap-1.5 text-sm font-extrabold text-slate-700 mb-2.5">
+          <label className="flex items-center gap-1.5 text-xs font-black text-slate-700 mb-2">
             <HelpCircle className="w-4 h-4 text-amber-500" />
             もんだいすう
           </label>
@@ -154,7 +195,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                   }}
                   className={`py-2 rounded-xl text-center font-black transition-all border-2 active:scale-95 ${
                     selected
-                      ? "border-amber-500 bg-amber-50 text-amber-900 text-sm shadow-sm"
+                      ? "border-amber-500 bg-amber-50 text-amber-900 text-xs shadow-xs"
                       : "border-slate-100 bg-slate-50 text-slate-600 text-xs"
                   }`}
                 >
@@ -167,9 +208,9 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
 
         {/* 4. せいげんじかん */}
         <div>
-          <label className="flex items-center gap-1.5 text-sm font-extrabold text-slate-700 mb-2.5">
+          <label className="flex items-center gap-1.5 text-xs font-black text-slate-700 mb-2">
             <Clock className="w-4 h-4 text-rose-500" />
-            1もんの じかん
+            1もんの じかん（はやく答えるとボーナス加点！）
           </label>
           <div className="grid grid-cols-3 gap-2">
             {timeLimits.map((t) => {
@@ -181,42 +222,42 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                     soundEffect.playTap();
                     onUpdateSettings({ ...settings, timeLimit: t.value });
                   }}
-                  className={`p-2.5 rounded-2xl border-2 text-center transition-all active:scale-95 flex flex-col items-center justify-center ${
+                  className={`p-2 rounded-2xl border-2 text-center transition-all active:scale-95 flex flex-col items-center justify-center ${
                     selected
-                      ? "border-rose-500 bg-rose-50 text-rose-950 shadow-sm"
+                      ? "border-rose-500 bg-rose-50 text-rose-950 shadow-xs"
                       : "border-slate-100 bg-slate-50 text-slate-600"
                   }`}
                 >
-                  <span className="text-sm font-black">{t.label}</span>
-                  <span className="text-[10px] text-slate-400 font-semibold">{t.desc}</span>
+                  <span className="text-xs font-black">{t.label}</span>
+                  <span className="text-[9px] text-slate-400 font-semibold">{t.desc}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* 5. ふりがな（ルビ）表示トグル */}
+        {/* 5. ふりがなトグル */}
         <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
           <div>
-            <div className="text-sm font-black text-slate-800">ふりがなを つける</div>
-            <div className="text-xs text-slate-400 font-semibold">かん字のよみかたを ひょうじ</div>
+            <div className="text-xs font-black text-slate-800">ふりがなを つける</div>
+            <div className="text-[10px] text-slate-400 font-semibold">かん字のよみかたを ひょうじ</div>
           </div>
           <button
             onClick={() => {
               soundEffect.playTap();
               onUpdateSettings({ ...settings, showRuby: !settings.showRuby });
             }}
-            className={`w-14 h-8 flex items-center rounded-full p-1 duration-300 cursor-pointer transition-colors ${
+            className={`w-12 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
               settings.showRuby ? "bg-indigo-600 justify-end" : "bg-slate-300 justify-start"
             }`}
           >
-            <div className="bg-white w-6 h-6 rounded-full shadow-md transform transition-transform" />
+            <div className="bg-white w-5 h-5 rounded-full shadow-md transform transition-transform" />
           </button>
         </div>
       </div>
 
       {/* スタートボタン */}
-      <div className="w-full mt-6 sticky bottom-4 z-20">
+      <div className="w-full mt-5 sticky bottom-4 z-20">
         <button
           onClick={handleStart}
           className="w-full py-4 px-6 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-white font-black text-xl rounded-full shadow-xl shadow-orange-300/50 flex items-center justify-center gap-3 transform active:scale-95 transition-all hover:brightness-105"

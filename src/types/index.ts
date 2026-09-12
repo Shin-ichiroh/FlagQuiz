@@ -11,9 +11,9 @@ export interface TriviaQuestion {
 }
 
 export interface Country {
-  code: string; // ISO 3166-1 alpha-2 (小文字, flagcdn等用)
-  name: string; // 日本語国名
-  ruby: string; // ふりがな
+  code: string;
+  name: string;
+  ruby: string;
   region: Region;
   trivia?: TriviaQuestion[];
 }
@@ -34,6 +34,7 @@ export interface QuizQuestion {
 }
 
 export interface GameSettings {
+  playerName: string;
   questionCount: number;
   timeLimit: number; // 秒単位 (0なら無制限)
   mode: GameMode;
@@ -46,5 +47,20 @@ export interface QuizResultRecord {
   question: QuizQuestion;
   selectedOptionIndex: number | null; // nullは時間切れ
   isCorrect: boolean;
-  timeTaken: number;
+  timeTaken: number; // 回答にかかった秒数
+  speedBonus: number; // スピード加点
+  questionScore: number; // この問題の合計点
+}
+
+export interface RankingEntry {
+  id: string;
+  playerName: string;
+  score: number;
+  accuracy: number;
+  correctCount: number;
+  totalQuestions: number;
+  mode: GameMode;
+  timeLimit: number;
+  date: string; // YYYY-MM-DD
+  weekKey: string; // YYYY-Wxx (週の識別子)
 }

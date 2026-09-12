@@ -3,11 +3,14 @@ import type { GameSettings, QuizQuestion, QuizResultRecord } from "./types";
 import { SettingsScreen } from "./components/SettingsScreen";
 import { QuizScreen } from "./components/QuizScreen";
 import { ResultScreen } from "./components/ResultScreen";
+import { RankingScreen } from "./components/RankingScreen";
 import { generateQuizQuestions } from "./utils/quizGenerator";
+import { getSavedPlayerName } from "./utils/ranking";
 
 export function App() {
-  const [screen, setScreen] = useState<"settings" | "quiz" | "result">("settings");
+  const [screen, setScreen] = useState<"settings" | "quiz" | "result" | "ranking">("settings");
   const [settings, setSettings] = useState<GameSettings>({
+    playerName: getSavedPlayerName(),
     questionCount: 10,
     timeLimit: 10,
     mode: "random",
@@ -37,11 +40,6 @@ export function App() {
     setScreen("result");
   };
 
-  // タイトルに戻る
-  const handleRestart = () => {
-    setScreen("settings");
-  };
-
   return (
     <main className="min-h-screen w-full bg-slate-100 flex flex-col justify-start">
       {screen === "settings" && (
@@ -49,6 +47,7 @@ export function App() {
           settings={settings}
           onUpdateSettings={setSettings}
           onStartGame={handleStartGame}
+          onViewRanking={() => setScreen("ranking")}
         />
       )}
 
@@ -57,7 +56,7 @@ export function App() {
           questions={questions}
           settings={settings}
           onFinish={handleFinishQuiz}
-          onQuit={handleRestart}
+          onQuit={() => setScreen("settings")}
         />
       )}
 
@@ -65,8 +64,13 @@ export function App() {
         <ResultScreen
           results={results}
           settings={settings}
-          onRestart={handleRestart}
+          onRestart={() => setScreen("settings")}
+          onViewRanking={() => setScreen("ranking")}
         />
+      )}
+
+      {screen === "ranking" && (
+        <RankingScreen onBack={() => setScreen("settings")} />
       )}
     </main>
   );
