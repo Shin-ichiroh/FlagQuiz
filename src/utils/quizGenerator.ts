@@ -12,7 +12,6 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 export function getFlagUrl(code: string, width: number = 320): string {
-  // flagcdn.com を利用 (無料・高信頼性・SVG / PNG両対応)
   return `https://flagcdn.com/w${width}/${code.toLowerCase()}.png`;
 }
 
@@ -22,21 +21,65 @@ export function generateQuizQuestions(
   region: Region
 ): QuizQuestion[] {
   // 1. 地域フィルタリング
-  let pool = region === "all" ? COUNTRIES : COUNTRIES.filter((c) => c.region === region);
-  if (pool.length === 0) {
-    pool = COUNTRIES;
+  let regionPool = region === "all" ? COUNTRIES : COUNTRIES.filter((c) => c.region === region);
+  if (regionPool.length === 0) {
+    regionPool = COUNTRIES;
   }
 
-  // 2. モードがトリビアのみの場合、トリビア情報を持つ国を優先
+  // 2. 由来（トリビア）モードの場合
   if (mode === "trivia") {
-    const triviaPool = pool.filter((c) => c.trivia && c.trivia.length > 0);
-    if (triviaPool.length > 0) {
-      pool = triviaPool;
+    // トリビアを持つ国・問題を全て抽出
+    const allTriviaItems: { country: Country; triviaIndex: number }[] = [];
+    for (const c of regionPool) {
+      if (c.trivia && c.trivia.length > 0) {
+        c.trivia.forEach((_, tIdx) => {
+          allTriviaItems.push({ country: c, triviaIndex: tIdx });
+        });
+      }
     }
+
+    // トリビア問題が足りない場合は他地域からも補充
+    if (allTriviaItems.length < count && region !== "all") {
+      for (const c of COUNTRIES) {
+        if (c.region !== region && c.trivia && c.trivia.length > 0) {
+          c.trivia.forEach((_, tIdx) => {
+            allTriviaItems.push({ country: c, triviaIndex: tIdx });
+          });
+        }
+      }
+    }
+
+    const shuffledTrivia = shuffle(allTriviaItems);
+    const selectedTrivia = [];
+    while (selectedTrivia.length < count) {
+      for (const item of shuffledTrivia) {
+        if (selectedTrivia.length >= count) break;
+        selectedTrivia.push(item);
+      }
+    }
+
+    return selectedTrivia.map((item, idx) => {
+      const country = item.country;
+      const triviaItem = country.trivia![item.triviaIndex];
+      const shuffledOptions = shuffle(triviaItem.options).map((opt) => ({
+        text: opt,
+        isCorrect: opt === triviaItem.correctAnswer,
+      }));
+
+      return {
+        id: idx + 1,
+        type: "trivia",
+        country,
+        prompt: triviaItem.question,
+        promptRuby: triviaItem.questionRuby,
+        options: shuffledOptions,
+        explanation: triviaItem.explanation,
+      };
+    });
   }
 
-  // 3. 出題する国を決定（重複を極力防ぎ、要求数まで）
-  const shuffledCountries = shuffle(pool);
+  // 3. 国旗当て / 国名当て / ランダムモード
+  const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
     for (const c of shuffledCountries) {
@@ -45,9 +88,7 @@ export function generateQuizQuestions(
     }
   }
 
-  // 4. 各問題の生成
-  const questions: QuizQuestion[] = selectedCountries.map((country, idx) => {
-    // 問題タイプ決定
+  return selectedCountries.map((country, idx) => {
     let qType: "flag_to_name" | "name_to_flag" | "trivia" = "flag_to_name";
     if (mode === "random") {
       const candidates: ("flag_to_name" | "name_to_flag" | "trivia")[] = [
@@ -59,16 +100,9 @@ export function generateQuizQuestions(
       }
       qType = candidates[Math.floor(Math.random() * candidates.length)];
     } else {
-      // 指定モード
-      if (mode === "trivia" && (!country.trivia || country.trivia.length === 0)) {
-        // トリビアがない場合は国旗当てにフォールバック
-        qType = "flag_to_name";
-      } else {
-        qType = mode;
-      }
+      qType = mode;
     }
 
-    // パターンに応じた問題構築
     if (qType === "trivia" && country.trivia && country.trivia.length > 0) {
       const triviaItem = country.trivia[Math.floor(Math.random() * country.trivia.length)];
       const shuffledOptions = shuffle(triviaItem.options).map((opt) => ({
@@ -86,7 +120,6 @@ export function generateQuizQuestions(
         explanation: triviaItem.explanation,
       };
     } else if (qType === "name_to_flag") {
-      // 国名 -> 4つの国旗文字から選択
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);
       const optionCountries = shuffle([country, ...otherCountries]);
 
@@ -105,7 +138,6 @@ export function generateQuizQuestions(
         explanation: `正解は「${country.name}」の国旗です！`,
       };
     } else {
-      // flag_to_name: 国旗 -> 4つの国名から選択
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);
       const optionCountries = shuffle([country, ...otherCountries]);
 
@@ -124,6 +156,4 @@ export function generateQuizQuestions(
       };
     }
   });
-
-  return questions;
 }
