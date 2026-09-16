@@ -23,7 +23,9 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "name_to_flag", label: "🔤 なまえあて", sub: "くになまえをみて はたをえらぶ" },
     { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
     { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
+    { id: "location", label: "📍 ばしょ・ちず", sub: "まわりの国と いっしょに出題！" },
   ];
+
 
 
   const regions: { id: Region; label: string }[] = [

@@ -1,6 +1,6 @@
 export type Region = "all" | "asia" | "europe" | "africa" | "north_america" | "south_america" | "oceania";
 
-export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape";
+export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location";
 
 export interface TriviaQuestion {
   question: string;
@@ -20,7 +20,8 @@ export interface Country {
 
 export interface QuizQuestion {
   id: number;
-  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape";
+  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name";
+
   country: Country;
   prompt: string;
   promptRuby?: string;

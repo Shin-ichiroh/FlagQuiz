@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import type { QuizResultRecord, GameSettings } from "../types";
-import { getFlagUrl } from "../utils/quizGenerator";
+import { getFlagUrl, getShapeUrl } from "../utils/quizGenerator";
+import { CountryMap } from "./CountryMap";
+import worldGeo from "../data/world_geo.json";
+const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
 import { soundEffect } from "../utils/sound";
 import { saveRankingEntry } from "../utils/ranking";
 import confetti from "canvas-confetti";
@@ -132,27 +135,67 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             {mistakes.map((record, idx) => {
               const country = record.question.country;
               return (
+
                 <div
                   key={idx}
-                  className="bg-white p-3 rounded-2xl shadow-xs border border-slate-100 flex items-start gap-3"
+                  className="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-100 flex flex-col gap-2.5"
                 >
-                  <img
-                    src={getFlagUrl(country.code, 160)}
-                    alt={country.name}
-                    className="w-14 h-10 object-contain rounded-lg border border-slate-200 bg-slate-50 shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[10px] font-bold text-indigo-500">{country.ruby}</div>
-                    <div className="text-sm font-black text-slate-900 leading-tight">
-                      {country.name}
+                  <div className="flex items-center gap-3">
+                    {/* 国旗画像 */}
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={getFlagUrl(country.code, 160)}
+                        alt={country.name}
+                        className="w-16 h-11 object-contain rounded-lg border border-slate-200 bg-slate-50 shrink-0"
+                      />
+                      <span className="text-[9px] font-bold text-slate-400 mt-0.5">こっき</span>
                     </div>
-                    {record.question.explanation && (
-                      <p className="text-[11px] text-slate-600 font-medium mt-1 leading-normal bg-amber-50/70 p-2 rounded-xl border border-amber-100">
-                        💡 {record.question.explanation}
-                      </p>
+
+                    {/* 周辺地図 / シルエット表示 */}
+                    {geoCodes.has(country.code) ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-16 h-11 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center p-0.5 shrink-0">
+                          <CountryMap
+                            countryCode={country.code}
+                            showSurroundings={true}
+                            className="w-full h-full"
+                          />
+                        </div>
+                        <span className="text-[9px] font-bold text-slate-400 mt-0.5">ちず・かたち</span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center">
+                        <div className="w-16 h-11 rounded-lg border border-slate-200 bg-indigo-50/50 overflow-hidden flex items-center justify-center p-1 shrink-0">
+                          <img
+                            src={getShapeUrl(country.code)}
+                            alt="シルエット"
+                            className="w-full h-full object-contain filter drop-shadow-xs"
+                          />
+                        </div>
+                        <span className="text-[9px] font-bold text-slate-400 mt-0.5">かたち</span>
+                      </div>
                     )}
+
+                    {/* 国名 & ふりがな */}
+                    <div className="flex-1 min-w-0 pl-1">
+                      <div className="text-[11px] font-bold text-indigo-500">{country.ruby}</div>
+                      <div className="text-base font-black text-slate-900 leading-tight">
+                        {country.name}
+                      </div>
+                      <span className="inline-block text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded mt-1">
+                        だい {record.question.id} もん
+                      </span>
+                    </div>
                   </div>
+
+                  {/* 解説・豆知識 */}
+                  {record.question.explanation && (
+                    <p className="text-[11px] text-slate-700 font-medium leading-relaxed bg-amber-50/80 p-2.5 rounded-xl border border-amber-100">
+                      💡 {record.question.explanation}
+                    </p>
+                  )}
                 </div>
+
               );
             })}
           </div>

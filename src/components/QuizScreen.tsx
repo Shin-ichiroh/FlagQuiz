@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import type { QuizQuestion, GameSettings, QuizResultRecord } from "../types";
 import { getFlagUrl, getShapeUrl } from "../utils/quizGenerator";
+import { CountryMap } from "./CountryMap";
 import { soundEffect } from "../utils/sound";
 import { calculateQuestionScore } from "../utils/ranking";
 import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap, ArrowRight } from "lucide-react";
@@ -261,7 +262,21 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </div>
         )}
 
-        {/* 2. パターン: シルエットから国名当て */}
+
+        {/* 2. パターン: 周辺地図（ロケーション）から国名当て */}
+        {currentQuestion.type === "location_to_name" && (
+          <div className="w-full flex flex-col items-center justify-center my-1">
+            <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-white w-64 h-44 max-w-full flex items-center justify-center">
+              <CountryMap
+                countryCode={currentQuestion.country.code}
+                showSurroundings={true}
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 3. パターン: シルエットから国名当て */}
         {currentQuestion.type === "shape_to_name" && (
           <div className="w-full flex flex-col items-center justify-center my-1">
             <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-indigo-50/50 w-60 h-40 max-w-full flex items-center justify-center p-3">
@@ -400,7 +415,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
         )}
 
         {/* パターンC: テキスト4択（国名当て、トリビア） */}
-        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "trivia") && (
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "location_to_name" || currentQuestion.type === "trivia") && (
           <div className="flex flex-col gap-2">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-indigo-200 text-slate-800";

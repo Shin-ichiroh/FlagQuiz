@@ -1,6 +1,8 @@
 import type { Country, GameMode, QuizQuestion, Region } from "../types";
 import { COUNTRIES } from "../data/countries";
 import availableShapesList from "../data/available_shapes.json";
+import worldGeo from "../data/world_geo.json";
+const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
 
 const availableShapes = new Set(availableShapesList);
 
@@ -137,7 +139,42 @@ export function generateQuizQuestions(
     });
   }
 
-  // 4. 国旗当て / 国名当て / ランダムモード
+
+  // 4. 周辺地図（ロケーション）モードの場合
+  if (mode === "location") {
+    const geoPool = regionPool.filter((c) => geoCodes.has(c.code));
+    const poolToUse = geoPool.length > 0 ? geoPool : COUNTRIES.filter((c) => geoCodes.has(c.code));
+    const shuffledGeo = shuffle(poolToUse);
+    const selectedCountries: Country[] = [];
+    while (selectedCountries.length < count) {
+      for (const c of shuffledGeo) {
+        if (selectedCountries.length >= count) break;
+        selectedCountries.push(c);
+      }
+    }
+
+    return selectedCountries.map((country, idx) => {
+      const otherCountries = shuffle(poolToUse.filter((c) => c.code !== country.code)).slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "location_to_name",
+        country,
+        prompt: "オレンジ色で ひかった 国は どこかな？",
+        promptRuby: "オレンジいろで ひかった くには どこかな？",
+        options: optionCountries.map((c) => ({
+          text: c.name,
+          ruby: c.ruby,
+          shapeCode: c.code,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${country.name}」です！周りの国との位置関係を覚えてみよう！`,
+      };
+    });
+  }
+
+  // 5. 国旗当て / 国名当て / ランダムモード
   const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
@@ -148,17 +185,21 @@ export function generateQuizQuestions(
   }
 
   return selectedCountries.map((country, idx) => {
-    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" = "flag_to_name";
+    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" = "flag_to_name";
     if (mode === "random") {
-      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape")[] = [
+      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name")[] = [
         "flag_to_name",
         "name_to_flag",
       ];
+
       if (country.trivia && country.trivia.length > 0) {
         candidates.push("trivia");
       }
       if (availableShapes.has(country.code)) {
         candidates.push(Math.random() < 0.5 ? "shape_to_name" : "name_to_shape");
+      }
+      if (geoCodes.has(country.code)) {
+        candidates.push("location_to_name");
       }
       qType = candidates[Math.floor(Math.random() * candidates.length)];
     } else {
@@ -180,6 +221,25 @@ export function generateQuizQuestions(
         promptRuby: triviaItem.questionRuby,
         options: shuffledOptions,
         explanation: triviaItem.explanation,
+      };
+    } else if (qType === "location_to_name") {
+      const geoPool = COUNTRIES.filter((c) => geoCodes.has(c.code) && c.code !== country.code);
+      const otherCountries = shuffle(geoPool).slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "location_to_name",
+        country,
+        prompt: "オレンジ色で ひかった 国は どこかな？",
+        promptRuby: "オレンジいろで ひかった くには どこかな？",
+        options: optionCountries.map((c) => ({
+          text: c.name,
+          ruby: c.ruby,
+          shapeCode: c.code,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${country.name}」です！周りの国との位置関係を覚えてみよう！`,
       };
     } else if (qType === "shape_to_name") {
       const shapePool = COUNTRIES.filter((c) => availableShapes.has(c.code) && c.code !== country.code);
