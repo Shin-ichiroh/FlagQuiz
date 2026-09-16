@@ -1,5 +1,8 @@
 import type { Country, GameMode, QuizQuestion, Region } from "../types";
 import { COUNTRIES } from "../data/countries";
+import availableShapesList from "../data/available_shapes.json";
+
+const availableShapes = new Set(availableShapesList);
 
 // Fisher-Yates シャッフル
 function shuffle<T>(array: T[]): T[] {
@@ -15,6 +18,11 @@ export function getFlagUrl(code: string, width: number = 320): string {
   return `https://flagcdn.com/w${width}/${code.toLowerCase()}.png`;
 }
 
+// 国のシルエット地図SVGのURL
+export function getShapeUrl(code: string): string {
+  return `https://raw.githubusercontent.com/djaiss/mapsicon/master/all/${code.toLowerCase()}/vector.svg`;
+}
+
 export function generateQuizQuestions(
   count: number,
   mode: GameMode,
@@ -28,7 +36,6 @@ export function generateQuizQuestions(
 
   // 2. 由来（トリビア）モードの場合
   if (mode === "trivia") {
-    // トリビアを持つ国・問題を全て抽出
     const allTriviaItems: { country: Country; triviaIndex: number }[] = [];
     for (const c of regionPool) {
       if (c.trivia && c.trivia.length > 0) {
@@ -38,7 +45,6 @@ export function generateQuizQuestions(
       }
     }
 
-    // トリビア問題が足りない場合は他地域からも補充
     if (allTriviaItems.length < count && region !== "all") {
       for (const c of COUNTRIES) {
         if (c.region !== region && c.trivia && c.trivia.length > 0) {
@@ -78,7 +84,60 @@ export function generateQuizQuestions(
     });
   }
 
-  // 3. 国旗当て / 国名当て / ランダムモード
+  // 3. シルエット（国のかたち）モードの場合
+  if (mode === "shape") {
+    const shapePool = regionPool.filter((c) => availableShapes.has(c.code));
+    const poolToUse = shapePool.length > 0 ? shapePool : COUNTRIES.filter((c) => availableShapes.has(c.code));
+    const shuffledShapes = shuffle(poolToUse);
+    const selectedCountries: Country[] = [];
+    while (selectedCountries.length < count) {
+      for (const c of shuffledShapes) {
+        if (selectedCountries.length >= count) break;
+        selectedCountries.push(c);
+      }
+    }
+
+    return selectedCountries.map((country, idx) => {
+      // 50%で「かたちから国名当て」、50%で「国名からかたち当て」
+      const isShapeToName = Math.random() < 0.5;
+      const otherCountries = shuffle(poolToUse.filter((c) => c.code !== country.code)).slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      if (isShapeToName) {
+        return {
+          id: idx + 1,
+          type: "shape_to_name",
+          country,
+          prompt: "この かたちの くには どこかな？",
+          promptRuby: "この かたちの くには どこかな？",
+          options: optionCountries.map((c) => ({
+            text: c.name,
+            ruby: c.ruby,
+            shapeCode: c.code,
+            isCorrect: c.code === country.code,
+          })),
+          explanation: `正解は「${country.name}」の国土の形です！`,
+        };
+      } else {
+        return {
+          id: idx + 1,
+          type: "name_to_shape",
+          country,
+          prompt: "この国の かたちは どれかな？",
+          promptRuby: "このくにの かたちは どれかな？",
+          options: optionCountries.map((c) => ({
+            shapeCode: c.code,
+            text: c.name,
+            ruby: c.ruby,
+            isCorrect: c.code === country.code,
+          })),
+          explanation: `正解は「${country.name}」のかたちです！`,
+        };
+      }
+    });
+  }
+
+  // 4. 国旗当て / 国名当て / ランダムモード
   const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
@@ -89,14 +148,17 @@ export function generateQuizQuestions(
   }
 
   return selectedCountries.map((country, idx) => {
-    let qType: "flag_to_name" | "name_to_flag" | "trivia" = "flag_to_name";
+    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" = "flag_to_name";
     if (mode === "random") {
-      const candidates: ("flag_to_name" | "name_to_flag" | "trivia")[] = [
+      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape")[] = [
         "flag_to_name",
         "name_to_flag",
       ];
       if (country.trivia && country.trivia.length > 0) {
         candidates.push("trivia");
+      }
+      if (availableShapes.has(country.code)) {
+        candidates.push(Math.random() < 0.5 ? "shape_to_name" : "name_to_shape");
       }
       qType = candidates[Math.floor(Math.random() * candidates.length)];
     } else {
@@ -118,6 +180,43 @@ export function generateQuizQuestions(
         promptRuby: triviaItem.questionRuby,
         options: shuffledOptions,
         explanation: triviaItem.explanation,
+      };
+    } else if (qType === "shape_to_name") {
+      const shapePool = COUNTRIES.filter((c) => availableShapes.has(c.code) && c.code !== country.code);
+      const otherCountries = shuffle(shapePool).slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "shape_to_name",
+        country,
+        prompt: "この かたちの くには どこかな？",
+        promptRuby: "この かたちの くには どこかな？",
+        options: optionCountries.map((c) => ({
+          text: c.name,
+          ruby: c.ruby,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${country.name}」の国土の形です！`,
+      };
+    } else if (qType === "name_to_shape") {
+      const shapePool = COUNTRIES.filter((c) => availableShapes.has(c.code) && c.code !== country.code);
+      const otherCountries = shuffle(shapePool).slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "name_to_shape",
+        country,
+        prompt: "この国の かたちは どれかな？",
+        promptRuby: "このくにの かたちは どれかな？",
+        options: optionCountries.map((c) => ({
+          shapeCode: c.code,
+          text: c.name,
+          ruby: c.ruby,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${country.name}」のかたちです！`,
       };
     } else if (qType === "name_to_flag") {
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);

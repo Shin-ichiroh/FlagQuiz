@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import type { QuizQuestion, GameSettings, QuizResultRecord } from "../types";
-import { getFlagUrl } from "../utils/quizGenerator";
+import { getFlagUrl, getShapeUrl } from "../utils/quizGenerator";
 import { soundEffect } from "../utils/sound";
 import { calculateQuestionScore } from "../utils/ranking";
-import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap } from "lucide-react";
+import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap, ArrowRight } from "lucide-react";
 
 interface QuizScreenProps {
   questions: QuizQuestion[];
@@ -29,6 +29,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 
   const currentQuestion = questions[currentIndex];
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoNextTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 累計スコア
   const currentTotalScore = results.reduce((sum, r) => sum + r.questionScore, 0);
@@ -65,6 +66,13 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     };
   }, [currentIndex, isAnswered, settings.timeLimit]);
 
+  // クリーンアップ
+  useEffect(() => {
+    return () => {
+      if (autoNextTimeoutRef.current) clearTimeout(autoNextTimeoutRef.current);
+    };
+  }, []);
+
   // 時間切れ
   const handleTimeUp = () => {
     if (isAnswered) return;
@@ -88,9 +96,11 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     const newResults = [...results, record];
     setResults(newResults);
 
-    setTimeout(() => {
+    // トリビア問題は読む時間を確保（5秒）、通常は1.8秒
+    const waitTime = currentQuestion.type === "trivia" ? 5000 : 1800;
+    autoNextTimeoutRef.current = setTimeout(() => {
       goToNext(newResults);
-    }, 1800);
+    }, waitTime);
   };
 
   // 選択肢タップ
@@ -124,9 +134,18 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     const newResults = [...results, record];
     setResults(newResults);
 
-    setTimeout(() => {
+    // トリビア問題は読む時間をたっぷり確保（4.5秒）、通常は1.5秒
+    const waitTime = currentQuestion.type === "trivia" ? 4500 : 1500;
+    autoNextTimeoutRef.current = setTimeout(() => {
       goToNext(newResults);
-    }, 1500);
+    }, waitTime);
+  };
+
+  // 「つぎへ」ボタン押下（手動送り）
+  const handleManualNext = () => {
+    if (autoNextTimeoutRef.current) clearTimeout(autoNextTimeoutRef.current);
+    soundEffect.playTap();
+    goToNext(results);
   };
 
   const goToNext = (currentResults: QuizResultRecord[]) => {
@@ -228,8 +247,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </p>
         </div>
 
-        {/* パターンAまたはトリビア: 国旗を大きく表示 */}
-        {currentQuestion.type !== "name_to_flag" && (
+        {/* 1. パターン: 国旗から国名当て、またはトリビア */}
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "trivia") && (
           <div className="w-full flex flex-col items-center justify-center my-1">
             <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-white w-64 h-38 max-w-full flex items-center justify-center">
               <img
@@ -242,8 +261,22 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </div>
         )}
 
-        {/* パターンB: 国名を大きく表示 */}
-        {currentQuestion.type === "name_to_flag" && (
+        {/* 2. パターン: シルエットから国名当て */}
+        {currentQuestion.type === "shape_to_name" && (
+          <div className="w-full flex flex-col items-center justify-center my-1">
+            <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-indigo-50/50 w-60 h-40 max-w-full flex items-center justify-center p-3">
+              <img
+                src={getShapeUrl(currentQuestion.country.code)}
+                alt="国のシルエット"
+                className="w-full h-full object-contain filter drop-shadow-md brightness-90 saturate-150"
+                loading="eager"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 3. パターン: 国名から国旗当て / 国名からシルエット当て */}
+        {(currentQuestion.type === "name_to_flag" || currentQuestion.type === "name_to_shape") && (
           <div className="my-2 px-6 py-4 bg-white rounded-3xl shadow-sm border-2 border-indigo-100 text-center w-full max-w-xs">
             {settings.showRuby && (
               <span className="block text-xs font-bold text-indigo-500 mb-0.5">
@@ -259,7 +292,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
         {/* 解答演出 & 加点表示バナー */}
         {isAnswered && (
           <div
-            className={`w-full my-2 p-2.5 rounded-2xl text-center flex flex-col items-center justify-center font-black text-sm shadow-md animate-bounce ${
+            className={`w-full my-2 p-2 rounded-2xl text-center flex flex-col items-center justify-center font-black text-sm shadow-md animate-bounce ${
               selectedOptionIndex === null
                 ? "bg-amber-500 text-white"
                 : currentQuestion.options[selectedOptionIndex].isCorrect
@@ -286,7 +319,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
               )}
             </div>
             {lastScoreGain && lastScoreGain.speedBonus > 0 && (
-              <span className="text-[11px] font-bold text-amber-200 mt-0.5 flex items-center gap-1">
+              <span className="text-[10px] font-bold text-amber-200 mt-0.5 flex items-center gap-1">
                 ⚡ スピードボーナス +{lastScoreGain.speedBonus}点！
               </span>
             )}
@@ -296,7 +329,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 
       {/* 選択肢ボタンエリア */}
       <div className="px-4 w-full">
-        {currentQuestion.type === "name_to_flag" ? (
+        {/* パターンA: 国旗4択 */}
+        {currentQuestion.type === "name_to_flag" && (
           <div className="grid grid-cols-2 gap-2.5">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-slate-300";
@@ -328,7 +362,45 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
               );
             })}
           </div>
-        ) : (
+        )}
+
+        {/* パターンB: シルエット4択 */}
+        {currentQuestion.type === "name_to_shape" && (
+          <div className="grid grid-cols-2 gap-2.5">
+            {currentQuestion.options.map((option, idx) => {
+              let btnClass = "bg-white border-2 border-slate-200 hover:border-slate-300";
+              if (isAnswered) {
+                if (option.isCorrect) {
+                  btnClass = "bg-emerald-50 border-4 border-emerald-500 shadow-md ring-2 ring-emerald-300";
+                } else if (idx === selectedOptionIndex) {
+                  btnClass = "bg-rose-50 border-4 border-rose-500 opacity-60";
+                } else {
+                  btnClass = "bg-white border-2 border-slate-200 opacity-30";
+                }
+              }
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleSelectOption(idx)}
+                  disabled={isAnswered}
+                  className={`p-2 rounded-2xl transition-all flex flex-col items-center justify-center active:scale-95 shadow-xs ${btnClass}`}
+                >
+                  <div className="w-full h-20 rounded-lg overflow-hidden flex items-center justify-center bg-indigo-50/40 p-2">
+                    <img
+                      src={getShapeUrl(option.shapeCode!)}
+                      alt="選択肢シルエット"
+                      className="w-full h-full object-contain filter drop-shadow-xs"
+                    />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* パターンC: テキスト4択（国名当て、トリビア） */}
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "trivia") && (
           <div className="flex flex-col gap-2">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-indigo-200 text-slate-800";
@@ -366,12 +438,24 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
         )}
       </div>
 
-      {/* 解説カード */}
+      {/* 解説カード ＆ 「つぎへ」ボタン */}
       {isAnswered && currentQuestion.explanation && (
         <div className="px-4 mt-2">
-          <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-2xl text-[11px] text-amber-950 font-medium leading-relaxed">
-            <span className="font-bold text-amber-800 mr-1">💡 まめちしき:</span>
-            {currentQuestion.explanation}
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-950 font-medium leading-relaxed shadow-xs flex flex-col gap-2">
+            <div>
+              <span className="font-bold text-amber-800 mr-1">💡 まめちしき:</span>
+              {currentQuestion.explanation}
+            </div>
+            {/* 自分のペースで進める「つぎへ」ボタン */}
+            <div className="flex justify-end pt-1">
+              <button
+                onClick={handleManualNext}
+                className="py-1.5 px-4 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-full shadow-xs flex items-center gap-1 active:scale-95 transition-all"
+              >
+                <span>つぎへ進む</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       )}

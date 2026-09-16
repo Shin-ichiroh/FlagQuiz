@@ -22,7 +22,9 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "flag_to_name", label: "🚩 国旗あて", sub: "はたをみて くにをあてる" },
     { id: "name_to_flag", label: "🔤 なまえあて", sub: "くになまえをみて はたをえらぶ" },
     { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
+    { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
   ];
+
 
   const regions: { id: Region; label: string }[] = [
     { id: "all", label: "🌍 ぜんせかい" },
