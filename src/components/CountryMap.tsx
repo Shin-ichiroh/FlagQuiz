@@ -8,6 +8,9 @@ interface CountryMapProps {
   highlightColor?: string;
   neighborColor?: string;
   borderColor?: string;
+  bgColor?: string;
+  targetStrokeColor?: string;
+  targetStrokeWidth?: number;
 }
 
 interface Geometry {
@@ -45,7 +48,8 @@ function getRingAreaAndBBox(ring: [number, number][]) {
   return { area: Math.abs(area) / 2, minLng, minLat, maxLng, maxLat };
 }
 
-// 遠隔の孤島（ハワイ、仏領ギアナ等）に引っ張られて極端に扁平になるのを防ぐ、国の主要部分（本土群）の境界検出
+// 遠隔の孤島（米国のハワイ、仏領ギアナ等）に引っ張られて国土が極小化するのを防ぎつつ、
+// 日本列島（北海道・本州・四国・九州・沖縄・佐渡・八重山等）や近隣島嶼群をすべて美しく内包するクラスタリング境界検出
 function getTargetCountryBBox(feature: GeoFeature) {
   const geom = feature.geom;
   if (geom.type === "Polygon") {
@@ -56,21 +60,36 @@ function getTargetCountryBBox(feature: GeoFeature) {
   // MultiPolygonの場合
   const stats = geom.coordinates.map((poly: [number, number][][]) => getRingAreaAndBBox(poly[0]));
   stats.sort((a, b) => b.area - a.area);
-  const maxArea = stats[0].area;
 
+  // アメリカ（us）は本土48州（CONUS）を基準として誰もが知る国土形状を美しく切り出す
+  if (feature.id === "us") {
+    return { minLng: stats[0].minLng, minLat: stats[0].minLat, maxLng: stats[0].maxLng, maxLat: stats[0].maxLat };
+  }
+
+  const maxArea = stats[0].area;
   let minLng = stats[0].minLng, minLat = stats[0].minLat, maxLng = stats[0].maxLng, maxLat = stats[0].maxLat;
 
-  // 面積が一定以上で、本土中心から極端に遠すぎない島々（日本列島、インドネシア、フィリピン等は全て内包）を含める
-  for (let i = 1; i < stats.length; i++) {
-    const s = stats[i];
-    if (s.area >= maxArea * 0.05) {
-      const dist = Math.hypot(s.minLng - minLng, s.minLat - minLat);
-      // 32度以内（約3,500km）の連なる領土を統合
-      if (dist < 32) {
+  // 島伝い（距離5.5度以内、または面積が20%以上かつ12度以内）に連鎖的に領土を吸収
+  let added = true;
+  const remaining = stats.slice(1);
+  while (added && remaining.length > 0) {
+    added = false;
+    for (let i = remaining.length - 1; i >= 0; i--) {
+      const s = remaining[i];
+      let dLng = Math.max(0, s.minLng - maxLng, minLng - s.maxLng);
+      if (dLng > 180) dLng = 360 - dLng;
+      const dLat = Math.max(0, s.minLat - maxLat, minLat - s.maxLat);
+      const dist = Math.hypot(dLng, dLat);
+
+      const maxAllowedDist = s.area >= maxArea * 0.2 ? 12.0 : 5.5;
+
+      if (dist < maxAllowedDist) {
         minLng = Math.min(minLng, s.minLng);
         maxLng = Math.max(maxLng, s.maxLng);
         minLat = Math.min(minLat, s.minLat);
         maxLat = Math.max(maxLat, s.maxLat);
+        remaining.splice(i, 1);
+        added = true;
       }
     }
   }
@@ -123,6 +142,9 @@ export const CountryMap: React.FC<CountryMapProps> = ({
   highlightColor = "#f97316", // ターゲット国: 明るいオレンジ
   neighborColor = "#f1f5f9",  // 周辺国: 淡いグレー
   borderColor = "#cbd5e1",    // 境界線: 優しい境界線
+  bgColor,
+  targetStrokeColor = "#ea580c",
+  targetStrokeWidth = 2,
 }) => {
   const code = countryCode.toLowerCase();
   const features = worldGeo as GeoFeature[];
@@ -144,8 +166,8 @@ export const CountryMap: React.FC<CountryMapProps> = ({
     const mWidth = Math.max(0.5, tMaxX - tMinX);
     const mHeight = Math.max(0.5, tMaxY - tMinY);
 
-    // 2. 余白の設定 (周辺国を表示する場合は約60%、単体シルエット時は約15%)
-    const marginRatio = showSurroundings ? 0.65 : 0.18;
+    // 2. 余白の設定 (周辺国を表示する場合は約65%、単体シルエット時は約12%)
+    const marginRatio = showSurroundings ? 0.65 : 0.12;
     const marginX = mWidth * marginRatio;
     const marginY = mHeight * marginRatio;
 
@@ -155,7 +177,6 @@ export const CountryMap: React.FC<CountryMapProps> = ({
     let viewMaxY = tMaxY + marginY;
 
     // 3. 縦横比を完全に 1:1（正方形アスペクト比）で等倍にする
-    // SVGのキャンバスサイズ
     const canvasW = 400;
     const canvasH = 280;
     const canvasAspect = canvasW / canvasH;
@@ -230,34 +251,39 @@ export const CountryMap: React.FC<CountryMapProps> = ({
     );
   }
 
+  const effectiveBg = bgColor ?? (showSurroundings ? "#f8fafc" : "transparent");
+
   return (
     <svg
       viewBox={`0 0 ${mapData.canvasW} ${mapData.canvasH}`}
       className={className}
       preserveAspectRatio="xMidYMid meet"
     >
-      {/* 海背景 */}
-      <rect width={mapData.canvasW} height={mapData.canvasH} fill="#f8fafc" />
+      {/* 背景（海または透明） */}
+      {effectiveBg !== "transparent" && (
+        <rect width={mapData.canvasW} height={mapData.canvasH} fill={effectiveBg} />
+      )}
 
       {/* 周辺国 (淡いグレー) */}
-      {mapData.neighbors.map((n) => (
-        <path
-          key={n.id}
-          d={n.path}
-          fill={neighborColor}
-          stroke={borderColor}
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      ))}
+      {showSurroundings &&
+        mapData.neighbors.map((n) => (
+          <path
+            key={n.id}
+            d={n.path}
+            fill={neighborColor}
+            stroke={borderColor}
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        ))}
 
-      {/* 対象国 (オレンジ・ハイライト & 輪郭強調) */}
+      {/* 対象国 */}
       <path
         d={mapData.targetPath}
         fill={highlightColor}
-        stroke="#ea580c"
-        strokeWidth="2"
+        stroke={targetStrokeColor}
+        strokeWidth={targetStrokeWidth}
         strokeLinejoin="round"
         strokeLinecap="round"
         className="filter drop-shadow-sm"

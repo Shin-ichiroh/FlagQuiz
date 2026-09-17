@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import type { QuizResultRecord, GameSettings } from "../types";
-import { getFlagUrl, getShapeUrl } from "../utils/quizGenerator";
+import { getFlagUrl } from "../utils/quizGenerator";
 import { CountryMap } from "./CountryMap";
-import worldGeo from "../data/world_geo.json";
-const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
+
 import { soundEffect } from "../utils/sound";
 import { saveRankingEntry } from "../utils/ranking";
 import confetti from "canvas-confetti";
@@ -152,29 +151,16 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                     </div>
 
                     {/* 周辺地図 / シルエット表示 */}
-                    {geoCodes.has(country.code) ? (
-                      <div className="flex flex-col items-center">
-                        <div className="w-16 h-11 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center p-0.5 shrink-0">
-                          <CountryMap
-                            countryCode={country.code}
-                            showSurroundings={true}
-                            className="w-full h-full"
-                          />
-                        </div>
-                        <span className="text-[9px] font-bold text-slate-400 mt-0.5">ちず・かたち</span>
+                    <div className="flex flex-col items-center">
+                      <div className="w-16 h-11 rounded-lg border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center p-0.5 shrink-0">
+                        <CountryMap
+                          countryCode={country.code}
+                          showSurroundings={true}
+                          className="w-full h-full"
+                        />
                       </div>
-                    ) : (
-                      <div className="flex flex-col items-center">
-                        <div className="w-16 h-11 rounded-lg border border-slate-200 bg-indigo-50/50 overflow-hidden flex items-center justify-center p-1 shrink-0">
-                          <img
-                            src={getShapeUrl(country.code)}
-                            alt="シルエット"
-                            className="w-full h-full object-contain filter drop-shadow-xs"
-                          />
-                        </div>
-                        <span className="text-[9px] font-bold text-slate-400 mt-0.5">かたち</span>
-                      </div>
-                    )}
+                      <span className="text-[9px] font-bold text-slate-400 mt-0.5">ちず・かたち</span>
+                    </div>
 
                     {/* 国名 & ふりがな */}
                     <div className="flex-1 min-w-0 pl-1">

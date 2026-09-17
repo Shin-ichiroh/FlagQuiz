@@ -1,10 +1,9 @@
 import type { Country, GameMode, QuizQuestion, Region } from "../types";
 import { COUNTRIES } from "../data/countries";
-import availableShapesList from "../data/available_shapes.json";
 import worldGeo from "../data/world_geo.json";
 const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
-
-const availableShapes = new Set(availableShapesList);
+// 全199カ国の高精度地図データを使用
+const availableShapes = geoCodes;
 
 // Fisher-Yates シャッフル
 function shuffle<T>(array: T[]): T[] {

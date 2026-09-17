@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import type { QuizQuestion, GameSettings, QuizResultRecord } from "../types";
-import { getFlagUrl, getShapeUrl } from "../utils/quizGenerator";
+import { getFlagUrl } from "../utils/quizGenerator";
 import { CountryMap } from "./CountryMap";
 import { soundEffect } from "../utils/sound";
 import { calculateQuestionScore } from "../utils/ranking";
@@ -279,12 +279,14 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
         {/* 3. パターン: シルエットから国名当て */}
         {currentQuestion.type === "shape_to_name" && (
           <div className="w-full flex flex-col items-center justify-center my-1">
-            <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-indigo-50/50 w-60 h-40 max-w-full flex items-center justify-center p-3">
-              <img
-                src={getShapeUrl(currentQuestion.country.code)}
-                alt="国のシルエット"
-                className="w-full h-full object-contain filter drop-shadow-md brightness-90 saturate-150"
-                loading="eager"
+            <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-indigo-50/50 w-64 h-44 max-w-full flex items-center justify-center p-2">
+              <CountryMap
+                countryCode={currentQuestion.country.code}
+                showSurroundings={false}
+                highlightColor="#4f46e5"
+                targetStrokeColor="#3730a3"
+                targetStrokeWidth={1.5}
+                className="w-full h-full"
               />
             </div>
           </div>
@@ -401,11 +403,14 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
                   disabled={isAnswered}
                   className={`p-2 rounded-2xl transition-all flex flex-col items-center justify-center active:scale-95 shadow-xs ${btnClass}`}
                 >
-                  <div className="w-full h-20 rounded-lg overflow-hidden flex items-center justify-center bg-indigo-50/40 p-2">
-                    <img
-                      src={getShapeUrl(option.shapeCode!)}
-                      alt="選択肢シルエット"
-                      className="w-full h-full object-contain filter drop-shadow-xs"
+                  <div className="w-full h-20 rounded-lg overflow-hidden flex items-center justify-center bg-indigo-50/40 p-1">
+                    <CountryMap
+                      countryCode={option.shapeCode!}
+                      showSurroundings={false}
+                      highlightColor="#4f46e5"
+                      targetStrokeColor="#3730a3"
+                      targetStrokeWidth={1.5}
+                      className="w-full h-full"
                     />
                   </div>
                 </button>
