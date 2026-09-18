@@ -1,6 +1,6 @@
 export type Region = "all" | "asia" | "europe" | "africa" | "north_america" | "south_america" | "oceania";
 
-export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location";
+export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location" | "compare";
 
 export interface TriviaQuestion {
   question: string;
@@ -20,21 +20,22 @@ export interface Country {
 
 export interface QuizQuestion {
   id: number;
-  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name";
-
+  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare";
   country: Country;
   prompt: string;
   promptRuby?: string;
+  compareType?: "area" | "population";
   options: {
     text?: string;
     ruby?: string;
     flagCode?: string;
     shapeCode?: string;
+    countryCode?: string;
+    factValue?: string;
     isCorrect: boolean;
   }[];
   explanation?: string;
 }
-
 
 export interface GameSettings {
   playerName: string;
@@ -44,7 +45,9 @@ export interface GameSettings {
   region: Region;
   showRuby: boolean;
   soundEnabled: boolean;
+  speechEnabled: boolean;
 }
+
 
 export interface QuizResultRecord {
   question: QuizQuestion;

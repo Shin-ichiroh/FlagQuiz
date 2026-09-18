@@ -1,9 +1,31 @@
 import type { Country, GameMode, QuizQuestion, Region } from "../types";
 import { COUNTRIES } from "../data/countries";
+import { COUNTRY_FACTS } from "../data/countryFacts";
 import worldGeo from "../data/world_geo.json";
 const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
 // 全199カ国の高精度地図データを使用
 const availableShapes = geoCodes;
+
+// 面積をわかりやすい日本語表記にする
+export function formatArea(areaKm2: number): string {
+  if (areaKm2 >= 10000) {
+    const man = Math.round(areaKm2 / 1000) / 10;
+    return `約${man.toLocaleString()}万 km²`;
+  }
+  return `約${areaKm2.toLocaleString()} km²`;
+}
+
+// 人口をわかりやすい日本語表記にする
+export function formatPopulation(pop: number): string {
+  if (pop >= 100000000) {
+    const oku = Math.round(pop / 10000000) / 10;
+    return `約${oku.toLocaleString()}億人`;
+  } else if (pop >= 10000) {
+    const man = Math.round(pop / 1000) / 10;
+    return `約${man.toLocaleString()}万人`;
+  }
+  return `約${pop.toLocaleString()}人`;
+}
 
 // Fisher-Yates シャッフル
 function shuffle<T>(array: T[]): T[] {
@@ -173,7 +195,84 @@ export function generateQuizQuestions(
     });
   }
 
-  // 5. 国旗当て / 国名当て / ランダムモード
+  // 5. 国くらべ（面積・人口）モードの場合
+  if (mode === "compare") {
+    const comparePool = regionPool.filter((c) => !!COUNTRY_FACTS[c.code.toLowerCase()]);
+    const poolToUse = comparePool.length >= 2 ? comparePool : COUNTRIES.filter((c) => !!COUNTRY_FACTS[c.code.toLowerCase()]);
+    const questions: QuizQuestion[] = [];
+
+    for (let i = 0; i < count; i++) {
+      const isArea = Math.random() < 0.5;
+      const compareType = isArea ? "area" : "population";
+      const shuffled = shuffle(poolToUse);
+      const c1 = shuffled[0];
+      const c2 = shuffled[1];
+      const f1 = COUNTRY_FACTS[c1.code.toLowerCase()];
+      const f2 = COUNTRY_FACTS[c2.code.toLowerCase()];
+
+      const val1 = isArea ? f1.area : f1.population;
+      const val2 = isArea ? f2.area : f2.population;
+
+      // 値が大きいほうを正解とする（同じならval1）
+      const c1IsCorrect = val1 >= val2;
+      const correctCountry = c1IsCorrect ? c1 : c2;
+      const otherCountry = c1IsCorrect ? c2 : c1;
+      const correctFact = c1IsCorrect ? f1 : f2;
+      const otherFact = c1IsCorrect ? f2 : f1;
+
+      const prompt = isArea
+        ? "面積が 広いのは どっちかな？"
+        : "人口（人の数）が 多いのは どっちかな？";
+      const promptRuby = isArea
+        ? "めんせきが ひろいのは どっちかな？"
+        : "じんこう（ひとの かず）が おおいのは どっちかな？";
+
+      const val1Str = isArea ? formatArea(f1.area) : formatPopulation(f1.population);
+      const val2Str = isArea ? formatArea(f2.area) : formatPopulation(f2.population);
+
+      const correctValStr = isArea ? formatArea(correctFact.area) : formatPopulation(correctFact.population);
+      const otherValStr = isArea ? formatArea(otherFact.area) : formatPopulation(otherFact.population);
+
+      const typeName = isArea ? "面積" : "人口";
+      const greetingInfo = correctFact.greeting
+        ? `\n🗣️ 「${correctCountry.name}」のごあいさつ: 「${correctFact.greeting}」(${correctFact.greetingLang})`
+        : "";
+
+      const explanation = `正解は「${correctCountry.name}」！\n・${correctCountry.name}: ${correctValStr}\n・${otherCountry.name}: ${otherValStr}\n${correctCountry.name}のほうが${typeName}が大きいです！${greetingInfo}`;
+
+      questions.push({
+        id: i + 1,
+        type: "compare",
+        compareType,
+        country: correctCountry,
+        prompt,
+        promptRuby,
+        options: [
+          {
+            text: c1.name,
+            ruby: c1.ruby,
+            flagCode: c1.code,
+            countryCode: c1.code,
+            factValue: val1Str,
+            isCorrect: c1IsCorrect,
+          },
+          {
+            text: c2.name,
+            ruby: c2.ruby,
+            flagCode: c2.code,
+            countryCode: c2.code,
+            factValue: val2Str,
+            isCorrect: !c1IsCorrect,
+          },
+        ],
+        explanation,
+      });
+    }
+
+    return questions;
+  }
+
+  // 6. 国旗当て / 国名当て / ランダムモード
   const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
@@ -184,9 +283,9 @@ export function generateQuizQuestions(
   }
 
   return selectedCountries.map((country, idx) => {
-    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" = "flag_to_name";
+    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" = "flag_to_name";
     if (mode === "random") {
-      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name")[] = [
+      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare")[] = [
         "flag_to_name",
         "name_to_flag",
       ];
@@ -199,6 +298,9 @@ export function generateQuizQuestions(
       }
       if (geoCodes.has(country.code)) {
         candidates.push("location_to_name");
+      }
+      if (COUNTRY_FACTS[country.code.toLowerCase()]) {
+        candidates.push("compare");
       }
       qType = candidates[Math.floor(Math.random() * candidates.length)];
     } else {
@@ -276,6 +378,69 @@ export function generateQuizQuestions(
           isCorrect: c.code === country.code,
         })),
         explanation: `正解は「${country.name}」のかたちです！`,
+      };
+    } else if (qType === "compare") {
+      const isArea = Math.random() < 0.5;
+      const compareType = isArea ? "area" : "population";
+      const otherPool = COUNTRIES.filter(
+        (c) => c.code !== country.code && !!COUNTRY_FACTS[c.code.toLowerCase()]
+      );
+      const otherCountry = shuffle(otherPool)[0] || country;
+      const f1 = COUNTRY_FACTS[country.code.toLowerCase()];
+      const f2 = COUNTRY_FACTS[otherCountry.code.toLowerCase()];
+
+      const val1 = isArea ? f1.area : f1.population;
+      const val2 = isArea ? f2.area : f2.population;
+      const c1IsCorrect = val1 >= val2;
+      const correctCountry = c1IsCorrect ? country : otherCountry;
+      const wrongCountry = c1IsCorrect ? otherCountry : country;
+      const correctFact = c1IsCorrect ? f1 : f2;
+      const wrongFact = c1IsCorrect ? f2 : f1;
+
+      const prompt = isArea
+        ? "面積が 広いのは どっちかな？"
+        : "人口（人の数）が 多いのは どっちかな？";
+      const promptRuby = isArea
+        ? "めんせきが ひろいのは どっちかな？"
+        : "じんこう（ひとの かず）が おおいのは どっちかな？";
+
+      const val1Str = isArea ? formatArea(f1.area) : formatPopulation(f1.population);
+      const val2Str = isArea ? formatArea(f2.area) : formatPopulation(f2.population);
+      const correctValStr = isArea ? formatArea(correctFact.area) : formatPopulation(correctFact.population);
+      const wrongValStr = isArea ? formatArea(wrongFact.area) : formatPopulation(wrongFact.population);
+      const typeName = isArea ? "面積" : "人口";
+      const greetingInfo = correctFact.greeting
+        ? `\n🗣️ 「${correctCountry.name}」のごあいさつ: 「${correctFact.greeting}」(${correctFact.greetingLang})`
+        : "";
+
+      const explanation = `正解は「${correctCountry.name}」！\n・${correctCountry.name}: ${correctValStr}\n・${wrongCountry.name}: ${wrongValStr}\n${correctCountry.name}のほうが${typeName}が大きいです！${greetingInfo}`;
+
+      return {
+        id: idx + 1,
+        type: "compare",
+        compareType,
+        country: correctCountry,
+        prompt,
+        promptRuby,
+        options: [
+          {
+            text: country.name,
+            ruby: country.ruby,
+            flagCode: country.code,
+            countryCode: country.code,
+            factValue: val1Str,
+            isCorrect: c1IsCorrect,
+          },
+          {
+            text: otherCountry.name,
+            ruby: otherCountry.ruby,
+            flagCode: otherCountry.code,
+            countryCode: otherCountry.code,
+            factValue: val2Str,
+            isCorrect: !c1IsCorrect,
+          },
+        ],
+        explanation,
       };
     } else if (qType === "name_to_flag") {
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);

@@ -4,9 +4,11 @@ import { getFlagUrl } from "../utils/quizGenerator";
 import { CountryMap } from "./CountryMap";
 
 import { soundEffect } from "../utils/sound";
+import { speech } from "../utils/speech";
+import { COUNTRY_FACTS } from "../data/countryFacts";
 import { saveRankingEntry } from "../utils/ranking";
 import confetti from "canvas-confetti";
-import { RotateCcw, Trophy, BookOpen, Zap } from "lucide-react";
+import { RotateCcw, Trophy, BookOpen, Zap, Volume2 } from "lucide-react";
 
 interface ResultScreenProps {
   results: QuizResultRecord[];
@@ -162,21 +164,47 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                       <span className="text-[9px] font-bold text-slate-400 mt-0.5">ちず・かたち</span>
                     </div>
 
-                    {/* 国名 & ふりがな */}
+                    {/* 国名 & ふりがな & 音声 */}
                     <div className="flex-1 min-w-0 pl-1">
                       <div className="text-[11px] font-bold text-indigo-500">{country.ruby}</div>
-                      <div className="text-base font-black text-slate-900 leading-tight">
-                        {country.name}
+                      <div className="flex items-center gap-1.5">
+                        <div className="text-base font-black text-slate-900 leading-tight truncate">
+                          {country.name}
+                        </div>
+                        <button
+                          onClick={() => speech.speak(country.name)}
+                          className="p-1 text-indigo-600 hover:text-indigo-800 rounded-full active:bg-indigo-50"
+                          title="発音をきく"
+                        >
+                          <Volume2 className="w-4 h-4" />
+                        </button>
                       </div>
-                      <span className="inline-block text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded mt-1">
-                        だい {record.question.id} もん
-                      </span>
+                      <div className="flex flex-wrap items-center gap-1 mt-1">
+                        <span className="inline-block text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                          だい {record.question.id} もん
+                        </span>
+                        {(() => {
+                          const fact = COUNTRY_FACTS[country.code.toLowerCase()];
+                          if (fact && fact.greeting) {
+                            return (
+                              <button
+                                onClick={() => speech.speak(`現地の言葉で、${fact.greeting}`)}
+                                className="inline-flex items-center gap-0.5 text-[10px] font-black text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded active:scale-95 transition-all"
+                                title="挨拶をきく"
+                              >
+                                <span>🗣️ {fact.greeting}</span>
+                              </button>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </div>
                     </div>
                   </div>
 
                   {/* 解説・豆知識 */}
                   {record.question.explanation && (
-                    <p className="text-[11px] text-slate-700 font-medium leading-relaxed bg-amber-50/80 p-2.5 rounded-xl border border-amber-100">
+                    <p className="text-[11px] text-slate-700 font-medium leading-relaxed bg-amber-50/80 p-2.5 rounded-xl border border-amber-100 whitespace-pre-line">
                       💡 {record.question.explanation}
                     </p>
                   )}

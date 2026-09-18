@@ -1,8 +1,9 @@
 import React from "react";
 import type { GameMode, GameSettings, Region } from "../types";
 import { soundEffect } from "../utils/sound";
+import { speech } from "../utils/speech";
 import { savePlayerName } from "../utils/ranking";
-import { Play, Volume2, VolumeX, Sparkles, Globe, Clock, Layers, HelpCircle, User, Trophy } from "lucide-react";
+import { Play, Volume2, VolumeX, Sparkles, Globe, Clock, Layers, HelpCircle, User, Trophy, Mic } from "lucide-react";
 
 interface SettingsModalProps {
   settings: GameSettings;
@@ -24,6 +25,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
     { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
     { id: "location", label: "📍 ばしょ・ちず", sub: "まわりの国と いっしょに出題！" },
+    { id: "compare", label: "⚔️ 国くらべ", sub: "どっちが大きい？ 人口が多い？" },
   ];
 
 
@@ -253,6 +255,31 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
             }}
             className={`w-12 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
               settings.showRuby ? "bg-indigo-600 justify-end" : "bg-slate-300 justify-start"
+            }`}
+          >
+            <div className="bg-white w-5 h-5 rounded-full shadow-md transform transition-transform" />
+          </button>
+        </div>
+
+        {/* 6. 音声よみあげトグル */}
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <div>
+            <div className="text-xs font-black text-slate-800 flex items-center gap-1">
+              <Mic className="w-3.5 h-3.5 text-indigo-600" />
+              こえで よみあげ
+            </div>
+            <div className="text-[10px] text-slate-400 font-semibold">もんだいや 国のなまえを よみあげるよ</div>
+          </div>
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              const next = !settings.speechEnabled;
+              speech.setEnabled(next);
+              if (next) speech.speak("音声読み上げをオンにしました");
+              onUpdateSettings({ ...settings, speechEnabled: next });
+            }}
+            className={`w-12 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
+              settings.speechEnabled ? "bg-indigo-600 justify-end" : "bg-slate-300 justify-start"
             }`}
           >
             <div className="bg-white w-5 h-5 rounded-full shadow-md transform transition-transform" />

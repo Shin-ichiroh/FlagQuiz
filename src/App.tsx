@@ -17,6 +17,7 @@ export function App() {
     region: "all",
     showRuby: true,
     soundEnabled: true,
+    speechEnabled: true,
   });
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
