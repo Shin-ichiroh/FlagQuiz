@@ -21,6 +21,7 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
   const [userFills, setUserFills] = useState<Record<string, string>>({});
   const [selectedColor, setSelectedColor] = useState<string>(flag.palette[1] || "#bc002d");
   const [showModel, setShowModel] = useState<boolean>(true);
+  const [showOutlines, setShowOutlines] = useState<boolean>(false); // デフォルトで枠線なし
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [checkResult, setCheckResult] = useState<"perfect" | "imperfect" | null>(null);
 
@@ -199,16 +200,31 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
         <span className="text-[11px] text-slate-500 font-medium">
           色をえらんで、ぬりたい場所をタップ！
         </span>
-        <button
-          onClick={() => {
-            soundEffect.playTap();
-            setShowModel((v) => !v);
-          }}
-          className="flex items-center gap-1 text-slate-600 hover:text-slate-800"
-        >
-          {showModel ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-          <span>おてほん: {showModel ? "ひょうじ" : "かくす"}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setShowOutlines((v) => !v);
+            }}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-bold transition-all ${
+              showOutlines
+                ? "bg-amber-100 border-amber-300 text-amber-900"
+                : "bg-white border-slate-200 text-slate-600"
+            }`}
+          >
+            <span>わくせん: {showOutlines ? "ON" : "OFF"}</span>
+          </button>
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setShowModel((v) => !v);
+            }}
+            className="flex items-center gap-1 text-slate-600 hover:text-slate-800"
+          >
+            {showModel ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+            <span>おてほん: {showModel ? "ひょうじ" : "かくす"}</span>
+          </button>
+        </div>
       </div>
 
       {/* おてほんミニ表示 */}
@@ -235,7 +251,7 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
 
       {/* ぬりえキャンバス (SVG) */}
       <div
-        className="relative w-full max-w-[340px] rounded-2xl shadow-md border-4 border-white bg-slate-100 overflow-hidden select-none mb-3"
+        className="relative w-full max-w-[340px] rounded-2xl shadow-md bg-white overflow-hidden select-none mb-3"
         style={{ aspectRatio: flag.aspectRatio }}
       >
         <svg
@@ -243,9 +259,26 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
           viewBox={flag.viewBox}
           className="w-full h-full cursor-pointer"
         >
-          {flag.elements.map((elem) => {
-            const fillColor = userFills[elem.id] || "#f1f5f9";
+          {flag.elements.map((elem, idx) => {
             const isFilled = !!userFills[elem.id];
+            // 未塗り時はパーツごとの淡い面グラデーション(#f8fafc / #e2e8f0)で境界を表現
+            const defaultUnfilled =
+              elem.id === "bg"
+                ? "#f8fafc"
+                : elem.id.includes("sun") || elem.id.includes("cross")
+                ? "#e2e8f0"
+                : idx % 2 === 0
+                ? "#f8fafc"
+                : "#e2e8f0";
+
+            const fillColor = isFilled ? userFills[elem.id] : defaultUnfilled;
+
+            // 枠線設定:
+            // 色を塗った要素は常に枠線なし (stroke: none)
+            // 未塗りの場合も「わくせん: OFF (デフォルト)」なら枠線なし
+            const strokeColor = !isFilled && showOutlines ? "#94a3b8" : "none";
+            const strokeWidth = !isFilled && showOutlines ? 1.5 : 0;
+            const strokeDasharray = !isFilled && showOutlines ? "4 2" : undefined;
 
             if (elem.type === "circle") {
               return (
@@ -253,9 +286,9 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                   key={elem.id}
                   {...elem.props}
                   fill={fillColor}
-                  stroke="#94a3b8"
-                  strokeWidth="2"
-                  strokeDasharray={isFilled ? "none" : "4 2"}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray}
                   onClick={() => handleElementClick(elem.id)}
                   className="transition-colors duration-150 hover:opacity-85"
                 />
@@ -267,9 +300,9 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                 key={elem.id}
                 {...elem.props}
                 fill={fillColor}
-                stroke="#94a3b8"
-                strokeWidth="2"
-                strokeDasharray={isFilled ? "none" : "4 2"}
+                stroke={strokeColor}
+                strokeWidth={strokeWidth}
+                strokeDasharray={strokeDasharray}
                 onClick={() => handleElementClick(elem.id)}
                 className="transition-colors duration-150 hover:opacity-85"
               />
