@@ -229,11 +229,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 ) : (
                   <span className="text-4xl">{placedPart.icon}</span>
                 )
-              ) : (
-                <div className="text-[10px] font-black text-slate-500/80 px-1 text-center pointer-events-none">
-                  {slot.name}
-                </div>
-              )}
+              ) : null}
             </div>
           );
         })}
