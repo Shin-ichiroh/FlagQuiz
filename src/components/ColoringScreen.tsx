@@ -248,8 +248,13 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
 
       {/* ぬりえキャンバス (SVG) */}
       <div
-        className="relative w-full max-w-[270px] xs:max-w-[290px] sm:max-w-[320px] max-h-[29vh] rounded-2xl shadow-sm bg-white overflow-hidden select-none mb-2 border border-slate-200"
-        style={{ aspectRatio: flag.aspectRatio }}
+        className="relative rounded-2xl shadow-sm bg-white overflow-hidden select-none mb-2 border border-slate-200"
+        style={{
+          aspectRatio: flag.aspectRatio,
+          height: "min(28vh, 195px)",
+          maxWidth: "calc(100% - 16px)",
+          width: "auto",
+        }}
       >
         <svg
           ref={svgRef}

@@ -275,7 +275,7 @@ export const COLORING_FLAGS: ColoringFlag[] = [
     "countryName": "スイス",
     "countryRuby": "すいす",
     "aspectRatio": "1 / 1",
-    "viewBox": "0 0 200 200",
+    "viewBox": "0 0 320 320",
     "elements": [
       {
         "id": "bg",
@@ -284,32 +284,17 @@ export const COLORING_FLAGS: ColoringFlag[] = [
         "props": {
           "x": 0,
           "y": 0,
-          "width": 200,
-          "height": 200
+          "width": 320,
+          "height": 320
         },
         "correctColor": "#ff0000"
       },
       {
-        "id": "cross_v",
-        "name": "十字のたて棒",
-        "type": "rect",
+        "id": "cross",
+        "name": "白い十字（スイスクロス）",
+        "type": "path",
         "props": {
-          "x": 82,
-          "y": 35,
-          "width": 36,
-          "height": 130
-        },
-        "correctColor": "#ffffff"
-      },
-      {
-        "id": "cross_h",
-        "name": "十字のよこ棒",
-        "type": "rect",
-        "props": {
-          "x": 35,
-          "y": 82,
-          "width": 130,
-          "height": 36
+          "d": "M 130 60 h 60 v 70 h 70 v 60 h -70 v 70 h -60 v -70 h -70 v -60 h 70 Z"
         },
         "correctColor": "#ffffff"
       }
@@ -603,7 +588,7 @@ export const COLORING_FLAGS: ColoringFlag[] = [
         "id": "star",
         "name": "金色の大きな星",
         "type": "polygon",
-        "props": { "points": "150,40 163.5,81.4 207.1,81.5 171.9,107.1 185.3,157.1 150,123 114.7,157.1 128.1,107.1 92.9,81.5 136.5,81.4" },
+        "props": { "points": "150.0,40.0 163.5,81.5 207.1,81.5 171.8,107.1 185.3,148.5 150.0,122.9 114.7,148.5 128.2,107.1 92.9,81.5 136.5,81.5" },
         "correctColor": "#ffff00"
       }
     ],
@@ -624,7 +609,7 @@ export const COLORING_FLAGS: ColoringFlag[] = [
         "id": "star",
         "name": "白い五角星",
         "type": "polygon",
-        "props": { "points": "150,42 163,82 205.2,82 171.1,106.8 184.1,155.2 150,122.2 115.9,155.2 128.9,106.8 94.8,82 137,82" },
+        "props": { "points": "150.0,42.0 163.0,82.1 205.2,82.1 171.1,106.8 184.1,146.9 150.0,122.2 115.9,146.9 128.9,106.8 94.8,82.1 137.0,82.1" },
         "correctColor": "#ffffff"
       }
     ],
