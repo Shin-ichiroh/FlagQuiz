@@ -953,8 +953,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白と赤の斜め十字",
         "ruby": "ななめじゅうじ",
         "icon": "✖",
-        "svgContent": "<g><path d=\"M0 0 L36 0 L300 132 L300 150 L264 150 L0 18 Z M300 0 L264 0 L0 132 L0 150 L36 150 L300 18 Z\" fill=\"#ffffff\"/><path d=\"M0 0 L18 0 L300 141 L300 150 L282 150 L0 9 Z M300 0 L282 0 L0 141 L0 150 L18 150 L300 9 Z\" fill=\"#c8102e\"/></g>",
-        "viewBox": "0 0 300 150",
+        "svgContent": "<defs><clipPath id=\"uk_saltires_s\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath><clipPath id=\"uk_saltires_t\"><path d=\"M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z\"/></clipPath></defs><g clip-path=\"url(#uk_saltires_s)\"><path d=\"M0,0 L60,30 M60,0 L0,30\" stroke=\"#ffffff\" stroke-width=\"6\"/><path d=\"M0,0 L60,30 M60,0 L0,30\" clip-path=\"url(#uk_saltires_t)\" stroke=\"#c8102e\" stroke-width=\"4\"/></g>",
+        "viewBox": "0 0 60 30",
+        "trayViewBox": "0 0 60 30",
         "targetSlotId": "saltires_slot"
       },
       {
@@ -962,8 +963,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "聖ジョージの十字架",
         "ruby": "せいじょーじじゅうじ",
         "icon": "➕",
-        "svgContent": "<g><rect x=\"120\" y=\"0\" width=\"60\" height=\"150\" fill=\"#ffffff\"/><rect x=\"0\" y=\"45\" width=\"300\" height=\"60\" fill=\"#ffffff\"/><rect x=\"132\" y=\"0\" width=\"36\" height=\"150\" fill=\"#c8102e\"/><rect x=\"0\" y=\"57\" width=\"300\" height=\"36\" fill=\"#c8102e\"/></g>",
-        "viewBox": "0 0 300 150",
+        "svgContent": "<defs><clipPath id=\"uk_cross_s\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath></defs><g clip-path=\"url(#uk_cross_s)\"><path d=\"M30,0 v30 M0,15 h60\" stroke=\"#ffffff\" stroke-width=\"10\"/><path d=\"M30,0 v30 M0,15 h60\" stroke=\"#c8102e\" stroke-width=\"6\"/></g>",
+        "viewBox": "0 0 60 30",
+        "trayViewBox": "0 0 60 30",
         "targetSlotId": "cross_slot"
       },
       {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import { ArrowLeft, RotateCcw, Trophy, ChevronRight, Lightbulb, Volume2 } from "lucide-react";
 import { ASSEMBLY_STAGES, type AssemblyFlagStage, type AssemblyPart } from "../data/flagAssemblyData";
@@ -16,6 +16,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
 }) => {
   const [stageIndex, setStageIndex] = useState<number>(0);
   const stage: AssemblyFlagStage = ASSEMBLY_STAGES[stageIndex];
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   // slotId -> partId
   const [placedParts, setPlacedParts] = useState<Record<string, string>>({});
@@ -46,7 +47,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
   };
 
   // スロットをタップしたとき
-  const handleSlotClick = (clickedSlotId: string) => {
+  const handleSlotClick = (clickedSlotId: string, event?: React.MouseEvent) => {
     if (isCompleted) return;
 
     if (!selectedPartId) {
@@ -57,35 +58,61 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
     let targetSlot = stage.slots.find((s) => s.id === clickedSlotId);
     if (!targetSlot) return;
 
-    // クリックされたスロットが既に配置済みの場合のみ:
-    // その下に重なっている別の未配置スロット（親スロット/背景スロット）があれば、そこに転送する
-    if (placedParts[targetSlot.id]) {
-      const unfilledSlot = stage.slots.find(
+    // クリックされたスロットが選択中のパーツのスロットと異なる場合:
+    // 例: イギリスで「斜め十字」を置きたいのに、上のレイヤーの「聖ジョージ十字」のスロット（透明な枠）がクリックを拾ってしまった場合や、
+    // ブラジルの天球儀とひし形のように重なっている場合、
+    // 選択中のパーツに対応する未配置スロット（candidateSlot）が存在し、
+    // クリック位置（またはスロット領域）がcandidateSlot内であれば、candidateSlotを優先ターゲットとする
+    if (targetSlot.requiredPartId !== selectedPartId) {
+      const candidateSlot = stage.slots.find(
         (s) => s.requiredPartId === selectedPartId && !placedParts[s.id]
       );
-      if (unfilledSlot) {
-        // unfilledSlotがクリックされたスロットの領域と空間的に重なっているか確認
-        // 例: ブラジルのひし形(diamond)の中に天球儀(globe)がある場合
-        const targetLeft = targetSlot.xPercent - targetSlot.widthPercent / 2;
-        const targetRight = targetSlot.xPercent + targetSlot.widthPercent / 2;
-        const targetTop = targetSlot.yPercent - targetSlot.heightPercent / 2;
-        const targetBottom = targetSlot.yPercent + targetSlot.heightPercent / 2;
+      if (candidateSlot) {
+        let isMatch = false;
+        if (event && canvasRef.current) {
+          const rect = canvasRef.current.getBoundingClientRect();
+          const clickX = ((event.clientX - rect.left) / rect.width) * 100;
+          const clickY = ((event.clientY - rect.top) / rect.height) * 100;
 
-        const uLeft = unfilledSlot.xPercent - unfilledSlot.widthPercent / 2;
-        const uRight = unfilledSlot.xPercent + unfilledSlot.widthPercent / 2;
-        const uTop = unfilledSlot.yPercent - unfilledSlot.heightPercent / 2;
-        const uBottom = unfilledSlot.yPercent + unfilledSlot.heightPercent / 2;
+          const cLeft = candidateSlot.xPercent - candidateSlot.widthPercent / 2;
+          const cRight = candidateSlot.xPercent + candidateSlot.widthPercent / 2;
+          const cTop = candidateSlot.yPercent - candidateSlot.heightPercent / 2;
+          const cBottom = candidateSlot.yPercent + candidateSlot.heightPercent / 2;
 
-        const overlaps = !(targetRight < uLeft || targetLeft > uRight || targetBottom < uTop || targetTop > uBottom);
-        if (overlaps) {
-          targetSlot = unfilledSlot;
+          if (
+            clickX >= cLeft - 3 &&
+            clickX <= cRight + 3 &&
+            clickY >= cTop - 3 &&
+            clickY <= cBottom + 3
+          ) {
+            isMatch = true;
+          }
         } else {
-          // 重なっていない（全く別の場所）なら何もしない
-          soundEffect.playWrong();
-          return;
+          // イベント情報がない場合はバウンディングボックスの重複判定
+          const targetLeft = targetSlot.xPercent - targetSlot.widthPercent / 2;
+          const targetRight = targetSlot.xPercent + targetSlot.widthPercent / 2;
+          const targetTop = targetSlot.yPercent - targetSlot.heightPercent / 2;
+          const targetBottom = targetSlot.yPercent + targetSlot.heightPercent / 2;
+
+          const cLeft = candidateSlot.xPercent - candidateSlot.widthPercent / 2;
+          const cRight = candidateSlot.xPercent + candidateSlot.widthPercent / 2;
+          const cTop = candidateSlot.yPercent - candidateSlot.heightPercent / 2;
+          const cBottom = candidateSlot.yPercent + candidateSlot.heightPercent / 2;
+
+          const overlaps = !(
+            targetRight < cLeft ||
+            targetLeft > cRight ||
+            targetBottom < cTop ||
+            targetTop > cBottom
+          );
+          if (overlaps) {
+            isMatch = true;
+          }
         }
-      } else {
-        return;
+
+        if (isMatch) {
+          targetSlot = candidateSlot;
+        }
       }
     }
 
@@ -115,6 +142,37 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
       setWrongSlotId(targetSlot.id);
       setTimeout(() => setWrongSlotId(null), 800);
     }
+  };
+
+  // キャンバスの背景タップ時（スロット外タップのハンドリング）
+  const handleCanvasClick = (event: React.MouseEvent) => {
+    if (isCompleted || !selectedPartId) return;
+    if (canvasRef.current) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const clickX = ((event.clientX - rect.left) / rect.width) * 100;
+      const clickY = ((event.clientY - rect.top) / rect.height) * 100;
+
+      const candidateSlot = stage.slots.find(
+        (s) => s.requiredPartId === selectedPartId && !placedParts[s.id]
+      );
+      if (candidateSlot) {
+        const cLeft = candidateSlot.xPercent - candidateSlot.widthPercent / 2;
+        const cRight = candidateSlot.xPercent + candidateSlot.widthPercent / 2;
+        const cTop = candidateSlot.yPercent - candidateSlot.heightPercent / 2;
+        const cBottom = candidateSlot.yPercent + candidateSlot.heightPercent / 2;
+
+        if (
+          clickX >= cLeft - 3 &&
+          clickX <= cRight + 3 &&
+          clickY >= cTop - 3 &&
+          clickY <= cBottom + 3
+        ) {
+          handleSlotClick(candidateSlot.id, event);
+          return;
+        }
+      }
+    }
+    soundEffect.playWrong();
   };
 
   // 次のステージへ
@@ -198,6 +256,12 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
 
       {/* 国旗組み立てキャンバス */}
       <div
+        ref={canvasRef}
+        onClick={(e) => {
+          if (selectedPartId) {
+            handleCanvasClick(e);
+          }
+        }}
         className="relative w-full max-w-[260px] sm:max-w-[300px] max-h-[25vh] rounded-xl shadow-md border-2 border-white overflow-hidden select-none mb-2"
         style={{
           aspectRatio: stage.aspectRatio || "3 / 2",
@@ -228,7 +292,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
               key={slot.id}
               onClick={(e) => {
                 e.stopPropagation();
-                handleSlotClick(slot.id);
+                handleSlotClick(slot.id, e);
               }}
               className={`absolute cursor-pointer transition-all flex items-center justify-center ${
                 isFilled
