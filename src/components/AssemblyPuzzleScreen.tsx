@@ -215,14 +215,15 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 top: `${slot.yPercent - slot.heightPercent / 2}%`,
                 width: `${slot.widthPercent}%`,
                 height: `${slot.heightPercent}%`,
-                borderRadius: slot.id.includes("circle") || slot.id.includes("globe") ? "50%" : "8px",
+                borderRadius: slot.id.includes("circle") || slot.id.includes("globe") || slot.id.includes("sun") ? "50%" : slot.id.includes("canton") ? "0px" : "4px",
               }}
             >
               {/* 配置済みパーツ */}
               {placedPart ? (
                 placedPart.svgContent ? (
                   <svg
-                    viewBox="0 0 100 100"
+                    viewBox={placedPart.viewBox || "0 0 100 100"}
+                    preserveAspectRatio="none"
                     className="w-full h-full drop-shadow-xs"
                     dangerouslySetInnerHTML={{ __html: placedPart.svgContent }}
                   />
@@ -268,7 +269,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
                   {part.svgContent ? (
                     <svg
-                      viewBox="0 0 100 100"
+                      viewBox={part.viewBox || "0 0 100 100"}
                       className="w-8 h-8"
                       dangerouslySetInnerHTML={{ __html: part.svgContent }}
                     />
