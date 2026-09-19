@@ -1,6 +1,7 @@
 import type { Country, GameMode, QuizQuestion, Region } from "../types";
 import { COUNTRIES } from "../data/countries";
 import { COUNTRY_FACTS } from "../data/countryFacts";
+import { COUNTRY_CAPITALS, getCountryCapital } from "../data/countryCapitals";
 import worldGeo from "../data/world_geo.json";
 const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
 // 全199カ国の高精度地図データを使用
@@ -272,7 +273,66 @@ export function generateQuizQuestions(
     return questions;
   }
 
-  // 6. 国旗当て / 国名当て / ランダムモード
+  // 6. 首都クイズモードの場合
+  if (mode === "capital") {
+    const capitalPool = regionPool.filter((c) => !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+    const poolToUse = capitalPool.length > 0 ? capitalPool : COUNTRIES.filter((c) => !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+    const shuffledPool = shuffle(poolToUse);
+    const selectedCountries: Country[] = [];
+    while (selectedCountries.length < count) {
+      for (const c of shuffledPool) {
+        if (selectedCountries.length >= count) break;
+        selectedCountries.push(c);
+      }
+    }
+
+    return selectedCountries.map((country, idx) => {
+      const capital = getCountryCapital(country.code)!;
+      const isFlagToCapital = Math.random() < 0.5;
+
+      const sameRegion = poolToUse.filter((c) => c.region === country.region && c.code !== country.code);
+      const otherRegion = poolToUse.filter((c) => c.region !== country.region && c.code !== country.code);
+      const dummyCandidates = [...shuffle(sameRegion), ...shuffle(otherRegion)];
+      const otherCountries = dummyCandidates.slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      if (isFlagToCapital) {
+        return {
+          id: idx + 1,
+          type: "flag_to_capital",
+          country,
+          prompt: "この国旗の 首都（しゅと）は どこかな？",
+          promptRuby: "このこっきの しゅとは どこかな？",
+          options: optionCountries.map((c) => {
+            const cap = getCountryCapital(c.code)!;
+            return {
+              text: cap.capital,
+              ruby: cap.ruby,
+              isCorrect: c.code === country.code,
+            };
+          }),
+          explanation: `正解は「${country.name}」の首都「${capital.capital}」です！`,
+        };
+      } else {
+        return {
+          id: idx + 1,
+          type: "capital_to_flag",
+          country,
+          prompt: `首都が「${capital.capital}」の 国旗は どれかな？`,
+          promptRuby: `しゅとが「${capital.ruby}」の こっきは どれかな？`,
+          options: optionCountries.map((c) => ({
+            flagCode: c.code,
+            text: c.name,
+            ruby: c.ruby,
+            isCorrect: c.code === country.code,
+          })),
+          explanation: `正解は「${capital.capital}」が首都の「${country.name}」の国旗です！`,
+        };
+      }
+    });
+  }
+
+  // 7. 国旗当て / 国名当て / ランダムモード
   const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
@@ -283,9 +343,9 @@ export function generateQuizQuestions(
   }
 
   return selectedCountries.map((country, idx) => {
-    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" = "flag_to_name";
+    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag" = "flag_to_name";
     if (mode === "random") {
-      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare")[] = [
+      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag")[] = [
         "flag_to_name",
         "name_to_flag",
       ];
@@ -302,9 +362,12 @@ export function generateQuizQuestions(
       if (COUNTRY_FACTS[country.code.toLowerCase()]) {
         candidates.push("compare");
       }
+      if (COUNTRY_CAPITALS[country.code.toLowerCase()]) {
+        candidates.push(Math.random() < 0.5 ? "flag_to_capital" : "capital_to_flag");
+      }
       qType = candidates[Math.floor(Math.random() * candidates.length)];
     } else {
-      qType = mode;
+      qType = mode as any;
     }
 
     if (qType === "trivia" && country.trivia && country.trivia.length > 0) {
@@ -441,6 +504,52 @@ export function generateQuizQuestions(
           },
         ],
         explanation,
+      };
+    } else if (qType === "flag_to_capital") {
+      const capital = getCountryCapital(country.code)!;
+      const sameRegion = COUNTRIES.filter((c) => c.region === country.region && c.code !== country.code && !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+      const otherRegion = COUNTRIES.filter((c) => c.region !== country.region && c.code !== country.code && !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+      const dummyCandidates = [...shuffle(sameRegion), ...shuffle(otherRegion)];
+      const otherCountries = dummyCandidates.slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "flag_to_capital",
+        country,
+        prompt: "この国旗の 首都（しゅと）は どこかな？",
+        promptRuby: "このこっきの しゅとは どこかな？",
+        options: optionCountries.map((c) => {
+          const cap = getCountryCapital(c.code)!;
+          return {
+            text: cap.capital,
+            ruby: cap.ruby,
+            isCorrect: c.code === country.code,
+          };
+        }),
+        explanation: `正解は「${country.name}」の首都「${capital.capital}」です！`,
+      };
+    } else if (qType === "capital_to_flag") {
+      const capital = getCountryCapital(country.code)!;
+      const sameRegion = COUNTRIES.filter((c) => c.region === country.region && c.code !== country.code && !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+      const otherRegion = COUNTRIES.filter((c) => c.region !== country.region && c.code !== country.code && !!COUNTRY_CAPITALS[c.code.toLowerCase()]);
+      const dummyCandidates = [...shuffle(sameRegion), ...shuffle(otherRegion)];
+      const otherCountries = dummyCandidates.slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "capital_to_flag",
+        country,
+        prompt: `首都が「${capital.capital}」の 国旗は どれかな？`,
+        promptRuby: `しゅとが「${capital.ruby}」の こっきは どれかな？`,
+        options: optionCountries.map((c) => ({
+          flagCode: c.code,
+          text: c.name,
+          ruby: c.ruby,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${capital.capital}」が首都の「${country.name}」の国旗です！`,
       };
     } else if (qType === "name_to_flag") {
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);

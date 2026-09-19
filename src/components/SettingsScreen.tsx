@@ -13,6 +13,7 @@ interface SettingsModalProps {
   onStartPuzzle: () => void;
   onStartAssembly: () => void;
   onStartColoring: () => void;
+  onStartCapitalMatch: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
@@ -23,11 +24,13 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   onStartPuzzle,
   onStartAssembly,
   onStartColoring,
+  onStartCapitalMatch,
 }) => {
   const modes: { id: GameMode; label: string; sub: string }[] = [
     { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
     { id: "flag_to_name", label: "🚩 国旗あて", sub: "はたをみて くにをあてる" },
     { id: "name_to_flag", label: "🔤 なまえあて", sub: "くになまえをみて はたをえらぶ" },
+    { id: "capital", label: "🏛️ 首都クイズ", sub: "国旗と首都をあてる！" },
     { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
     { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
     { id: "location", label: "📍 ばしょ・ちず", sub: "まわりの国と いっしょに出題！" },
@@ -121,17 +124,17 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
           </span>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
           {/* 1. こっきパズル */}
           <button
             onClick={() => {
               soundEffect.playTap();
               onStartPuzzle();
             }}
-            className="p-2.5 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
           >
-            <span className="text-2xl mb-1">🧩</span>
-            <span className="text-xs font-black text-indigo-900 leading-tight">こっき<br/>パズル</span>
+            <span className="text-xl sm:text-2xl mb-1">🧩</span>
+            <span className="text-[11px] sm:text-xs font-black text-indigo-900 leading-tight">こっき<br/>パズル</span>
             <span className="text-[9px] text-slate-500 font-semibold mt-1">9ピース</span>
           </button>
 
@@ -141,11 +144,11 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
               soundEffect.playTap();
               onStartAssembly();
             }}
-            className="p-2.5 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
           >
-            <span className="text-2xl mb-1">⭐</span>
-            <span className="text-xs font-black text-amber-900 leading-tight">マーク<br/>パズル</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">絵柄を置こう</span>
+            <span className="text-xl sm:text-2xl mb-1">⭐</span>
+            <span className="text-[11px] sm:text-xs font-black text-amber-900 leading-tight">マーク<br/>パズル</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">絵柄を置く</span>
           </button>
 
           {/* 3. こっきぬりえ */}
@@ -154,11 +157,24 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
               soundEffect.playTap();
               onStartColoring();
             }}
-            className="p-2.5 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
           >
-            <span className="text-2xl mb-1">🎨</span>
-            <span className="text-xs font-black text-rose-900 leading-tight">こっき<br/>ぬりえ</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">タップで塗る</span>
+            <span className="text-xl sm:text-2xl mb-1">🎨</span>
+            <span className="text-[11px] sm:text-xs font-black text-rose-900 leading-tight">こっき<br/>ぬりえ</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">色を塗る</span>
+          </button>
+
+          {/* 4. 首都マッチ */}
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onStartCapitalMatch();
+            }}
+            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-emerald-200 hover:border-emerald-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+          >
+            <span className="text-xl sm:text-2xl mb-1">🏛️</span>
+            <span className="text-[11px] sm:text-xs font-black text-emerald-900 leading-tight">首都<br/>マッチ</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">ペア消し</span>
           </button>
         </div>
       </div>

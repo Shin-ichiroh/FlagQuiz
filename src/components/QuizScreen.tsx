@@ -301,8 +301,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </p>
         </div>
 
-        {/* 1. パターン: 国旗から国名当て、またはトリビア */}
-        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "trivia") && (
+        {/* 1. パターン: 国旗から国名当て、首都当て、またはトリビア */}
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "trivia" || currentQuestion.type === "flag_to_capital") && (
           <div className="w-full flex flex-col items-center justify-center my-1">
             <div className="relative rounded-2xl overflow-hidden shadow-md border-4 border-white bg-white w-64 h-38 max-w-full flex items-center justify-center">
               <img
@@ -417,7 +417,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
       {/* 選択肢ボタンエリア */}
       <div className="px-4 w-full">
         {/* パターンA: 国旗4択 */}
-        {currentQuestion.type === "name_to_flag" && (
+        {(currentQuestion.type === "name_to_flag" || currentQuestion.type === "capital_to_flag") && (
           <div className="grid grid-cols-2 gap-2.5">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-slate-300";
@@ -544,8 +544,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </div>
         )}
 
-        {/* パターンD: テキスト4択（国名当て、トリビア） */}
-        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "location_to_name" || currentQuestion.type === "trivia") && (
+        {/* パターンD: テキスト4択（国名当て、首都当て、トリビア） */}
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "location_to_name" || currentQuestion.type === "trivia" || currentQuestion.type === "flag_to_capital") && (
           <div className="flex flex-col gap-2">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-indigo-200 text-slate-800";
