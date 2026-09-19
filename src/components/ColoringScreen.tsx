@@ -1,0 +1,399 @@
+import React, { useState, useEffect, useRef } from "react";
+import confetti from "canvas-confetti";
+import { ArrowLeft, RotateCcw, Download, Check, Sparkles, Trophy, ChevronRight, Eye, EyeOff, Volume2, Paintbrush } from "lucide-react";
+import { COLORING_FLAGS, type ColoringFlag } from "../data/flagColoringData";
+import { soundEffect } from "../utils/sound";
+import { speech } from "../utils/speech";
+
+interface ColoringScreenProps {
+  onBack: () => void;
+  showRuby?: boolean;
+}
+
+export const ColoringScreen: React.FC<ColoringScreenProps> = ({
+  onBack,
+  showRuby = true,
+}) => {
+  const [flagIndex, setFlagIndex] = useState<number>(0);
+  const flag: ColoringFlag = COLORING_FLAGS[flagIndex];
+
+  // elementId -> selected hex color
+  const [userFills, setUserFills] = useState<Record<string, string>>({});
+  const [selectedColor, setSelectedColor] = useState<string>(flag.palette[1] || "#bc002d");
+  const [showModel, setShowModel] = useState<boolean>(true);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [checkResult, setCheckResult] = useState<"perfect" | "imperfect" | null>(null);
+
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  // 国が切り替わったときの初期化
+  useEffect(() => {
+    setUserFills({});
+    setSelectedColor(flag.palette[1] || "#bc002d");
+    setIsCompleted(false);
+    setCheckResult(null);
+  }, [flagIndex, flag.palette]);
+
+  // 要素をタップして色を塗る
+  const handleElementClick = (elementId: string) => {
+    soundEffect.playTap();
+    setUserFills((prev) => ({
+      ...prev,
+      [elementId]: selectedColor,
+    }));
+    setCheckResult(null);
+  };
+
+  const [feedbackMsg, setFeedbackMsg] = useState<string>("");
+
+  const handleCheckAnswer = () => {
+    soundEffect.playTap();
+
+    // 未塗りの部分があるかチェック
+    const hasUnpainted = flag.elements.some((elem) => !userFills[elem.id]);
+    if (hasUnpainted) {
+      soundEffect.playWrong();
+      setCheckResult("imperfect");
+      setFeedbackMsg("まだ塗っていない場所があるよ！ えのぐをえらんでタップしてね！");
+      setTimeout(() => setCheckResult(null), 3500);
+      return;
+    }
+
+    // すべての要素が正解の色に一致しているか
+    const isAllCorrect = flag.elements.every((elem) => {
+      const userColor = userFills[elem.id]?.toLowerCase();
+      const targetColor = elem.correctColor.toLowerCase();
+      return userColor === targetColor;
+    });
+
+    if (isAllCorrect) {
+      setIsCompleted(true);
+      setCheckResult("perfect");
+      soundEffect.playCorrect();
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+      });
+      speech.speak(`せいかい！ ${flag.countryName}の国旗がかんせいしたよ！ ${flag.trivia}`);
+    } else {
+      soundEffect.playWrong();
+      setCheckResult("imperfect");
+      setFeedbackMsg("ちがう色のところがあるよ！ おてほんをよく見てみよう！");
+      setTimeout(() => setCheckResult(null), 3500);
+    }
+  };
+
+  // 画像をPNGで保存（ダウンロード）
+  const handleDownloadImage = () => {
+    soundEffect.playTap();
+    if (!svgRef.current) return;
+
+    // SVG文字列をシリアライズ
+    const serializer = new XMLSerializer();
+    const svgStr = serializer.serializeToString(svgRef.current);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // 解析してviewBoxからサイズ取得
+    const [, , vw, vh] = flag.viewBox.split(" ").map(Number);
+    canvas.width = vw * 2;
+    canvas.height = vh * 2;
+
+    const img = new Image();
+    const svgBlob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      const link = document.createElement("a");
+      link.download = `${flag.countryName}_こっきぬりえ.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    };
+    img.src = url;
+  };
+
+  // リセット
+  const handleReset = () => {
+    soundEffect.playTap();
+    setUserFills({});
+    setIsCompleted(false);
+    setCheckResult(null);
+  };
+
+  // 次の国へ
+  const handleNextFlag = () => {
+    soundEffect.playTap();
+    setFlagIndex((prev) => (prev + 1) % COLORING_FLAGS.length);
+  };
+
+  // 音声読み上げ
+  const handleSpeakTrivia = () => {
+    soundEffect.playTap();
+    speech.speak(`${flag.countryName}。${flag.trivia}`);
+  };
+
+  return (
+    <div className="w-full max-w-xl mx-auto p-4 flex flex-col items-center min-h-[90vh]">
+      {/* 上部ヘッダー */}
+      <div className="w-full flex items-center justify-between mb-3">
+        <button
+          onClick={() => {
+            soundEffect.playTap();
+            onBack();
+          }}
+          className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white shadow-xs border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 active:scale-95 transition-transform"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>もどる</span>
+        </button>
+
+        {/* 進捗 */}
+        <div className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full text-xs font-black text-rose-900">
+          <Paintbrush className="w-3.5 h-3.5 text-rose-500" />
+          <span>{flagIndex + 1} / {COLORING_FLAGS.length}</span>
+        </div>
+      </div>
+
+      {/* 国名カード */}
+      <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex items-center justify-between mb-3">
+        <div>
+          <div className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            こっきぬりえ
+          </div>
+          <h2 className="text-xl font-black text-slate-800">
+            {showRuby && flag.countryRuby ? (
+              <ruby>
+                {flag.countryName}
+                <rt className="text-xs text-rose-500 font-normal">{flag.countryRuby}</rt>
+              </ruby>
+            ) : (
+              flag.countryName
+            )}
+          </h2>
+        </div>
+
+        {/* 国セレクト */}
+        <select
+          value={flagIndex}
+          onChange={(e) => {
+            soundEffect.playTap();
+            setFlagIndex(Number(e.target.value));
+          }}
+          className="bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-rose-500"
+        >
+          {COLORING_FLAGS.map((f, i) => (
+            <option key={f.id} value={i}>
+              {i + 1}. {f.countryName}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* おてほんバー */}
+      <div className="w-full flex items-center justify-between text-xs font-bold text-slate-600 px-1 mb-2">
+        <span className="text-[11px] text-slate-500 font-medium">
+          色をえらんで、ぬりたい場所をタップ！
+        </span>
+        <button
+          onClick={() => {
+            soundEffect.playTap();
+            setShowModel((v) => !v);
+          }}
+          className="flex items-center gap-1 text-slate-600 hover:text-slate-800"
+        >
+          {showModel ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+          <span>おてほん: {showModel ? "ひょうじ" : "かくす"}</span>
+        </button>
+      </div>
+
+      {/* おてほんミニ表示 */}
+      {showModel && (
+        <div className="w-full mb-3 flex items-center justify-center">
+          <div className="flex items-center gap-2 bg-rose-50/70 border border-rose-200/70 px-3 py-1.5 rounded-xl">
+            <span className="text-[11px] font-bold text-rose-900">おてほん:</span>
+            <div
+              className="h-9 rounded shadow-xs border border-white overflow-hidden"
+              style={{ aspectRatio: flag.aspectRatio }}
+            >
+              <svg viewBox={flag.viewBox} className="w-full h-full">
+                {flag.elements.map((elem) => {
+                  if (elem.type === "circle") {
+                    return <circle key={elem.id} {...elem.props} fill={elem.correctColor} />;
+                  }
+                  return <rect key={elem.id} {...elem.props} fill={elem.correctColor} />;
+                })}
+              </svg>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ぬりえキャンバス (SVG) */}
+      <div
+        className="relative w-full max-w-[340px] rounded-2xl shadow-md border-4 border-white bg-slate-100 overflow-hidden select-none mb-3"
+        style={{ aspectRatio: flag.aspectRatio }}
+      >
+        <svg
+          ref={svgRef}
+          viewBox={flag.viewBox}
+          className="w-full h-full cursor-pointer"
+        >
+          {flag.elements.map((elem) => {
+            const fillColor = userFills[elem.id] || "#f1f5f9";
+            const isFilled = !!userFills[elem.id];
+
+            if (elem.type === "circle") {
+              return (
+                <circle
+                  key={elem.id}
+                  {...elem.props}
+                  fill={fillColor}
+                  stroke="#94a3b8"
+                  strokeWidth="2"
+                  strokeDasharray={isFilled ? "none" : "4 2"}
+                  onClick={() => handleElementClick(elem.id)}
+                  className="transition-colors duration-150 hover:opacity-85"
+                />
+              );
+            }
+
+            return (
+              <rect
+                key={elem.id}
+                {...elem.props}
+                fill={fillColor}
+                stroke="#94a3b8"
+                strokeWidth="2"
+                strokeDasharray={isFilled ? "none" : "4 2"}
+                onClick={() => handleElementClick(elem.id)}
+                className="transition-colors duration-150 hover:opacity-85"
+              />
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* カラーパレット */}
+      <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 mb-3">
+        <div className="flex items-center justify-between text-xs font-black text-slate-700 mb-2">
+          <span>えのぐパレット</span>
+          <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+            <span>えらんだ色:</span>
+            <span
+              className="w-4 h-4 rounded-full border border-slate-300 shadow-xs inline-block"
+              style={{ backgroundColor: selectedColor }}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-2.5">
+          {flag.palette.map((hex) => {
+            const isSelected = selectedColor.toLowerCase() === hex.toLowerCase();
+            return (
+              <button
+                key={hex}
+                onClick={() => {
+                  soundEffect.playTap();
+                  setSelectedColor(hex);
+                }}
+                className={`w-10 h-10 rounded-full border-2 transition-all active:scale-90 flex items-center justify-center shadow-xs ${
+                  isSelected
+                    ? "ring-4 ring-rose-400 scale-110 border-white z-10"
+                    : "border-slate-300 hover:scale-105"
+                }`}
+                style={{ backgroundColor: hex }}
+                title={hex}
+              >
+                {isSelected && (
+                  <Check
+                    className={`w-5 h-5 ${
+                      hex.toLowerCase() === "#ffffff" || hex.toLowerCase() === "#ffce00"
+                        ? "text-slate-800"
+                        : "text-white"
+                    }`}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 不正解メッセージ */}
+      {checkResult === "imperfect" && (
+        <div className="w-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-black rounded-xl p-2.5 text-center mb-3 animate-shake">
+          {feedbackMsg}
+        </div>
+      )}
+
+      {/* アクションボタン */}
+      {isCompleted ? (
+        <div className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white text-center shadow-lg animate-in fade-in zoom-in duration-300">
+          <div className="flex items-center justify-center gap-1.5 font-black text-lg mb-1">
+            <Trophy className="w-6 h-6 text-amber-300" />
+            <span>🎉 お見事！ 正解の国旗ができたよ！</span>
+          </div>
+
+          <p className="text-xs text-emerald-100 font-bold mb-3 px-2 leading-relaxed">
+            {flag.trivia}
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={handleSpeakTrivia}
+              className="px-3.5 py-2 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-black text-xs rounded-xl flex items-center gap-1.5 transition-all"
+            >
+              <Volume2 className="w-4 h-4" />
+              <span>声できく</span>
+            </button>
+            <button
+              onClick={handleDownloadImage}
+              className="px-3.5 py-2 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-black text-xs rounded-xl flex items-center gap-1.5 transition-all"
+            >
+              <Download className="w-4 h-4" />
+              <span>がぞうを保存</span>
+            </button>
+            <button
+              onClick={handleNextFlag}
+              className="px-5 py-2 bg-white text-emerald-800 hover:bg-emerald-50 active:scale-95 font-black text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md"
+            >
+              <span>つぎの国へ！</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full flex items-center justify-center gap-2.5">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1 px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
+            <span>やりなおす</span>
+          </button>
+
+          <button
+            onClick={handleDownloadImage}
+            className="flex items-center gap-1 px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
+          >
+            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <span>保存</span>
+          </button>
+
+          <button
+            onClick={handleCheckAnswer}
+            className="flex-1 max-w-[180px] py-2.5 px-4 bg-gradient-to-r from-rose-500 to-orange-500 text-white font-black text-sm rounded-xl shadow-md flex items-center justify-center gap-1.5 active:scale-95 transition-all hover:brightness-105"
+          >
+            <Check className="w-4 h-4" />
+            <span>できた！</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};

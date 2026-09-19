@@ -10,6 +10,9 @@ interface SettingsModalProps {
   onUpdateSettings: (newSettings: GameSettings) => void;
   onStartGame: () => void;
   onViewRanking: () => void;
+  onStartPuzzle: () => void;
+  onStartAssembly: () => void;
+  onStartColoring: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
@@ -17,6 +20,9 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   onUpdateSettings,
   onStartGame,
   onViewRanking,
+  onStartPuzzle,
+  onStartAssembly,
+  onStartColoring,
 }) => {
   const modes: { id: GameMode; label: string; sub: string }[] = [
     { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
@@ -102,6 +108,60 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
           </button>
         </div>
       </header>
+
+      {/* 知育・あそびコーナー */}
+      <div className="w-full bg-gradient-to-r from-amber-400/20 via-pink-400/20 to-indigo-400/20 p-3.5 rounded-3xl border-2 border-amber-300/60 shadow-sm mb-4">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5 text-xs font-black text-slate-800">
+            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400" />
+            <span>たのしい知育・パズルコーナー</span>
+          </div>
+          <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full">
+            あたらしく登場！
+          </span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2">
+          {/* 1. こっきパズル */}
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onStartPuzzle();
+            }}
+            className="p-2.5 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+          >
+            <span className="text-2xl mb-1">🧩</span>
+            <span className="text-xs font-black text-indigo-900 leading-tight">こっき<br/>パズル</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">9ピース</span>
+          </button>
+
+          {/* 2. マークパズル */}
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onStartAssembly();
+            }}
+            className="p-2.5 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+          >
+            <span className="text-2xl mb-1">⭐</span>
+            <span className="text-xs font-black text-amber-900 leading-tight">マーク<br/>パズル</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">絵柄を置こう</span>
+          </button>
+
+          {/* 3. こっきぬりえ */}
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onStartColoring();
+            }}
+            className="p-2.5 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
+          >
+            <span className="text-2xl mb-1">🎨</span>
+            <span className="text-xs font-black text-rose-900 leading-tight">こっき<br/>ぬりえ</span>
+            <span className="text-[9px] text-slate-500 font-semibold mt-1">タップで塗る</span>
+          </button>
+        </div>
+      </div>
 
       {/* メイン設定カード */}
       <div className="w-full space-y-4 bg-white/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg border border-indigo-100">

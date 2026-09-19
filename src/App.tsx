@@ -4,11 +4,14 @@ import { SettingsScreen } from "./components/SettingsScreen";
 import { QuizScreen } from "./components/QuizScreen";
 import { ResultScreen } from "./components/ResultScreen";
 import { RankingScreen } from "./components/RankingScreen";
+import { PuzzleScreen } from "./components/PuzzleScreen";
+import { AssemblyPuzzleScreen } from "./components/AssemblyPuzzleScreen";
+import { ColoringScreen } from "./components/ColoringScreen";
 import { generateQuizQuestions } from "./utils/quizGenerator";
 import { getSavedPlayerName } from "./utils/ranking";
 
 export function App() {
-  const [screen, setScreen] = useState<"settings" | "quiz" | "result" | "ranking">("settings");
+  const [screen, setScreen] = useState<"settings" | "quiz" | "result" | "ranking" | "puzzle" | "assembly" | "coloring">("settings");
   const [settings, setSettings] = useState<GameSettings>({
     playerName: getSavedPlayerName(),
     questionCount: 10,
@@ -49,6 +52,9 @@ export function App() {
           onUpdateSettings={setSettings}
           onStartGame={handleStartGame}
           onViewRanking={() => setScreen("ranking")}
+          onStartPuzzle={() => setScreen("puzzle")}
+          onStartAssembly={() => setScreen("assembly")}
+          onStartColoring={() => setScreen("coloring")}
         />
       )}
 
@@ -72,6 +78,27 @@ export function App() {
 
       {screen === "ranking" && (
         <RankingScreen onBack={() => setScreen("settings")} />
+      )}
+
+      {screen === "puzzle" && (
+        <PuzzleScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "assembly" && (
+        <AssemblyPuzzleScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "coloring" && (
+        <ColoringScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
       )}
     </main>
   );
