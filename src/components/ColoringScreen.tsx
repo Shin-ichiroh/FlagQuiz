@@ -10,6 +10,14 @@ interface ColoringScreenProps {
   showRuby?: boolean;
 }
 
+function prefixSvgIds(svg: string, prefix: string): string {
+  return svg
+    .replace(/\bid="([^"]+)"/g, `id="${prefix}_$1"`)
+    .replace(/(?:xlink:)?href="#([^"]+)"/g, (match, id) =>
+      match.startsWith("xlink:") ? `xlink:href="#${prefix}_${id}"` : `href="#${prefix}_${id}"`
+    );
+}
+
 export const ColoringScreen: React.FC<ColoringScreenProps> = ({
   onBack,
   showRuby = true,
@@ -203,7 +211,14 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
             >
               <svg viewBox={flag.viewBox} className="w-full h-full">
                 {flag.elements.map((elem) => {
-                  if (elem.type === "circle") {
+                  if (elem.type === "g" && elem.svgContent) {
+                    return (
+                      <g
+                        key={elem.id}
+                        dangerouslySetInnerHTML={{ __html: prefixSvgIds(elem.svgContent, "model") }}
+                      />
+                    );
+                  } else if (elem.type === "circle") {
                     return <circle key={elem.id} {...elem.props} fill={elem.correctColor} />;
                   } else if (elem.type === "polygon") {
                     return <polygon key={elem.id} {...elem.props} fill={elem.correctColor} />;
@@ -291,7 +306,26 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
             const strokeWidth = !isFilled && showOutlines ? 1.5 : 0;
             const strokeDasharray = !isFilled && showOutlines ? "4 2" : undefined;
 
-            if (elem.type === "circle") {
+            if (elem.type === "g" && elem.svgContent) {
+              let content = elem.svgContent;
+              if (!isFilled) {
+                content = content
+                  .replaceAll("#f6b40e", "#e2e8f0")
+                  .replaceAll("#85340a", "#94a3b8")
+                  .replaceAll("#843511", "#94a3b8");
+              } else {
+                content = content.replaceAll("#f6b40e", fillColor);
+              }
+
+              return (
+                <g
+                  key={elem.id}
+                  onClick={() => handleElementClick(elem.id)}
+                  className="transition-colors duration-150 hover:opacity-85 cursor-pointer"
+                  dangerouslySetInnerHTML={{ __html: prefixSvgIds(content, "canvas") }}
+                />
+              );
+            } else if (elem.type === "circle") {
               return (
                 <circle
                   key={elem.id}
