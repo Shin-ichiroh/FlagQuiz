@@ -5,6 +5,7 @@ import { CountryMap } from "./CountryMap";
 import { soundEffect } from "../utils/sound";
 import { speech } from "../utils/speech";
 import { COUNTRY_FACTS } from "../data/countryFacts";
+import { getCountryCapital } from "../data/countryCapitals";
 import { calculateQuestionScore } from "../utils/ranking";
 import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap, ArrowRight, Mic, MicOff } from "lucide-react";
 
@@ -96,7 +97,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     };
   }, []);
 
-  // 時間切れ
+  // 時間切れ（制限時間ありの時のみ発生）
   const handleTimeUp = () => {
     if (isAnswered) return;
     setIsAnswered(true);
@@ -119,14 +120,13 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     const newResults = [...results, record];
     setResults(newResults);
 
-    // トリビア・国くらべ問題は読む時間を確保（5秒）、通常は1.8秒
-    const waitTime = currentQuestion.type === "trivia" || currentQuestion.type === "compare" ? 5000 : 1800;
+    // 時間制限時は音声も短く「じかんぎれ！」のみ
     if (speechOn) {
-      speech.speak(`正解は、${currentQuestion.country.name}です。`);
+      speech.speak("じかんぎれ！");
     }
     autoNextTimeoutRef.current = setTimeout(() => {
       goToNext(newResults);
-    }, waitTime);
+    }, 1600);
   };
 
   // 選択肢タップ
@@ -148,16 +148,41 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
       soundEffect.playWrong();
     }
 
+    const hasTimeLimit = settings.timeLimit > 0;
     const fact = COUNTRY_FACTS[currentQuestion.country.code.toLowerCase()];
+
     if (speechOn) {
-      if (isCorrect) {
-        let msg = `正解！${currentQuestion.country.name}！`;
-        if (fact && fact.greeting) {
-          msg += ` ご挨拶は、${fact.greeting}`;
+      if (hasTimeLimit) {
+        // 【時間制限あり（3秒・5秒・10秒・15秒）】
+        // テンポよく進むため、正解・間違いのみ発声（次の設問に被らないよう極短）
+        if (isCorrect) {
+          speech.speak("正解！");
+        } else {
+          speech.speak("ざんねん！");
+        }
+      } else {
+        // 【時間制限なし（じっくり学習モード）】
+        // 全部説明する！
+        let msg = isCorrect
+          ? `正解！${currentQuestion.country.name}！`
+          : `残念！正解は、${currentQuestion.country.name}です。`;
+
+        // 首都クイズの場合は首都も説明
+        if (currentQuestion.type === "flag_to_capital" || currentQuestion.type === "capital_to_flag") {
+          const cap = getCountryCapital(currentQuestion.country.code);
+          if (cap) {
+            msg += ` 首都は、${cap.capital}です。`;
+          }
+        } else if (fact && fact.greeting) {
+          msg += ` ご挨拶は、${fact.greeting}。`;
+        }
+
+        // 解説・まめちしき
+        const triviaText = currentQuestion.explanation || currentQuestion.country.trivia?.[0]?.explanation;
+        if (triviaText) {
+          msg += ` ${triviaText}`;
         }
         speech.speak(msg);
-      } else {
-        speech.speak(`残念！正解は、${currentQuestion.country.name}です。`);
       }
     }
 
@@ -173,11 +198,15 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     const newResults = [...results, record];
     setResults(newResults);
 
-    // トリビア・国くらべ問題は読む時間をたっぷり確保（4.5秒）、通常は1.8秒
-    const waitTime = currentQuestion.type === "trivia" || currentQuestion.type === "compare" ? 5000 : 1800;
-    autoNextTimeoutRef.current = setTimeout(() => {
-      goToNext(newResults);
-    }, waitTime);
+    // 次の設問への自動送り：
+    // 制限時間ありの場合はサクサク自動送り（1.6秒、トリビア等3.5秒）
+    // 制限時間なしの場合は自動送りせず「つぎへ進む」ボタンでじっくり読めるようにする！
+    if (hasTimeLimit) {
+      const waitTime = currentQuestion.type === "trivia" || currentQuestion.type === "compare" ? 3500 : 1600;
+      autoNextTimeoutRef.current = setTimeout(() => {
+        goToNext(newResults);
+      }, waitTime);
+    }
   };
 
   // 「つぎへ」ボタン押下（手動送り）
@@ -187,7 +216,15 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
     goToNext(results);
   };
 
+  const handleQuit = () => {
+    speech.cancel();
+    if (autoNextTimeoutRef.current) clearTimeout(autoNextTimeoutRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
+    onQuit();
+  };
+
   const goToNext = (currentResults: QuizResultRecord[]) => {
+    speech.cancel(); // 前の音声読み上げを確実にストップ
     if (currentIndex + 1 >= questions.length) {
       onFinish(currentResults);
     } else {
@@ -212,7 +249,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
       <div className="bg-white px-4 pt-3 pb-2 shadow-xs z-10">
         <div className="flex items-center justify-between mb-1.5">
           <button
-            onClick={onQuit}
+            onClick={handleQuit}
             className="p-1.5 -ml-1 text-slate-400 hover:text-slate-600 rounded-full active:bg-slate-100"
             aria-label="もどる"
           >
@@ -584,13 +621,22 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
       </div>
 
       {/* 解説カード ＆ あいさつ ＆ 「つぎへ」ボタン */}
-      {isAnswered && currentQuestion.explanation && (
+      {isAnswered && (
         <div className="px-4 mt-2">
           <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-950 font-medium leading-relaxed shadow-xs flex flex-col gap-2">
-            <div className="whitespace-pre-line">
-              <span className="font-bold text-amber-800 mr-1">💡 まめちしき:</span>
-              {currentQuestion.explanation}
-            </div>
+            {/* まめちしき / 解説 */}
+            {(() => {
+              const triviaText = currentQuestion.explanation || currentQuestion.country.trivia?.[0]?.explanation;
+              if (triviaText) {
+                return (
+                  <div className="whitespace-pre-line">
+                    <span className="font-bold text-amber-800 mr-1">💡 まめちしき:</span>
+                    {triviaText}
+                  </div>
+                );
+              }
+              return null;
+            })()}
 
             {/* 世界のあいさつ再生ボタン */}
             {(() => {
@@ -617,11 +663,11 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
               return null;
             })()}
 
-            {/* 自分のペースで進める「つぎへ」ボタン */}
+            {/* 「つぎへ」ボタン */}
             <div className="flex justify-end pt-1">
               <button
                 onClick={handleManualNext}
-                className="py-1.5 px-4 bg-amber-500 hover:bg-amber-600 text-white font-black text-xs rounded-full shadow-xs flex items-center gap-1 active:scale-95 transition-all"
+                className="py-1.5 px-4 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black text-xs rounded-full shadow-xs flex items-center gap-1.5 active:scale-95 transition-all"
               >
                 <span>つぎへ進む</span>
                 <ArrowRight className="w-3.5 h-3.5" />

@@ -41,6 +41,12 @@ class SpeechManager {
       console.warn('Speech failed', e);
     }
   }
+
+  public cancel() {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
 }
 
 export const speech = new SpeechManager();
