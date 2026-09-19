@@ -5,6 +5,8 @@ export interface AssemblyPart {
   icon: string;
   svgContent?: string;
   viewBox?: string;
+  traySvgContent?: string;
+  trayViewBox?: string;
   targetSlotId: string;
 }
 
@@ -454,9 +456,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "id": "maple_leaf_slot",
         "name": "中央",
         "xPercent": 50,
-        "yPercent": 50,
-        "widthPercent": 32,
-        "heightPercent": 64,
+        "yPercent": 50.3,
+        "widthPercent": 38.75,
+        "heightPercent": 83.96,
         "layer": 1,
         "requiredPartId": "maple_leaf"
       }
@@ -467,8 +469,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "サトウカエデ（メイプル）の葉",
         "ruby": "めいぷるのは",
         "icon": "🍁",
-        "svgContent": "<path d=\"M 50 10 L 54 23 L 64 20 L 61 29 L 72 33 L 70 39 L 61 39 L 63 45 L 55 46 L 51 65 L 49 65 L 45 46 L 37 45 L 39 39 L 30 39 L 28 33 L 39 29 L 36 20 L 46 23 Z\" fill=\"#d80621\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path d=\"M 4890 4430 l -45 -863 a 95 95 0 0 1 111 -98 l 859 151 -116 -320 a 65 65 0 0 1 20 -73 l 941 -762 -212 -99 a 65 65 0 0 1 -34 -79 l 186 -572 -542 115 a 65 65 0 0 1 -73 -38 l -105 -247 -423 454 a 65 65 0 0 1 -111 -57 l 204 -1052 -327 189 a 65 65 0 0 1 -91 -27 l -332 -652 -332 652 a 65 65 0 0 1 -91 27 l -327 -189 204 1052 a 65 65 0 0 1 -111 57 l -423 -454 -105 247 a 65 65 0 0 1 -73 38 l -542 -115 186 572 a 65 65 0 0 1 -34 79 l -212 99 941 762 a 65 65 0 0 1 20 73 l -116 320 859 -151 a 95 95 0 0 1 111 98 l -45 863 z\" fill=\"#d80621\"/>",
+        "viewBox": "2940 400 3720 4030",
         "targetSlotId": "maple_leaf_slot"
       },
       {
@@ -606,20 +608,20 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
       {
         "id": "big_star_slot",
         "name": "大きな星",
-        "xPercent": 20,
-        "yPercent": 30,
-        "widthPercent": 25,
-        "heightPercent": 37.5,
+        "xPercent": 16.67,
+        "yPercent": 25,
+        "widthPercent": 20,
+        "heightPercent": 30,
         "layer": 1,
         "requiredPartId": "big_star"
       },
       {
         "id": "small_stars_slot",
         "name": "4つの小さな星",
-        "xPercent": 38,
-        "yPercent": 30,
-        "widthPercent": 18,
-        "heightPercent": 50,
+        "xPercent": 36.67,
+        "yPercent": 27.5,
+        "widthPercent": 13.33,
+        "heightPercent": 45,
         "layer": 2,
         "requiredPartId": "small_stars"
       }
@@ -630,7 +632,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "大きな黄金の星",
         "ruby": "おおきなほし",
         "icon": "⭐",
-        "svgContent": "<polygon points=\"50,5 64,36 98,36 71,56 81,88 50,68 19,88 29,56 2,36 36,36\" fill=\"#ffde00\"/>",
+        "svgContent": "<polygon points=\"50.00,0.00 61.23,34.55 97.55,34.55 68.16,55.90 79.39,90.45 50.00,69.10 20.61,90.45 31.84,55.90 2.45,34.55 38.77,34.55\" fill=\"#ffde00\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": "big_star_slot"
       },
@@ -639,8 +641,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "4つの小さな星",
         "ruby": "よっつのほし",
         "icon": "✨",
-        "svgContent": "<g fill=\"#ffde00\"><polygon points=\"25,8 28,16 36,16 30,21 32,29 25,24 18,29 20,21 14,16 22,16\"/><polygon points=\"58,25 61,33 69,33 63,38 65,46 58,41 51,46 53,38 47,33 55,33\"/><polygon points=\"58,55 61,63 69,63 63,68 65,76 58,71 51,76 53,68 47,63 55,63\"/><polygon points=\"25,72 28,80 36,80 30,85 32,93 25,88 18,93 20,85 14,80 22,80\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g fill=\"#ffde00\"><polygon points=\"274.28,75.43 288.59,58.99 277.37,40.30 297.43,48.83 311.74,32.39 309.83,54.10 329.88,62.63 308.64,67.52 306.73,89.24 295.52,70.55\"/><polygon points=\"330.30,124.24 349.87,114.64 346.79,93.07 361.96,108.71 381.53,99.11 371.34,118.38 386.52,134.02 365.05,130.29 354.86,149.56 351.78,127.98\"/><polygon points=\"331.15,201.76 352.94,200.98 358.92,180.02 366.40,200.49 388.18,199.71 371.02,213.15 378.49,233.62 360.41,221.45 343.25,234.89 349.24,213.93\"/><polygon points=\"276.57,251.26 296.97,258.95 310.58,241.93 309.57,263.70 329.97,271.39 308.95,277.16 307.94,298.93 295.96,280.72 274.94,286.49 288.55,269.47\"/></g>",
+        "viewBox": "270 30 120 270",
+        "trayViewBox": "250 20 160 280",
         "targetSlotId": "small_stars_slot"
       },
       {
@@ -700,7 +703,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "黄色の縦棒",
         "ruby": "きいろのたてぼう",
         "icon": "▮",
-        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#fecc00\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#fecc00\"/>",
+        "traySvgContent": "<rect x=\"30\" y=\"5\" width=\"40\" height=\"90\" rx=\"3\" fill=\"#fecc00\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": "cross_v_slot"
       },
@@ -709,7 +713,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "黄色の横棒",
         "ruby": "きいろのよこぼう",
         "icon": "▬",
-        "svgContent": "<rect x=\"0\" y=\"35\" width=\"100\" height=\"30\" fill=\"#fecc00\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#fecc00\"/>",
+        "traySvgContent": "<rect x=\"5\" y=\"30\" width=\"90\" height=\"40\" rx=\"3\" fill=\"#fecc00\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": "cross_h_slot"
       },
@@ -718,7 +723,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白い縦棒",
         "ruby": "しろのたてぼう",
         "icon": "▮",
-        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#ffffff\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#ffffff\"/>",
+        "traySvgContent": "<rect x=\"30\" y=\"5\" width=\"40\" height=\"90\" rx=\"3\" fill=\"#ffffff\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": ""
       },
@@ -727,7 +733,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "赤い横棒",
         "ruby": "あかのよこぼう",
         "icon": "▬",
-        "svgContent": "<rect x=\"0\" y=\"35\" width=\"100\" height=\"30\" fill=\"#ed2939\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#ed2939\"/>",
+        "traySvgContent": "<rect x=\"5\" y=\"30\" width=\"90\" height=\"40\" rx=\"3\" fill=\"#ed2939\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": ""
       }
@@ -770,7 +777,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "青い縦棒",
         "ruby": "あおのたてぼう",
         "icon": "▮",
-        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#002f6c\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#002f6c\"/>",
+        "traySvgContent": "<rect x=\"30\" y=\"5\" width=\"40\" height=\"90\" rx=\"3\" fill=\"#002f6c\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": "cross_v_slot"
       },
@@ -779,7 +787,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "青い横棒",
         "ruby": "あおのよこぼう",
         "icon": "▬",
-        "svgContent": "<rect x=\"0\" y=\"30\" width=\"100\" height=\"40\" fill=\"#002f6c\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#002f6c\"/>",
+        "traySvgContent": "<rect x=\"5\" y=\"30\" width=\"90\" height=\"40\" rx=\"3\" fill=\"#002f6c\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": "cross_h_slot"
       },
@@ -788,7 +797,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "黄色の縦棒",
         "ruby": "きいろのたてぼう",
         "icon": "▮",
-        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#ffcc00\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#ffcc00\"/>",
+        "traySvgContent": "<rect x=\"30\" y=\"5\" width=\"40\" height=\"90\" rx=\"3\" fill=\"#ffcc00\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": ""
       },
@@ -797,7 +807,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "緑の横棒",
         "ruby": "みどりのよこぼう",
         "icon": "▬",
-        "svgContent": "<rect x=\"0\" y=\"30\" width=\"100\" height=\"40\" fill=\"#009246\"/>",
+        "svgContent": "<rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"#009246\"/>",
+        "traySvgContent": "<rect x=\"5\" y=\"30\" width=\"90\" height=\"40\" rx=\"3\" fill=\"#009246\"/>",
         "viewBox": "0 0 100 100",
         "targetSlotId": ""
       }

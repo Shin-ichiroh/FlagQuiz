@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
-import { ArrowLeft, RotateCcw, Sparkles, Trophy, ChevronRight, Lightbulb, Volume2 } from "lucide-react";
+import { ArrowLeft, RotateCcw, Trophy, ChevronRight, Lightbulb, Volume2 } from "lucide-react";
 import { ASSEMBLY_STAGES, type AssemblyFlagStage, type AssemblyPart } from "../data/flagAssemblyData";
 import { soundEffect } from "../utils/sound";
 import { speech } from "../utils/speech";
@@ -139,74 +139,66 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto p-4 flex flex-col items-center min-h-[90vh]">
-      {/* 上部ヘッダー */}
-      <div className="w-full flex items-center justify-between mb-3">
-        <button
-          onClick={() => {
-            soundEffect.playTap();
-            onBack();
-          }}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white shadow-xs border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 active:scale-95 transition-transform"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>もどる</span>
-        </button>
-
-        {/* ステージ進捗バッジ */}
-        <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full text-xs font-black text-amber-900">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>ステージ {stageIndex + 1} / {ASSEMBLY_STAGES.length}</span>
-        </div>
-      </div>
-
-      {/* 国名カード */}
-      <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex items-center justify-between mb-3">
-        <div>
-          <div className="text-[10px] font-bold text-amber-600 flex items-center gap-1">
-            <Trophy className="w-3.5 h-3.5" />
-            国旗づくりパズル
+    <div className="w-full max-w-md mx-auto px-3 py-1.5 sm:py-3 flex flex-col items-center">
+      {/* 上部統合コントロールバー */}
+      <div className="w-full bg-white/95 backdrop-blur-xs rounded-2xl px-3 py-2 shadow-xs border border-slate-100 flex items-center justify-between gap-2 mb-1.5">
+        <div className="flex items-center gap-2 min-w-0">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onBack();
+            }}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors shrink-0"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden xs:inline">もどる</span>
+          </button>
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-black text-slate-800 leading-tight truncate">
+              {showRuby && stage.countryRuby ? (
+                <ruby>
+                  {stage.countryName}
+                  <rt className="text-[10px] text-amber-600 font-normal">{stage.countryRuby}</rt>
+                </ruby>
+              ) : (
+                stage.countryName
+              )}
+            </h2>
           </div>
-          <h2 className="text-xl font-black text-slate-800">
-            {showRuby && stage.countryRuby ? (
-              <ruby>
-                {stage.countryName}
-                <rt className="text-xs text-amber-600 font-normal">{stage.countryRuby}</rt>
-              </ruby>
-            ) : (
-              stage.countryName
-            )}
-          </h2>
         </div>
 
-        {/* ステージ切り替えセレクタ */}
-        <select
-          value={stageIndex}
-          onChange={(e) => {
-            soundEffect.playTap();
-            setStageIndex(Number(e.target.value));
-          }}
-          className="bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-amber-500"
-        >
-          {ASSEMBLY_STAGES.map((stg, i) => (
-            <option key={stg.id} value={i}>
-              {i + 1}. {stg.countryName}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <select
+            value={stageIndex}
+            onChange={(e) => {
+              soundEffect.playTap();
+              setStageIndex(Number(e.target.value));
+            }}
+            className="bg-slate-100 border-none text-slate-700 font-bold text-xs rounded-lg px-2 py-1 focus:ring-2 focus:ring-amber-400 max-w-[120px] sm:max-w-[140px] truncate"
+          >
+            {ASSEMBLY_STAGES.map((stg, i) => (
+              <option key={stg.id} value={i}>
+                {i + 1}. {stg.countryName}
+              </option>
+            ))}
+          </select>
+          <div className="bg-amber-50 border border-amber-200 px-2 py-1 rounded-lg text-[11px] font-black text-amber-900 shrink-0">
+            {stageIndex + 1}/{ASSEMBLY_STAGES.length}
+          </div>
+        </div>
       </div>
 
       {/* ヒント文表示 */}
-      <div className="w-full bg-amber-50/80 border border-amber-200/80 rounded-xl p-2.5 flex items-start gap-2 mb-3 shadow-xs">
-        <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-        <p className="text-xs font-black text-amber-950 leading-relaxed">
+      <div className="w-full bg-amber-50/80 border border-amber-200/80 rounded-xl px-2.5 py-1.5 flex items-center gap-1.5 mb-2 shadow-xs">
+        <Lightbulb className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+        <p className="text-[11px] sm:text-xs font-bold text-amber-950 leading-tight truncate">
           {stage.hint}
         </p>
       </div>
 
       {/* 国旗組み立てキャンバス */}
       <div
-        className="relative w-full max-w-[340px] rounded-2xl shadow-lg border-4 border-white overflow-hidden select-none mb-4"
+        className="relative w-full max-w-[260px] sm:max-w-[300px] max-h-[25vh] rounded-xl shadow-md border-2 border-white overflow-hidden select-none mb-2"
         style={{
           aspectRatio: stage.aspectRatio || "3 / 2",
           backgroundColor: stage.baseBgColor,
@@ -264,7 +256,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                     dangerouslySetInnerHTML={{ __html: placedPart.svgContent }}
                   />
                 ) : (
-                  <span className="text-4xl">{placedPart.icon}</span>
+                  <span className="text-3xl">{placedPart.icon}</span>
                 )
               ) : null}
             </div>
@@ -273,8 +265,8 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
       </div>
 
       {/* パーツトレイ */}
-      <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 mb-3">
-        <div className="text-xs font-black text-slate-700 mb-2 flex items-center justify-between">
+      <div className="w-full bg-white rounded-xl p-2 shadow-xs border border-slate-100 mb-2">
+        <div className="text-[11px] font-black text-slate-700 mb-1.5 flex items-center justify-between">
           <span>パーツをえらんで 旗に置こう！</span>
           {selectedPartId && (
             <span className="text-[10px] text-amber-600 font-bold animate-pulse">
@@ -283,7 +275,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
           )}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
           {stage.availableParts.map((part) => {
             const isPlaced = Object.values(placedParts).includes(part.id);
             const isSelected = selectedPartId === part.id;
@@ -293,24 +285,24 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 key={part.id}
                 disabled={isPlaced}
                 onClick={() => handleSelectPart(part)}
-                className={`relative p-2 rounded-xl border-2 transition-all flex items-center gap-2 text-left active:scale-95 ${
+                className={`relative p-1.5 rounded-lg border-2 transition-all flex items-center gap-1.5 text-left active:scale-95 ${
                   isPlaced
                     ? "opacity-30 border-slate-100 bg-slate-50 cursor-not-allowed"
                     : isSelected
-                    ? "border-amber-500 bg-amber-50 ring-2 ring-amber-300 shadow-md"
+                    ? "border-amber-500 bg-amber-50 ring-2 ring-amber-300 shadow-xs"
                     : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                 }`}
               >
                 {/* ミニアイコン/SVG */}
-                <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden" style={{ backgroundColor: stage.baseBgColor === "#ffffff" ? "#f1f5f9" : stage.baseBgColor }}>
-                  {part.svgContent ? (
+                <div className="w-8 h-8 rounded-md border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden" style={{ backgroundColor: stage.baseBgColor === "#ffffff" ? "#f1f5f9" : stage.baseBgColor }}>
+                  {part.traySvgContent || part.svgContent ? (
                     <svg
-                      viewBox={part.viewBox || "0 0 100 100"}
-                      className="w-8 h-8"
-                      dangerouslySetInnerHTML={{ __html: part.svgContent }}
+                      viewBox={part.trayViewBox || part.viewBox || "0 0 100 100"}
+                      className="w-6 h-6"
+                      dangerouslySetInnerHTML={{ __html: part.traySvgContent || part.svgContent || "" }}
                     />
                   ) : (
-                    <span className="text-2xl">{part.icon}</span>
+                    <span className="text-xl">{part.icon}</span>
                   )}
                 </div>
 
@@ -326,7 +318,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 </div>
 
                 {isPlaced && (
-                  <span className="absolute top-1 right-1 text-[10px] font-black text-emerald-600 bg-emerald-100 px-1 rounded">
+                  <span className="absolute top-1 right-1 text-[9px] font-black text-emerald-600 bg-emerald-100 px-1 rounded">
                     OK
                   </span>
                 )}
@@ -338,41 +330,41 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
 
       {/* 完成メッセージ or リセット */}
       {isCompleted ? (
-        <div className="w-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-4 text-white text-center shadow-lg animate-in fade-in zoom-in duration-300">
-          <div className="flex items-center justify-center gap-1.5 font-black text-lg mb-1">
-            <Trophy className="w-6 h-6 text-yellow-200" />
+        <div className="w-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-3 text-white text-center shadow-md animate-in fade-in zoom-in duration-300">
+          <div className="flex items-center justify-center gap-1.5 font-black text-sm mb-1">
+            <Trophy className="w-4 h-4 text-yellow-200" />
             <span>🎉 国旗が完成したよ！</span>
           </div>
 
-          <p className="text-xs text-amber-100 font-bold mb-3 px-2 leading-relaxed">
+          <p className="text-[11px] text-amber-100 font-bold mb-2 px-2 leading-tight">
             {stage.trivia}
           </p>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center gap-2">
             <button
               onClick={handleSpeakTrivia}
-              className="px-3.5 py-2 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-black text-xs rounded-xl flex items-center gap-1.5 transition-all"
+              className="px-2.5 py-1.5 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-bold text-xs rounded-lg flex items-center gap-1 transition-all"
             >
-              <Volume2 className="w-4 h-4" />
+              <Volume2 className="w-3.5 h-3.5" />
               <span>声できく</span>
             </button>
             <button
               onClick={handleNextStage}
-              className="px-5 py-2 bg-white text-orange-700 hover:bg-amber-50 active:scale-95 font-black text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md"
+              className="px-4 py-1.5 bg-white text-orange-700 hover:bg-amber-50 active:scale-95 font-black text-xs rounded-lg flex items-center gap-1 transition-all shadow-xs"
             >
-              <span>つぎのステージへ！</span>
-              <ChevronRight className="w-4 h-4" />
+              <span>つぎへ！</span>
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center gap-2 mt-2">
+        <div className="flex items-center justify-center gap-2 mt-1">
           <button
             onClick={handleReset}
-            className="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
+            className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
-            <span>はじめから やりなおす</span>
+            <span>やりなおす</span>
           </button>
         </div>
       )}

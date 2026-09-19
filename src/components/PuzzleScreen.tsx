@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import confetti from "canvas-confetti";
-import { ArrowLeft, RotateCcw, HelpCircle, Eye, EyeOff, Sparkles, Trophy, ChevronRight, Shuffle } from "lucide-react";
+import { ArrowLeft, RotateCcw, HelpCircle, Eye, EyeOff, Trophy, ChevronRight, Shuffle } from "lucide-react";
 import { COUNTRIES } from "../data/countries";
 import { getFlagUrl } from "../utils/quizGenerator";
 import { soundEffect } from "../utils/sound";
@@ -269,73 +269,26 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto p-4 flex flex-col items-center min-h-[90vh]">
-      {/* 上部ヘッダー */}
-      <div className="w-full flex items-center justify-between mb-3">
-        <button
-          onClick={() => {
-            soundEffect.playTap();
-            onBack();
-          }}
-          className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white shadow-xs border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 active:scale-95 transition-transform"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>もどる</span>
-        </button>
-
-        <div className="flex items-center gap-2">
-          {/* グリッドサイズ切り替え */}
-          <div className="flex bg-slate-200 p-0.5 rounded-xl text-xs font-black">
-            <button
-              onClick={() => {
-                soundEffect.playTap();
-                setGridSize(2);
-              }}
-              className={`px-2 py-1 rounded-lg transition-all ${
-                gridSize === 2 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
-              }`}
-            >
-              2×2 (かんたん)
-            </button>
-            <button
-              onClick={() => {
-                soundEffect.playTap();
-                setGridSize(3);
-              }}
-              className={`px-2 py-1 rounded-lg transition-all ${
-                gridSize === 3 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
-              }`}
-            >
-              3×3 (ふつう)
-            </button>
-            <button
-              onClick={() => {
-                soundEffect.playTap();
-                setGridSize(4);
-              }}
-              className={`px-2 py-1 rounded-lg transition-all ${
-                gridSize === 4 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
-              }`}
-            >
-              4×4 (むずかしい)
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 国タイトル ＆ 国切り替え */}
-      <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex items-center justify-between mb-3">
-        <div className="flex-1 mr-2 min-w-0">
-          <div className="text-[10px] font-bold text-indigo-600 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5" />
-            こっきパズル
-          </div>
-          <div className="flex items-baseline gap-2 truncate">
-            <h2 className="text-xl font-black text-slate-800 truncate">
+    <div className="w-full max-w-md mx-auto px-3 py-1.5 sm:py-3 flex flex-col items-center">
+      {/* 上部統合コントロールバー */}
+      <div className="w-full bg-white/95 backdrop-blur-xs rounded-2xl px-3 py-2 shadow-xs border border-slate-100 flex items-center justify-between gap-2 mb-1.5">
+        <div className="flex items-center gap-2 min-w-0">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              onBack();
+            }}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors shrink-0"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden xs:inline">もどる</span>
+          </button>
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-black text-slate-800 leading-tight truncate">
               {showRuby && country.ruby ? (
                 <ruby>
                   {country.name}
-                  <rt className="text-xs text-indigo-500 font-normal">{country.ruby}</rt>
+                  <rt className="text-[10px] text-indigo-500 font-normal">{country.ruby}</rt>
                 </ruby>
               ) : (
                 country.name
@@ -354,7 +307,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
                 setCountry(selected);
               }
             }}
-            className="max-w-[120px] sm:max-w-[140px] bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl px-2 py-2 focus:outline-none focus:border-indigo-500 truncate"
+            className="bg-slate-100 border-none text-slate-700 font-bold text-xs rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-400 max-w-[110px] sm:max-w-[130px] truncate"
             title="国をえらぶ"
           >
             {COUNTRIES.map((c) => (
@@ -366,68 +319,109 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
 
           <button
             onClick={handleRandomCountry}
-            className="px-2.5 py-2 bg-indigo-50 hover:bg-indigo-100 active:scale-95 text-indigo-700 font-black text-xs rounded-xl flex items-center gap-1 transition-all border border-indigo-200 shrink-0"
+            className="px-2 py-1 bg-indigo-50 hover:bg-indigo-100 active:scale-95 text-indigo-700 font-black text-xs rounded-lg flex items-center gap-1 transition-all border border-indigo-200 shrink-0"
             title="ランダムにつぎの国へ"
           >
-            <Shuffle className="w-3.5 h-3.5" />
+            <Shuffle className="w-3 h-3" />
             <span>つぎ</span>
           </button>
         </div>
       </div>
 
-      {/* 操作＆ヒントバー */}
-      <div className="w-full flex items-center justify-between text-xs font-bold text-slate-600 px-1 mb-2">
-        <div className="flex items-center gap-3">
-          <span className="bg-slate-100 px-2.5 py-1 rounded-lg">
-            てすう: <strong className="text-indigo-600 font-black">{moves}</strong>
-          </span>
+      {/* サブバー（難易度切替・手数・ヒント・おてほんを1行に統合） */}
+      <div className="w-full bg-slate-100/90 rounded-xl px-2 py-1 flex items-center justify-between gap-1 mb-2 text-xs">
+        {/* グリッドサイズ切り替え */}
+        <div className="flex bg-white/80 p-0.5 rounded-lg text-[11px] font-black shrink-0 shadow-2xs">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setGridSize(2);
+            }}
+            className={`px-1.5 py-0.5 rounded transition-all ${
+              gridSize === 2 ? "bg-indigo-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            2×2
+          </button>
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setGridSize(3);
+            }}
+            className={`px-1.5 py-0.5 rounded transition-all ${
+              gridSize === 3 ? "bg-indigo-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            3×3
+          </button>
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setGridSize(4);
+            }}
+            className={`px-1.5 py-0.5 rounded transition-all ${
+              gridSize === 4 ? "bg-indigo-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            4×4
+          </button>
+        </div>
+
+        {/* 手数 */}
+        <span className="text-[11px] font-bold text-slate-500 shrink-0">
+          てすう: <strong className="text-indigo-600 font-black">{moves}</strong>
+        </span>
+
+        {/* ヒント & おてほん */}
+        <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={() => {
               soundEffect.playTap();
               setShowHint((v) => !v);
             }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border transition-all ${
+            className={`flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold border transition-all ${
               showHint ? "bg-amber-100 border-amber-300 text-amber-900" : "bg-white border-slate-200 text-slate-600"
             }`}
           >
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>ばんごうヒント: {showHint ? "ON" : "OFF"}</span>
+            <HelpCircle className="w-3 h-3" />
+            <span>ヒント:{showHint ? "ON" : "OFF"}</span>
+          </button>
+
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setShowModel((v) => !v);
+            }}
+            className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[11px] font-bold border transition-all ${
+              showModel ? "bg-indigo-100 border-indigo-300 text-indigo-800" : "bg-white border-slate-200 text-slate-600"
+            }`}
+          >
+            {showModel ? (
+              <>
+                <img
+                  src={flagImgUrl}
+                  alt={country.name}
+                  className="h-4 w-6 object-cover rounded-xs border border-white shrink-0"
+                />
+                <EyeOff className="w-3 h-3" />
+              </>
+            ) : (
+              <>
+                <Eye className="w-3 h-3" />
+                <span>おてほん</span>
+              </>
+            )}
           </button>
         </div>
-
-        <button
-          onClick={() => {
-            soundEffect.playTap();
-            setShowModel((v) => !v);
-          }}
-          className="flex items-center gap-1 text-slate-500 hover:text-slate-800 transition-colors"
-        >
-          {showModel ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-          <span>おてほん</span>
-        </button>
       </div>
-
-      {/* おてほんミニ表示 */}
-      {showModel && (
-        <div className="w-full mb-3 flex items-center justify-center">
-          <div className="flex items-center gap-2 bg-indigo-50/70 border border-indigo-200/70 px-3 py-1.5 rounded-xl">
-            <span className="text-[11px] font-bold text-indigo-800">おてほん:</span>
-            <img
-              src={flagImgUrl}
-              alt={country.name}
-              className="h-9 w-14 object-cover rounded shadow-xs border border-white"
-            />
-          </div>
-        </div>
-      )}
 
       {/* パズルボード */}
       <div
         ref={boardRef}
-        className="relative w-full max-w-[340px] aspect-[3/2] bg-slate-200 rounded-2xl p-1.5 shadow-md border-2 border-slate-300 overflow-hidden select-none touch-none"
+        className="relative w-full max-w-[260px] sm:max-w-[300px] max-h-[29vh] aspect-[3/2] bg-slate-200 rounded-xl p-1 shadow-md border-2 border-slate-300 overflow-hidden select-none touch-none mb-2"
       >
         <div
-          className="w-full h-full grid gap-1 rounded-xl overflow-hidden"
+          className="w-full h-full grid gap-0.5 sm:gap-1 rounded-lg overflow-hidden"
           style={{
             gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
             gridTemplateRows: `repeat(${gridSize}, minmax(0, 1fr))`,
@@ -523,43 +517,43 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
 
       {/* 完成時の祝福モーダル / メッセージ */}
       {isCompleted ? (
-        <div className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white text-center mt-4 shadow-lg animate-in fade-in zoom-in duration-300">
-          <div className="flex items-center justify-center gap-1.5 font-black text-lg mb-1">
-            <Trophy className="w-6 h-6 text-amber-300" />
+        <div className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-3 text-white text-center shadow-md animate-in fade-in zoom-in duration-300">
+          <div className="flex items-center justify-center gap-1.5 font-black text-sm mb-1">
+            <Trophy className="w-4 h-4 text-amber-300" />
             <span>🎉 かんせい！ おめでとう！</span>
           </div>
-          <p className="text-xs text-emerald-100 font-bold mb-3">
+          <p className="text-[11px] text-emerald-100 font-bold mb-2">
             {moves}手で {country.name}の国旗を完成させました！
           </p>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center gap-2">
             <button
               onClick={() => {
                 soundEffect.playTap();
                 initPuzzle(country, gridSize);
               }}
-              className="px-4 py-2 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-black text-xs rounded-xl flex items-center gap-1.5 transition-all"
+              className="px-3 py-1.5 bg-white/20 hover:bg-white/30 active:scale-95 text-white font-bold text-xs rounded-lg flex items-center gap-1 transition-all"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
               <span>もういちど</span>
             </button>
             <button
               onClick={handleRandomCountry}
-              className="px-5 py-2 bg-white text-emerald-800 hover:bg-emerald-50 active:scale-95 font-black text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-md"
+              className="px-4 py-1.5 bg-white text-emerald-800 hover:bg-emerald-50 active:scale-95 font-black text-xs rounded-lg flex items-center gap-1 transition-all shadow-xs"
             >
               <span>つぎの国へ！</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center gap-2 mt-4">
+        <div className="flex items-center justify-center gap-2 mt-1">
           <button
             onClick={() => {
               soundEffect.playTap();
               initPuzzle(country, gridSize);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
+            className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 active:scale-95 shadow-xs transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
             <span>やりなおす</span>
