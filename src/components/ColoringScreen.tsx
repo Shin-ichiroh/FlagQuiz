@@ -240,6 +240,10 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                 {flag.elements.map((elem) => {
                   if (elem.type === "circle") {
                     return <circle key={elem.id} {...elem.props} fill={elem.correctColor} />;
+                  } else if (elem.type === "polygon") {
+                    return <polygon key={elem.id} {...elem.props} fill={elem.correctColor} />;
+                  } else if (elem.type === "path") {
+                    return <path key={elem.id} {...elem.props} fill={elem.correctColor} />;
                   }
                   return <rect key={elem.id} {...elem.props} fill={elem.correctColor} />;
                 })}
@@ -261,11 +265,20 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
         >
           {flag.elements.map((elem, idx) => {
             const isFilled = !!userFills[elem.id];
-            // 未塗り時はパーツごとの淡い面グラデーション(#f8fafc / #e2e8f0)で境界を表現
+            // 未塗り時はパーツごとの淡い面グラデーションで境界を表現
             const defaultUnfilled =
-              elem.id === "bg"
+              elem.id === "bg" || elem.id === "mid"
                 ? "#f8fafc"
-                : elem.id.includes("sun") || elem.id.includes("cross")
+                : elem.id.includes("leaf") ||
+                  elem.id.includes("sun") ||
+                  elem.id.includes("moon") ||
+                  elem.id.includes("star") ||
+                  elem.id.includes("globe") ||
+                  elem.id.includes("diamond") ||
+                  elem.id.includes("taegeuk") ||
+                  elem.id.includes("trigram")
+                ? "#cbd5e1"
+                : elem.id.includes("cross")
                 ? "#e2e8f0"
                 : idx % 2 === 0
                 ? "#f8fafc"
@@ -290,7 +303,33 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                   strokeWidth={strokeWidth}
                   strokeDasharray={strokeDasharray}
                   onClick={() => handleElementClick(elem.id)}
-                  className="transition-colors duration-150 hover:opacity-85"
+                  className="transition-colors duration-150 hover:opacity-85 cursor-pointer"
+                />
+              );
+            } else if (elem.type === "polygon") {
+              return (
+                <polygon
+                  key={elem.id}
+                  {...elem.props}
+                  fill={fillColor}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray}
+                  onClick={() => handleElementClick(elem.id)}
+                  className="transition-colors duration-150 hover:opacity-85 cursor-pointer"
+                />
+              );
+            } else if (elem.type === "path") {
+              return (
+                <path
+                  key={elem.id}
+                  {...elem.props}
+                  fill={fillColor}
+                  stroke={strokeColor}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray}
+                  onClick={() => handleElementClick(elem.id)}
+                  className="transition-colors duration-150 hover:opacity-85 cursor-pointer"
                 />
               );
             }
@@ -304,7 +343,7 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                 strokeWidth={strokeWidth}
                 strokeDasharray={strokeDasharray}
                 onClick={() => handleElementClick(elem.id)}
-                className="transition-colors duration-150 hover:opacity-85"
+                className="transition-colors duration-150 hover:opacity-85 cursor-pointer"
               />
             );
           })}

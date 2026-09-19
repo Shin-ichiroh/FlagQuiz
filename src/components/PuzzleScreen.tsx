@@ -40,7 +40,7 @@ const getTileIdxFromCoord = (
 };
 
 export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = true }) => {
-  const [gridSize, setGridSize] = useState<2 | 3>(3); // 2x2 or 3x3
+  const [gridSize, setGridSize] = useState<2 | 3 | 4>(3); // 2x2, 3x3, or 4x4
   const [country, setCountry] = useState<Country>(() => {
     const initial = COUNTRIES.find((c) => c.code === "jp") || COUNTRIES[0];
     return initial;
@@ -90,7 +90,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
 
   // 画像から等価ピースマトリクスを解析し、パズルを初期化（依存配列なしで無限ループを完全防止）
   const initPuzzle = useCallback(
-    async (targetCountry: Country, size: 2 | 3) => {
+    async (targetCountry: Country, size: 2 | 3 | 4) => {
       const count = size * size;
       const imgUrl = getFlagUrl(targetCountry.code, 640);
 
@@ -291,7 +291,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
                 soundEffect.playTap();
                 setGridSize(2);
               }}
-              className={`px-2.5 py-1 rounded-lg transition-all ${
+              className={`px-2 py-1 rounded-lg transition-all ${
                 gridSize === 2 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
               }`}
             >
@@ -302,11 +302,22 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
                 soundEffect.playTap();
                 setGridSize(3);
               }}
-              className={`px-2.5 py-1 rounded-lg transition-all ${
+              className={`px-2 py-1 rounded-lg transition-all ${
                 gridSize === 3 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
               }`}
             >
               3×3 (ふつう)
+            </button>
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                setGridSize(4);
+              }}
+              className={`px-2 py-1 rounded-lg transition-all ${
+                gridSize === 4 ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600"
+              }`}
+            >
+              4×4 (むずかしい)
             </button>
           </div>
         </div>
@@ -314,13 +325,13 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
 
       {/* 国タイトル ＆ 国切り替え */}
       <div className="w-full bg-white rounded-2xl p-3 shadow-sm border border-slate-100 flex items-center justify-between mb-3">
-        <div>
+        <div className="flex-1 mr-2 min-w-0">
           <div className="text-[10px] font-bold text-indigo-600 flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5" />
             こっきパズル
           </div>
-          <div className="flex items-baseline gap-2">
-            <h2 className="text-xl font-black text-slate-800">
+          <div className="flex items-baseline gap-2 truncate">
+            <h2 className="text-xl font-black text-slate-800 truncate">
               {showRuby && country.ruby ? (
                 <ruby>
                   {country.name}
@@ -333,13 +344,35 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
           </div>
         </div>
 
-        <button
-          onClick={handleRandomCountry}
-          className="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 active:scale-95 text-indigo-700 font-black text-xs rounded-xl flex items-center gap-1.5 transition-all border border-indigo-200"
-        >
-          <Shuffle className="w-3.5 h-3.5" />
-          <span>つぎの国</span>
-        </button>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <select
+            value={country.code}
+            onChange={(e) => {
+              const selected = COUNTRIES.find((c) => c.code === e.target.value);
+              if (selected) {
+                soundEffect.playTap();
+                setCountry(selected);
+              }
+            }}
+            className="max-w-[120px] sm:max-w-[140px] bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl px-2 py-2 focus:outline-none focus:border-indigo-500 truncate"
+            title="国をえらぶ"
+          >
+            {COUNTRIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={handleRandomCountry}
+            className="px-2.5 py-2 bg-indigo-50 hover:bg-indigo-100 active:scale-95 text-indigo-700 font-black text-xs rounded-xl flex items-center gap-1 transition-all border border-indigo-200 shrink-0"
+            title="ランダムにつぎの国へ"
+          >
+            <Shuffle className="w-3.5 h-3.5" />
+            <span>つぎ</span>
+          </button>
+        </div>
       </div>
 
       {/* 操作＆ヒントバー */}
@@ -408,9 +441,10 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
             const isThisDragging = isDragging && draggedIdx === idx;
             const isThisHovered = isDragging && hoveredIdx === idx && draggedIdx !== idx;
 
-            // background-positionの計算
-            const posX = gridSize === 2 ? origCol * 100 : origCol * 50;
-            const posY = gridSize === 2 ? origRow * 100 : origRow * 50;
+            // background-positionの計算 (2x2: step 100%, 3x3: step 50%, 4x4: step 33.333%)
+            const step = gridSize > 1 ? 100 / (gridSize - 1) : 0;
+            const posX = origCol * step;
+            const posY = origRow * step;
             const bgSize = `${gridSize * 100}% ${gridSize * 100}%`;
 
             return (
@@ -472,8 +506,8 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
             height: ghostSize.height,
             backgroundImage: `url(${flagImgUrl})`,
             backgroundSize: `${gridSize * 100}% ${gridSize * 100}%`,
-            backgroundPosition: `${(tiles[draggedIdx] % gridSize) * (gridSize === 2 ? 100 : 50)}% ${
-              Math.floor(tiles[draggedIdx] / gridSize) * (gridSize === 2 ? 100 : 50)
+            backgroundPosition: `${(tiles[draggedIdx] % gridSize) * (100 / (gridSize - 1))}% ${
+              Math.floor(tiles[draggedIdx] / gridSize) * (100 / (gridSize - 1))
             }%`,
             backgroundRepeat: "no-repeat",
             opacity: 0.92,

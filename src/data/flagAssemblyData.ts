@@ -440,5 +440,541 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     ],
     "hint": "青と白の空の中央に、独立の希望を表す輝くシンボルを置こう！",
     "trivia": "アルゼンチン国旗の「五月の太陽」は、1810年5月の独立革命の日に雨雲を突き抜けて輝いた太陽の伝説に由来しています。"
+  },
+  {
+    "id": "ca",
+    "countryCode": "ca",
+    "countryName": "カナダ",
+    "countryRuby": "かなだ",
+    "aspectRatio": "2 / 1",
+    "baseBgColor": "#ffffff",
+    "baseElementsSvg": "<rect x=\"0\" y=\"0\" width=\"25\" height=\"100\" fill=\"#d80621\"/><rect x=\"75\" y=\"0\" width=\"25\" height=\"100\" fill=\"#d80621\"/>",
+    "slots": [
+      {
+        "id": "maple_leaf_slot",
+        "name": "中央",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 32,
+        "heightPercent": 64,
+        "layer": 1,
+        "requiredPartId": "maple_leaf"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "maple_leaf",
+        "name": "サトウカエデ（メイプル）の葉",
+        "ruby": "めいぷるのは",
+        "icon": "🍁",
+        "svgContent": "<path d=\"M 50 10 L 54 23 L 64 20 L 61 29 L 72 33 L 70 39 L 61 39 L 63 45 L 55 46 L 51 65 L 49 65 L 45 46 L 37 45 L 39 39 L 30 39 L 28 33 L 39 29 L 36 20 L 46 23 Z\" fill=\"#d80621\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "maple_leaf_slot"
+      },
+      {
+        "id": "green_leaf",
+        "name": "緑のオークの葉",
+        "ruby": "みどりのは",
+        "icon": "🍃",
+        "svgContent": "<path d=\"M 50 15 C 30 30 20 60 45 80 L 55 80 C 80 60 70 30 50 15 Z\" fill=\"#2e7d32\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "red_star",
+        "name": "赤い星",
+        "ruby": "あかいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#d80621\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "赤白赤の帯の中央に、カナダのシンボルである赤い葉っぱを置こう！",
+    "trivia": "カナダの国旗の中央に描かれているのはサトウカエデ（メイプル）の葉。国中に美しく茂る自然と豊かな実りを表しています。"
+  },
+  {
+    "id": "vn",
+    "countryCode": "vn",
+    "countryName": "ベトナム",
+    "countryRuby": "べとなむ",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#da251d",
+    "slots": [
+      {
+        "id": "star_slot",
+        "name": "中央",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 40,
+        "heightPercent": 60,
+        "layer": 1,
+        "requiredPartId": "gold_star"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "gold_star",
+        "name": "金色の大きな星",
+        "ruby": "きんのほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffff00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "star_slot"
+      },
+      {
+        "id": "white_star",
+        "name": "白い星",
+        "ruby": "しろいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "yellow_crescent",
+        "name": "黄色い三日月",
+        "ruby": "きいろいみかづき",
+        "icon": "🌙",
+        "svgContent": "<path d=\"M50 15 A35 35 0 1 0 85 50 A28 28 0 1 1 50 15 Z\" fill=\"#ffff00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "真っ赤な大地の中央に、希望と団結を表す金色の星を置こう！",
+    "trivia": "ベトナムの国旗は「金星紅旗」と呼ばれ、中央の大きな星は労働者・農民・知識人などの国民の団結を表しています。"
+  },
+  {
+    "id": "so",
+    "countryCode": "so",
+    "countryName": "ソマリア",
+    "countryRuby": "そまりあ",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#4189dd",
+    "slots": [
+      {
+        "id": "star_slot",
+        "name": "中央",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 40,
+        "heightPercent": 60,
+        "layer": 1,
+        "requiredPartId": "white_star_so"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "white_star_so",
+        "name": "白い五角星",
+        "ruby": "しろいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "star_slot"
+      },
+      {
+        "id": "yellow_sun",
+        "name": "黄色い太陽",
+        "ruby": "きいろのたいよう",
+        "icon": "☀️",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"#ffcc00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "white_moon",
+        "name": "白い三日月",
+        "ruby": "しろいみかづき",
+        "icon": "🌙",
+        "svgContent": "<path d=\"M50 15 A35 35 0 1 0 85 50 A28 28 0 1 1 50 15 Z\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "澄みきった青空の中央に、自由と平和の白い星を掲げよう！",
+    "trivia": "ソマリアの国旗の水色は澄んだ空とインド洋、中央の白い五角星はソマリ族の住む5つの地域と自由を表しています。"
+  },
+  {
+    "id": "cn",
+    "countryCode": "cn",
+    "countryName": "中国",
+    "countryRuby": "ちゅうごく",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#de2910",
+    "slots": [
+      {
+        "id": "big_star_slot",
+        "name": "大きな星",
+        "xPercent": 20,
+        "yPercent": 30,
+        "widthPercent": 25,
+        "heightPercent": 37.5,
+        "layer": 1,
+        "requiredPartId": "big_star"
+      },
+      {
+        "id": "small_stars_slot",
+        "name": "4つの小さな星",
+        "xPercent": 38,
+        "yPercent": 30,
+        "widthPercent": 18,
+        "heightPercent": 50,
+        "layer": 2,
+        "requiredPartId": "small_stars"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "big_star",
+        "name": "大きな黄金の星",
+        "ruby": "おおきなほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,5 64,36 98,36 71,56 81,88 50,68 19,88 29,56 2,36 36,36\" fill=\"#ffde00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "big_star_slot"
+      },
+      {
+        "id": "small_stars",
+        "name": "4つの小さな星",
+        "ruby": "よっつのほし",
+        "icon": "✨",
+        "svgContent": "<g fill=\"#ffde00\"><polygon points=\"25,8 28,16 36,16 30,21 32,29 25,24 18,29 20,21 14,16 22,16\"/><polygon points=\"58,25 61,33 69,33 63,38 65,46 58,41 51,46 53,38 47,33 55,33\"/><polygon points=\"58,55 61,63 69,63 63,68 65,76 58,71 51,76 53,68 47,63 55,63\"/><polygon points=\"25,72 28,80 36,80 30,85 32,93 25,88 18,93 20,85 14,80 22,80\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "small_stars_slot"
+      },
+      {
+        "id": "red_sun",
+        "name": "赤い太陽",
+        "ruby": "あかいたいよう",
+        "icon": "🔴",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "white_star",
+        "name": "白い星",
+        "ruby": "しろいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "赤旗の左上に、大きな主星とそれを取り囲む4つの星を配置しよう！",
+    "trivia": "中国の「五星紅旗」は、大きな星が指導者を、4つの小さな星が国民の固い団結を表しています。"
+  },
+  {
+    "id": "se",
+    "countryCode": "se",
+    "countryName": "スウェーデン",
+    "countryRuby": "すうぇーでん",
+    "aspectRatio": "8 / 5",
+    "baseBgColor": "#006aa7",
+    "slots": [
+      {
+        "id": "cross_v_slot",
+        "name": "黄色の縦棒",
+        "xPercent": 37.5,
+        "yPercent": 50,
+        "widthPercent": 12.5,
+        "heightPercent": 100,
+        "layer": 1,
+        "requiredPartId": "yellow_cross_v"
+      },
+      {
+        "id": "cross_h_slot",
+        "name": "黄色の横棒",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 100,
+        "heightPercent": 20,
+        "layer": 2,
+        "requiredPartId": "yellow_cross_h"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "yellow_cross_v",
+        "name": "黄色の縦棒",
+        "ruby": "きいろのたてぼう",
+        "icon": "▮",
+        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#fecc00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "cross_v_slot"
+      },
+      {
+        "id": "yellow_cross_h",
+        "name": "黄色の横棒",
+        "ruby": "きいろのよこぼう",
+        "icon": "▬",
+        "svgContent": "<rect x=\"0\" y=\"35\" width=\"100\" height=\"30\" fill=\"#fecc00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "cross_h_slot"
+      },
+      {
+        "id": "white_cross_v",
+        "name": "白い縦棒",
+        "ruby": "しろのたてぼう",
+        "icon": "▮",
+        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "red_cross_h",
+        "name": "赤い横棒",
+        "ruby": "あかのよこぼう",
+        "icon": "▬",
+        "svgContent": "<rect x=\"0\" y=\"35\" width=\"100\" height=\"30\" fill=\"#ed2939\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "青い海と空の上に、黄金のスカンジナビア十字を交差させて完成させよう！",
+    "trivia": "スウェーデンの金十字旗はスカンジナビア十字と呼ばれ、十字架の位置が少し左に寄っているのが北欧国旗の伝統です。"
+  },
+  {
+    "id": "fi",
+    "countryCode": "fi",
+    "countryName": "フィンランド",
+    "countryRuby": "ふぃんらんど",
+    "aspectRatio": "18 / 11",
+    "baseBgColor": "#ffffff",
+    "slots": [
+      {
+        "id": "cross_v_slot",
+        "name": "青い縦棒",
+        "xPercent": 36.11,
+        "yPercent": 50,
+        "widthPercent": 16.67,
+        "heightPercent": 100,
+        "layer": 1,
+        "requiredPartId": "blue_cross_v"
+      },
+      {
+        "id": "cross_h_slot",
+        "name": "青い横棒",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 100,
+        "heightPercent": 27.27,
+        "layer": 2,
+        "requiredPartId": "blue_cross_h"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "blue_cross_v",
+        "name": "青い縦棒",
+        "ruby": "あおのたてぼう",
+        "icon": "▮",
+        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#002f6c\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "cross_v_slot"
+      },
+      {
+        "id": "blue_cross_h",
+        "name": "青い横棒",
+        "ruby": "あおのよこぼう",
+        "icon": "▬",
+        "svgContent": "<rect x=\"0\" y=\"30\" width=\"100\" height=\"40\" fill=\"#002f6c\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "cross_h_slot"
+      },
+      {
+        "id": "yellow_cross_v",
+        "name": "黄色の縦棒",
+        "ruby": "きいろのたてぼう",
+        "icon": "▮",
+        "svgContent": "<rect x=\"25\" y=\"0\" width=\"50\" height=\"100\" fill=\"#ffcc00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "green_cross_h",
+        "name": "緑の横棒",
+        "ruby": "みどりのよこぼう",
+        "icon": "▬",
+        "svgContent": "<rect x=\"0\" y=\"30\" width=\"100\" height=\"40\" fill=\"#009246\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "純白の雪原の上に、深い湖と空を表す青い十字架をクロスさせよう！",
+    "trivia": "フィンランドの国旗は「青十字旗」。白は冬の純白の雪、青は国内に数万もある美しい湖や青空を象徴しています。"
+  },
+  {
+    "id": "pw",
+    "countryCode": "pw",
+    "countryName": "パラオ",
+    "countryRuby": "ぱらお",
+    "aspectRatio": "8 / 5",
+    "baseBgColor": "#0099cc",
+    "slots": [
+      {
+        "id": "moon_slot",
+        "name": "満月",
+        "xPercent": 43.75,
+        "yPercent": 50,
+        "widthPercent": 37.5,
+        "heightPercent": 60,
+        "layer": 1,
+        "requiredPartId": "yellow_moon"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "yellow_moon",
+        "name": "黄色い満月",
+        "ruby": "きいろのまんげつ",
+        "icon": "🌕",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#ffce00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "moon_slot"
+      },
+      {
+        "id": "red_sun",
+        "name": "赤い太陽",
+        "ruby": "あかいたいよう",
+        "icon": "🔴",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#bc002d\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "white_star",
+        "name": "白い星",
+        "ruby": "しろいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "南太平洋の青い海の上に、少し左に寄せて黄色い満月を浮かべよう！",
+    "trivia": "パラオの国旗は日本の日の丸と形が同じ兄弟旗！日本の太陽に対してパラオは「月」を表し、風になびいた時に中央に見えるよう少し左に置かれています。"
+  },
+  {
+    "id": "bd",
+    "countryCode": "bd",
+    "countryName": "バングラデシュ",
+    "countryRuby": "ばんぐらでしゅ",
+    "aspectRatio": "5 / 3",
+    "baseBgColor": "#006a4e",
+    "slots": [
+      {
+        "id": "sun_slot",
+        "name": "赤い太陽",
+        "xPercent": 45,
+        "yPercent": 50,
+        "widthPercent": 40,
+        "heightPercent": 66.67,
+        "layer": 1,
+        "requiredPartId": "red_sun_bd"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "red_sun_bd",
+        "name": "昇る赤い太陽",
+        "ruby": "あかいたいよう",
+        "icon": "🔴",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#f42a41\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "sun_slot"
+      },
+      {
+        "id": "yellow_star",
+        "name": "黄色い星",
+        "ruby": "きいろいほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffcc00\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "white_crescent",
+        "name": "白い三日月",
+        "ruby": "しろいみかづき",
+        "icon": "🌙",
+        "svgContent": "<path d=\"M50 15 A35 35 0 1 0 85 50 A28 28 0 1 1 50 15 Z\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "緑豊かな大地の上に、昇る情熱の赤い太陽を置こう！",
+    "trivia": "バングラデシュの国旗も日本の日の丸に影響を受けたとされています。緑は豊かな自然、赤い丸は昇る太陽と独立の夜明けを表します。"
+  },
+  {
+    "id": "gb",
+    "countryCode": "gb",
+    "countryName": "イギリス",
+    "countryRuby": "いぎりす",
+    "aspectRatio": "2 / 1",
+    "baseBgColor": "#012169",
+    "slots": [
+      {
+        "id": "saltires_slot",
+        "name": "斜め十字",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 100,
+        "heightPercent": 100,
+        "layer": 1,
+        "requiredPartId": "saltires"
+      },
+      {
+        "id": "cross_slot",
+        "name": "聖ジョージの十字架",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 100,
+        "heightPercent": 100,
+        "layer": 2,
+        "requiredPartId": "george_cross"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "saltires",
+        "name": "白と赤の斜め十字",
+        "ruby": "ななめじゅうじ",
+        "icon": "✖",
+        "svgContent": "<g><path d=\"M0 0 L36 0 L300 132 L300 150 L264 150 L0 18 Z M300 0 L264 0 L0 132 L0 150 L36 150 L300 18 Z\" fill=\"#ffffff\"/><path d=\"M0 0 L18 0 L300 141 L300 150 L282 150 L0 9 Z M300 0 L282 0 L0 141 L0 150 L18 150 L300 9 Z\" fill=\"#c8102e\"/></g>",
+        "viewBox": "0 0 300 150",
+        "targetSlotId": "saltires_slot"
+      },
+      {
+        "id": "george_cross",
+        "name": "聖ジョージの十字架",
+        "ruby": "せいじょーじじゅうじ",
+        "icon": "➕",
+        "svgContent": "<g><rect x=\"120\" y=\"0\" width=\"60\" height=\"150\" fill=\"#ffffff\"/><rect x=\"0\" y=\"45\" width=\"300\" height=\"60\" fill=\"#ffffff\"/><rect x=\"132\" y=\"0\" width=\"36\" height=\"150\" fill=\"#c8102e\"/><rect x=\"0\" y=\"57\" width=\"300\" height=\"36\" fill=\"#c8102e\"/></g>",
+        "viewBox": "0 0 300 150",
+        "targetSlotId": "cross_slot"
+      },
+      {
+        "id": "yellow_crown",
+        "name": "黄金の王冠",
+        "ruby": "おうかん",
+        "icon": "👑",
+        "svgContent": "<path d=\"M20 70 L20 40 L40 55 L50 25 L60 55 L80 40 L80 70 Z\" fill=\"#ffcc00\" stroke=\"#e65100\" stroke-width=\"2\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      },
+      {
+        "id": "white_dove",
+        "name": "白いハト",
+        "ruby": "しろいはと",
+        "icon": "🕊️",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "青い海の上に、まず斜め十字を重ね、最後に聖ジョージの赤十字をのせよう！",
+    "trivia": "イギリスの「ユニオンジャック」は、イングランドの聖ジョージ十字、スコットランドの聖アンドリュー十字、アイルランドの聖パトリック十字が合体して生まれました！"
   }
 ];
