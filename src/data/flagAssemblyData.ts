@@ -15,6 +15,7 @@ export interface AssemblySlot {
   yPercent: number;
   widthPercent: number;
   heightPercent: number;
+  layer?: number;
   requiredPartId: string;
 }
 
@@ -48,6 +49,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 50,
         "widthPercent": 40,
         "heightPercent": 60,
+        "layer": 1,
         "requiredPartId": "red_sun"
       }
     ],
@@ -99,6 +101,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 26.923,
         "widthPercent": 40,
         "heightPercent": 53.846,
+        "layer": 1,
         "requiredPartId": "blue_stars_50"
       }
     ],
@@ -140,7 +143,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryName": "ブラジル",
     "countryRuby": "ぶらじる",
     "aspectRatio": "10 / 7",
-    "baseBgColor": "#009c3b",
+    "baseBgColor": "#009440",
     "slots": [
       {
         "id": "diamond_slot",
@@ -148,7 +151,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "xPercent": 50,
         "yPercent": 50,
         "widthPercent": 83,
-        "heightPercent": 77,
+        "heightPercent": 75.714,
+        "layer": 1,
         "requiredPartId": "yellow_diamond"
       },
       {
@@ -158,6 +162,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 50,
         "widthPercent": 35,
         "heightPercent": 50,
+        "layer": 2,
         "requiredPartId": "blue_globe"
       }
     ],
@@ -167,17 +172,17 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "黄色いひし形",
         "ruby": "きいろいひしがた",
         "icon": "🔶",
-        "svgContent": "<polygon points=\"50,2 98,50 50,98 2,50\" fill=\"#ffdf00\" />",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#ffcb00\" d=\"M-1743 0 0 1113 1743 0 0-1113Z\"/>",
+        "viewBox": "-1743 -1113 3486 2226",
         "targetSlotId": "diamond_slot"
       },
       {
         "id": "blue_globe",
-        "name": "星空の天球儀",
+        "name": "27星の青い天球儀",
         "ruby": "てんきゅうぎ",
         "icon": "🌐",
-        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"48\" fill=\"#002776\"/><path d=\"M5 60 Q 50 40 95 48\" stroke=\"#ffffff\" stroke-width=\"5.5\" fill=\"none\"/><circle cx=\"48\" cy=\"28\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"58\" cy=\"32\" r=\"2\" fill=\"#ffffff\"/><circle cx=\"46\" cy=\"68\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"54\" cy=\"72\" r=\"2\" fill=\"#ffffff\"/><circle cx=\"50\" cy=\"76\" r=\"1.5\" fill=\"#ffffff\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<defs><path id=\"j\" fill-rule=\"evenodd\" d=\"M-31.5 0h33a30 30 0 0 0 30-30v-10a30 30 0 0 0-30-30h-33zm13-13h19a19 19 0 0 0 19-19v-6a19 19 0 0 0-19-19h-19z\"/><path id=\"k\" d=\"M0 0h63v-13H12v-18h40v-12H12v-14h48v-13H0z\" transform=\"translate(-31.5)\"/><path id=\"m\" d=\"M-26.25 0h52.5v-12h-40.5v-16h33v-12h-33v-11H25v-12h-51.25z\"/><path id=\"l\" d=\"M-31.5 0h12v-48l14 48h11l14-48V0h12v-70H14L0-22l-14-48h-17.5z\"/><path id=\"b\" fill-rule=\"evenodd\" d=\"M0 0a31.5 35 0 0 0 0-70A31.5 35 0 0 0 0 0m0-13a18.5 22 0 0 0 0-44 18.5 22 0 0 0 0 44\"/><path id=\"c\" fill-rule=\"evenodd\" d=\"M-31.5 0h13v-26h28a22 22 0 0 0 0-44h-40zm13-39h27a9 9 0 0 0 0-18h-27z\"/><path id=\"o\" d=\"M-15.75-22C-15.75-15-9-11.5 1-11.5s14.74-3.25 14.75-7.75c0-14.25-46.75-5.25-46.5-30.25C-30.5-71-6-70 3-70s26 4 25.75 21.25H13.5c0-7.5-7-10.25-15-10.25-7.75 0-13.25 1.25-13.25 8.5-.25 11.75 46.25 4 46.25 28.75C31.5-3.5 13.5 0 0 0c-11.5 0-31.55-4.5-31.5-22z\"/><use xlink:href=\"#f\" id=\"p\" transform=\"scale(31.5)\"/><use xlink:href=\"#f\" id=\"q\" transform=\"scale(26.25)\"/><use xlink:href=\"#f\" id=\"u\" transform=\"scale(21)\"/><use xlink:href=\"#f\" id=\"r\" transform=\"scale(15)\"/><use xlink:href=\"#f\" id=\"v\" transform=\"scale(10.5)\"/><g id=\"n\"><clipPath id=\"a\"><path d=\"M-31.5 0v-70h63V0zM0-47v12h31.5v-12z\"/></clipPath><use xlink:href=\"#b\" clip-path=\"url(#a)\"/><path d=\"M5-35h26.5v10H5z\"/><path d=\"M21.5-35h10V0h-10z\"/></g><g id=\"i\"><use xlink:href=\"#c\"/><path d=\"M28 0c0-10 0-32-15-32H-6c22 0 22 22 22 32\"/></g><g id=\"f\" fill=\"#fff\"><g id=\"e\"><path id=\"d\" d=\"M0-1v1h.5\" transform=\"rotate(18 0 -1)\"/><use xlink:href=\"#d\" transform=\"scale(-1 1)\"/></g><use xlink:href=\"#e\" transform=\"rotate(72)\"/><use xlink:href=\"#e\" transform=\"rotate(-72)\"/><use xlink:href=\"#e\" transform=\"rotate(144)\"/><use xlink:href=\"#e\" transform=\"rotate(216)\"/></g></defs><clipPath id=\"h\"><circle r=\"735\"/></clipPath><circle r=\"735\"/></clipPath><path fill=\"#009440\" d=\"M-2100-1470h4200v2940h-4200z\"/><path fill=\"#ffcb00\" d=\"M-1743 0 0 1113 1743 0 0-1113Z\"/><circle r=\"735\" fill=\"#302681\"/><path fill=\"#fff\" d=\"M-2205 1470a1785 1785 0 0 1 3570 0h-105a1680 1680 0 1 0-3360 0z\" clip-path=\"url(#h)\"/><g fill=\"#009440\" transform=\"translate(-420 1470)\"><use xlink:href=\"#b\" y=\"-1697.5\" transform=\"rotate(-7)\"/><use xlink:href=\"#i\" y=\"-1697.5\" transform=\"rotate(-4)\"/><use xlink:href=\"#j\" y=\"-1697.5\" transform=\"rotate(-1)\"/><use xlink:href=\"#k\" y=\"-1697.5\" transform=\"rotate(2)\"/><use xlink:href=\"#l\" y=\"-1697.5\" transform=\"rotate(5)\"/><use xlink:href=\"#m\" y=\"-1697.5\" transform=\"rotate(9.75)\"/><use xlink:href=\"#c\" y=\"-1697.5\" transform=\"rotate(14.5)\"/><use xlink:href=\"#i\" y=\"-1697.5\" transform=\"rotate(17.5)\"/><use xlink:href=\"#b\" y=\"-1697.5\" transform=\"rotate(20.5)\"/><use xlink:href=\"#n\" y=\"-1697.5\" transform=\"rotate(23.5)\"/><use xlink:href=\"#i\" y=\"-1697.5\" transform=\"rotate(26.5)\"/><use xlink:href=\"#k\" y=\"-1697.5\" transform=\"rotate(29.5)\"/><use xlink:href=\"#o\" y=\"-1697.5\" transform=\"rotate(32.5)\"/><use xlink:href=\"#o\" y=\"-1697.5\" transform=\"rotate(35.5)\"/><use xlink:href=\"#b\" y=\"-1697.5\" transform=\"rotate(38.5)\"/></g><use xlink:href=\"#p\" x=\"-600\" y=\"-132\"/><use xlink:href=\"#p\" x=\"-535\" y=\"177\"/><use xlink:href=\"#q\" x=\"-625\" y=\"243\"/><use xlink:href=\"#r\" x=\"-463\" y=\"132\"/><use xlink:href=\"#q\" x=\"-382\" y=\"250\"/><use xlink:href=\"#u\" x=\"-404\" y=\"323\"/><use xlink:href=\"#p\" x=\"228\" y=\"-228\"/><use xlink:href=\"#p\" x=\"515\" y=\"258\"/><use xlink:href=\"#u\" x=\"617\" y=\"265\"/><use xlink:href=\"#q\" x=\"545\" y=\"323\"/><use xlink:href=\"#q\" x=\"368\" y=\"477\"/><use xlink:href=\"#u\" x=\"367\" y=\"551\"/><use xlink:href=\"#u\" x=\"441\" y=\"419\"/><use xlink:href=\"#q\" x=\"500\" y=\"382\"/><use xlink:href=\"#u\" x=\"365\" y=\"405\"/><use xlink:href=\"#q\" x=\"-280\" y=\"30\"/><use xlink:href=\"#u\" x=\"200\" y=\"-37\"/><use xlink:href=\"#p\" y=\"330\"/><use xlink:href=\"#q\" x=\"85\" y=\"184\"/><use xlink:href=\"#q\" y=\"118\"/><use xlink:href=\"#u\" x=\"-74\" y=\"184\"/><use xlink:href=\"#r\" x=\"-37\" y=\"235\"/><use xlink:href=\"#q\" x=\"220\" y=\"495\"/><use xlink:href=\"#u\" x=\"283\" y=\"430\"/><use xlink:href=\"#u\" x=\"162\" y=\"412\"/><use xlink:href=\"#p\" x=\"-295\" y=\"390\"/><use xlink:href=\"#v\" y=\"575\"/>",
+        "viewBox": "-735 -735 1470 1470",
         "targetSlotId": "globe_slot"
       },
       {
@@ -200,7 +205,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
       }
     ],
     "hint": "豊かな自然と、リオデジャネイロの美しい星空を組み合わせよう！",
-    "trivia": "ブラジル国旗の緑は豊かな森林、黄色は鉱物資源、青い円は共和制が樹立された日のリオデジャネイロの星空を表しています。"
+    "trivia": "ブラジル国旗の青い円は、共和制が樹立された1889年11月15日のリオデジャネイロの星空（南十字星など27個の星）と、国の標語「ORDEM E PROGRESSO（秩序と進歩）」を表しています。"
   },
   {
     "id": "ch",
@@ -217,6 +222,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 50,
         "widthPercent": 60,
         "heightPercent": 60,
+        "layer": 1,
         "requiredPartId": "white_cross"
       }
     ],
@@ -267,6 +273,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 50,
         "widthPercent": 30,
         "heightPercent": 45,
+        "layer": 1,
         "requiredPartId": "turkey_crescent"
       },
       {
@@ -276,6 +283,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "yPercent": 50,
         "widthPercent": 18,
         "heightPercent": 27,
+        "layer": 2,
         "requiredPartId": "turkey_star"
       }
     ],
@@ -329,22 +337,24 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "baseBgColor": "#ffffff",
     "slots": [
       {
-        "id": "taeguk_slot",
-        "name": "中央",
-        "xPercent": 50,
-        "yPercent": 50,
-        "widthPercent": 30,
-        "heightPercent": 45,
-        "requiredPartId": "taeguk_mark"
-      },
-      {
         "id": "trigram_slot",
         "name": "四隅",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 88,
-        "heightPercent": 80,
+        "widthPercent": 100,
+        "heightPercent": 100,
+        "layer": 1,
         "requiredPartId": "four_trigrams"
+      },
+      {
+        "id": "taeguk_slot",
+        "name": "中央",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 33.333,
+        "heightPercent": 50,
+        "layer": 2,
+        "requiredPartId": "taeguk_mark"
       }
     ],
     "availableParts": [
@@ -353,8 +363,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "赤と青の太極マーク",
         "ruby": "たいきょくまーく",
         "icon": "☯️",
-        "svgContent": "<g transform=\"rotate(-34, 50, 50)\"><circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"#cd2e3a\" /><path d=\"M50 95 A45 45 0 0 1 50 5 A22.5 22.5 0 0 1 50 50 A22.5 22.5 0 0 0 50 95 Z\" fill=\"#0047a0\" /></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#cd2e3a\" d=\"M9.985 6.656A18 18 0 1 1-19.97-13.313a24 24 0 1 1 39.938 26.626\"/><path fill=\"#0047a0\" d=\"M0 0a12 12 0 1 1 19.97 13.313 24 24 0 1 1-39.94-26.626A12 12 0 1 0 0 0\"/>",
+        "viewBox": "-24 -24 48 48",
         "targetSlotId": "taeguk_slot"
       },
       {
@@ -362,8 +372,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "四隅の黒い三本線（卦）",
         "ruby": "よすみのけ",
         "icon": "☰",
-        "svgContent": "<g fill=\"#000000\"><g transform=\"translate(14, 18) rotate(34)\"><rect x=\"-14\" y=\"-7\" width=\"28\" height=\"3\"/><rect x=\"-14\" y=\"-1\" width=\"28\" height=\"3\"/><rect x=\"-14\" y=\"5\" width=\"28\" height=\"3\"/></g><g transform=\"translate(86, 18) rotate(-34)\"><rect x=\"-14\" y=\"-7\" width=\"12\" height=\"3\"/><rect x=\"2\" y=\"-7\" width=\"12\" height=\"3\"/><rect x=\"-14\" y=\"-1\" width=\"28\" height=\"3\"/><rect x=\"-14\" y=\"5\" width=\"12\" height=\"3\"/><rect x=\"2\" y=\"5\" width=\"12\" height=\"3\"/></g><g transform=\"translate(14, 82) rotate(-34)\"><rect x=\"-14\" y=\"-7\" width=\"28\" height=\"3\"/><rect x=\"-14\" y=\"-1\" width=\"12\" height=\"3\"/><rect x=\"2\" y=\"-1\" width=\"12\" height=\"3\"/><rect x=\"-14\" y=\"5\" width=\"28\" height=\"3\"/></g><g transform=\"translate(86, 82) rotate(34)\"><rect x=\"-14\" y=\"-7\" width=\"12\" height=\"3\"/><rect x=\"2\" y=\"-7\" width=\"12\" height=\"3\"/><rect x=\"-14\" y=\"-1\" width=\"12\" height=\"3\"/><rect x=\"-14\" y=\"5\" width=\"12\" height=\"3\"/><rect x=\"2\" y=\"5\" width=\"12\" height=\"3\"/></g></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g stroke=\"#000\" stroke-width=\"4\"><path d=\"M-34.946-37.72-48.26-17.75m4.992 3.328 13.313-19.97m4.992 3.329-13.312 19.969m63.236 42.157 6.101-9.152m1.11-1.664 6.101-9.153m4.993 3.328-6.102 9.153m-1.11 1.664-6.101 9.152m4.992 3.329 6.102-9.153m1.11-1.664 6.1-9.153M-48.259 17.75l13.313 19.97m4.992-3.329-6.102-9.152m-1.109-1.664-6.102-9.153m4.993-3.328 13.312 19.97m63.236-42.158-6.101-9.153m-1.11-1.664-6.101-9.152m4.992-3.328 13.313 19.969m4.992-3.328-6.102-9.153m-1.11-1.664-6.1-9.153\"/></g>",
+        "viewBox": "-72 -48 144 96",
         "targetSlotId": "trigram_slot"
       },
       {
@@ -393,8 +403,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "中央",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 20.83,
-        "heightPercent": 33.33,
+        "widthPercent": 20.833,
+        "heightPercent": 33.333,
+        "layer": 1,
         "requiredPartId": "sun_of_may"
       }
     ],
@@ -404,8 +415,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "五月の太陽（顔のある太陽）",
         "ruby": "ごがつのたいよう",
         "icon": "🌞",
-        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"22\" fill=\"#ffb81c\" stroke=\"#854d0e\" stroke-width=\"1.5\"/><g stroke=\"#ffb81c\" stroke-width=\"2.5\"><line x1=\"50\" y1=\"12\" x2=\"50\" y2=\"24\"/><line x1=\"50\" y1=\"76\" x2=\"50\" y2=\"88\"/><line x1=\"12\" y1=\"50\" x2=\"24\" y2=\"50\"/><line x1=\"76\" y1=\"50\" x2=\"88\" y2=\"50\"/><line x1=\"23\" y1=\"23\" x2=\"32\" y2=\"32\"/><line x1=\"68\" y1=\"68\" x2=\"77\" y2=\"77\"/><line x1=\"23\" y1=\"77\" x2=\"32\" y2=\"68\"/><line x1=\"68\" y1=\"32\" x2=\"77\" y2=\"23\"/></g><circle cx=\"43\" cy=\"46\" r=\"2.5\" fill=\"#854d0e\"/><circle cx=\"57\" cy=\"46\" r=\"2.5\" fill=\"#854d0e\"/><path d=\"M44 58 Q 50 64 56 58\" stroke=\"#854d0e\" stroke-width=\"2\" fill=\"none\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g id=\"c\"><path id=\"a\" stroke-width=\"1.112\" stroke=\"#85340a\" fill=\"#f6b40e\" d=\"m396.84 251.31 28.454 61.992s.49 1.185 1.28.859c.79-.327.299-1.512.299-1.512l-23.715-63.956m-.68 24.12c-.347 9.428 5.452 14.613 4.694 23.032-.757 8.42 3.867 13.18 4.94 16.454 1.073 3.274-1.16 5.232-.198 5.698.963.466 3.07-2.12 2.383-6.775-.687-4.655-4.22-6.037-3.39-16.32.83-10.283-4.206-12.678-2.98-22.058\"/><use xlink:href=\"#a\" transform=\"rotate(22.5 400 250)\"/><use xlink:href=\"#a\" transform=\"rotate(45 400 250)\"/><use xlink:href=\"#a\" transform=\"rotate(67.5 400 250)\"/><path id=\"b\" fill=\"#85340a\" d=\"M404.31 274.41c.453 9.054 5.587 13.063 4.579 21.314 2.213-6.525-3.124-11.583-2.82-21.22m-7.649-23.757 19.487 42.577-16.329-43.887\"/><use xlink:href=\"#b\" transform=\"rotate(22.5 400 250)\"/><use xlink:href=\"#b\" transform=\"rotate(45 400 250)\"/><use xlink:href=\"#b\" transform=\"rotate(67.5 400 250)\"/></g><use xlink:href=\"#c\" transform=\"rotate(90 400 250)\"/><use xlink:href=\"#c\" transform=\"rotate(180 400 250)\"/><use xlink:href=\"#c\" transform=\"rotate(270 400 250)\"/><circle r=\"27.778\" stroke=\"#85340a\" cy=\"250\" cx=\"400\" stroke-width=\"1.5\" fill=\"#f6b40e\"/><path id=\"h\" fill=\"#843511\" d=\"M409.47 244.06c-1.897 0-3.713.822-4.781 2.531 2.136 1.923 6.856 2.132 10.062-.219a7.333 7.333 0 0 0-5.281-2.312zm-.031.438c1.846-.034 3.571.814 3.812 1.656-2.136 2.35-5.55 2.146-7.687.437.935-1.495 2.439-2.067 3.875-2.094z\"/><use xlink:href=\"#d\" transform=\"matrix(-1 0 0 1 800.25 0)\"/><use xlink:href=\"#e\" transform=\"matrix(-1 0 0 1 800.25 0)\"/><use xlink:href=\"#f\" transform=\"translate(18.862)\"/><use xlink:href=\"#g\" transform=\"matrix(-1 0 0 1 800.25 0)\"/><path d=\"M395.75 253.84c-.913.167-1.563.977-1.563 1.906 0 1.062.878 1.906 1.938 1.906a1.89 1.89 0 0 0 1.563-.812c.739.556 1.764.615 2.312.625.084.002.193 0 .25 0 .548-.01 1.573-.069 2.313-.625.36.516.935.812 1.562.812 1.06 0 1.938-.844 1.938-1.906 0-.929-.65-1.74-1.563-1.906.513.18.844.676.844 1.219a1.28 1.28 0 0 1-1.281 1.281c-.68 0-1.242-.54-1.282-1.219-.208.417-1.034 1.655-2.656 1.719-1.622-.064-2.447-1.302-2.656-1.719-.04.679-.6 1.219-1.281 1.219a1.28 1.28 0 0 1-1.281-1.281c0-.542.33-1.038.843-1.219zM397.84 259.53c-2.138 0-2.983 1.937-4.906 3.219 1.068-.427 1.91-1.27 3.406-2.125 1.496-.855 2.772.187 3.625.187h.031c.853 0 2.13-1.041 3.625-.187 1.497.856 2.369 1.698 3.438 2.125-1.924-1.282-2.8-3.219-4.938-3.219-.426 0-1.271.23-2.125.656h-.031c-.853-.426-1.698-.656-2.125-.656z\" fill=\"#85340a\"/><path d=\"M397.12 262.06c-.844.037-1.96.207-3.563.688 3.848-.855 4.697.437 6.407.437h.03c1.71 0 2.56-1.292 6.407-.438-4.274-1.282-5.124-.437-6.406-.437h-.031c-.802 0-1.437-.312-2.844-.25z\" fill=\"#85340a\"/><path d=\"M393.75 262.72c-.248.003-.519.005-.813.031 4.488.428 2.331 3 7.032 3h.03c4.702 0 2.575-2.572 7.063-3-4.7-.426-3.214 2.344-7.062 2.344h-.031c-3.608 0-2.496-2.421-6.22-2.375zM403.85 269.66a3.848 3.848 0 0 0-3.846-3.846 3.848 3.848 0 0 0-3.847 3.846 3.955 3.955 0 0 1 3.847-3.04 3.952 3.952 0 0 1 3.846 3.04z\" fill=\"#85340a\"/><path id=\"e\" fill=\"#85340a\" d=\"M382.73 244.02c4.915-4.273 11.11-4.915 14.53-1.709.837 1.121 1.373 2.32 1.593 3.57.43 2.433-.33 5.062-2.236 7.756.215-.001.643.212.856.427 1.697-3.244 2.297-6.577 1.74-9.746a13.815 13.815 0 0 0-.67-2.436c-4.7-3.845-11.11-4.272-15.81 2.138z\"/><path id=\"d\" fill=\"#85340a\" d=\"M390.42 242.74c2.777 0 3.419.642 4.7 1.71 1.284 1.068 1.924.854 2.137 1.068.213.215 0 .854-.426.64s-1.284-.64-2.564-1.708c-1.283-1.07-2.563-1.069-3.846-1.069-3.846 0-5.983 3.205-6.41 2.991-.426-.214 2.137-3.632 6.41-3.632z\"/><use xlink:href=\"#h\" transform=\"translate(-19.181)\"/><circle id=\"f\" cy=\"246.15\" cx=\"390.54\" r=\"1.923\" fill=\"#85340a\"/><path id=\"g\" fill=\"#85340a\" d=\"M385.29 247.44c3.633 2.778 7.265 2.564 9.402 1.282 2.136-1.282 2.136-1.709 1.71-1.709-.427 0-.853.427-2.564 1.281-1.71.856-4.273.856-8.546-.854z\"/>",
+        "viewBox": "316.67 166.67 166.67 166.67",
         "targetSlotId": "sun_slot"
       },
       {

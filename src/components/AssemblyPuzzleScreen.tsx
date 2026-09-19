@@ -46,24 +46,34 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
   };
 
   // スロットをタップしたとき
-  const handleSlotClick = (slotId: string) => {
+  const handleSlotClick = (clickedSlotId: string) => {
     if (isCompleted) return;
-    const slot = stage.slots.find((s) => s.id === slotId);
-    if (!slot) return;
-
-    // 既に正しく埋まっている場合
-    if (placedParts[slotId]) return;
 
     if (!selectedPartId) {
-      // まだパーツを選んでいないときの案内
       soundEffect.playTap();
       return;
     }
 
+    // クリックされたスロットを取得
+    let targetSlot = stage.slots.find((s) => s.id === clickedSlotId);
+    if (!targetSlot) return;
+
+    // 前面・背面の重なり対策:
+    // クリックされたスロットが既に埋まっている場合、または選択中のパーツと合わない場合、
+    // 未配置のスロットの中に、現在選択中のパーツを求めているスロットがあればそちらをターゲットにする
+    if (placedParts[targetSlot.id] || targetSlot.requiredPartId !== selectedPartId) {
+      const matchSlot = stage.slots.find(
+        (s) => s.requiredPartId === selectedPartId && !placedParts[s.id]
+      );
+      if (matchSlot) {
+        targetSlot = matchSlot;
+      }
+    }
+
     // 正解チェック
-    if (slot.requiredPartId === selectedPartId) {
+    if (targetSlot.requiredPartId === selectedPartId && !placedParts[targetSlot.id]) {
       soundEffect.playCorrect();
-      const nextPlaced = { ...placedParts, [slotId]: selectedPartId };
+      const nextPlaced = { ...placedParts, [targetSlot.id]: selectedPartId };
       setPlacedParts(nextPlaced);
       setSelectedPartId(null);
       setWrongSlotId(null);
@@ -82,7 +92,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
     } else {
       // 不正解
       soundEffect.playWrong();
-      setWrongSlotId(slotId);
+      setWrongSlotId(targetSlot.id);
       setTimeout(() => setWrongSlotId(null), 800);
     }
   };
@@ -177,6 +187,12 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
       {/* 国旗組み立てキャンバス */}
       <div
         className="relative w-full max-w-[340px] rounded-2xl shadow-lg border-4 border-white overflow-hidden select-none mb-4"
+        onClick={() => {
+          if (selectedPartId) {
+            const matchSlot = stage.slots.find((s) => s.requiredPartId === selectedPartId && !placedParts[s.id]);
+            if (matchSlot) handleSlotClick(matchSlot.id);
+          }
+        }}
         style={{
           aspectRatio: stage.aspectRatio || "3 / 2",
           backgroundColor: stage.baseBgColor,
@@ -193,19 +209,24 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
         )}
 
         {/* スロット枠 */}
-        {stage.slots.map((slot) => {
+        {stage.slots.map((slot, idx) => {
           const placedPartId = placedParts[slot.id];
           const placedPart = stage.availableParts.find((p) => p.id === placedPartId);
           const isWrong = wrongSlotId === slot.id;
           const isFilled = !!placedPart;
+          const layerIndex = slot.layer ?? (idx + 1);
+          const zIndex = layerIndex * 10;
 
           return (
             <div
               key={slot.id}
-              onClick={() => handleSlotClick(slot.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSlotClick(slot.id);
+              }}
               className={`absolute cursor-pointer transition-all flex items-center justify-center ${
                 isFilled
-                  ? "z-10"
+                  ? ""
                   : selectedPartId
                   ? "border-2 border-dashed border-amber-400 bg-amber-300/30 animate-pulse hover:bg-amber-300/50"
                   : "border-2 border-dashed border-slate-400/40 bg-black/5 hover:border-slate-500/60"
@@ -215,6 +236,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 top: `${slot.yPercent - slot.heightPercent / 2}%`,
                 width: `${slot.widthPercent}%`,
                 height: `${slot.heightPercent}%`,
+                zIndex,
                 borderRadius: slot.id.includes("circle") || slot.id.includes("globe") || slot.id.includes("sun") ? "50%" : slot.id.includes("canton") ? "0px" : "4px",
               }}
             >
