@@ -269,20 +269,20 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
       {
         "id": "crescent_slot",
         "name": "三日月",
-        "xPercent": 44,
+        "xPercent": 33.333,
         "yPercent": 50,
-        "widthPercent": 30,
-        "heightPercent": 45,
+        "widthPercent": 33.333,
+        "heightPercent": 50,
         "layer": 1,
         "requiredPartId": "turkey_crescent"
       },
       {
         "id": "star_slot",
         "name": "星",
-        "xPercent": 68,
+        "xPercent": 53.927,
         "yPercent": 50,
-        "widthPercent": 18,
-        "heightPercent": 27,
+        "widthPercent": 15.076,
+        "heightPercent": 23.777,
         "layer": 2,
         "requiredPartId": "turkey_star"
       }
@@ -293,8 +293,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白い三日月",
         "ruby": "しろいみかづき",
         "icon": "🌙",
-        "svgContent": "<mask id=\"crescentMask\"><rect width=\"100\" height=\"100\" fill=\"white\"/><circle cx=\"58\" cy=\"50\" r=\"32\" fill=\"black\"/></mask><circle cx=\"48\" cy=\"50\" r=\"40\" fill=\"#ffffff\" mask=\"url(#crescentMask)\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#ffffff\" d=\"M42675 8021a15000 15000 0 1 1 0-16042 12000 12000 0 1 0 0 16042z\"/>",
+        "viewBox": "15000 -15000 30000 30000",
         "targetSlotId": "crescent_slot"
       },
       {
@@ -302,8 +302,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白い五角星",
         "ruby": "しろいほし",
         "icon": "⭐",
-        "svgContent": "<polygon points=\"50,10 62,38 92,38 68,56 77,85 50,67 23,85 32,56 8,38 38,38\" fill=\"#ffffff\" transform=\"rotate(15, 50, 50)\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#ffffff\" d=\"m41750 0 13568-4408-8386 11541V-7133l8386 11541z\"/>",
+        "viewBox": "41750 -7133 13568 14266",
         "targetSlotId": "star_slot"
       },
       {
@@ -326,7 +326,7 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
       }
     ],
     "hint": "夜空に浮かぶ2つのシンボルを組み合わせて、新月旗を完成させよう！",
-    "trivia": "トルコ国旗は「新月旗（アイ・ユルドゥズ）」と呼ばれ、オスマン帝国時代から続く伝統的なシンボルです。"
+    "trivia": "トルコ国旗は「新月旗（アイ・ユルドゥズ）」と呼ばれ、三日月と星の正確な位置や比率は法律で厳密に定められています。"
   },
   {
     "id": "kr",

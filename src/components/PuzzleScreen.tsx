@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import confetti from "canvas-confetti";
 import { ArrowLeft, RotateCcw, HelpCircle, Eye, EyeOff, Sparkles, Trophy, ChevronRight, Shuffle } from "lucide-react";
 import { COUNTRIES } from "../data/countries";
 import { getFlagUrl } from "../utils/quizGenerator";
 import { soundEffect } from "../utils/sound";
 import { speech } from "../utils/speech";
+import { checkEquivalentTiles } from "../utils/puzzleEquivalence";
 import type { Country } from "../types";
 
 interface PuzzleScreenProps {
@@ -12,10 +13,35 @@ interface PuzzleScreenProps {
   showRuby?: boolean;
 }
 
+// パズルボード上のマウス/タッチ座標から対応するタイルのインデックスを算出する
+const getTileIdxFromCoord = (
+  clientX: number,
+  clientY: number,
+  boardEl: HTMLElement,
+  size: number
+): number | null => {
+  const rect = boardEl.getBoundingClientRect();
+  if (
+    clientX < rect.left ||
+    clientX > rect.right ||
+    clientY < rect.top ||
+    clientY > rect.bottom
+  ) {
+    return null;
+  }
+  const relX = clientX - rect.left;
+  const relY = clientY - rect.top;
+  const col = Math.floor((relX / rect.width) * size);
+  const row = Math.floor((relY / rect.height) * size);
+  if (col >= 0 && col < size && row >= 0 && row < size) {
+    return row * size + col;
+  }
+  return null;
+};
+
 export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = true }) => {
   const [gridSize, setGridSize] = useState<2 | 3>(3); // 2x2 or 3x3
   const [country, setCountry] = useState<Country>(() => {
-    // デフォルトで人気の国（日本やフランスなど）
     const initial = COUNTRIES.find((c) => c.code === "jp") || COUNTRIES[0];
     return initial;
   });
@@ -28,63 +54,210 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
   const [showHint, setShowHint] = useState<boolean>(false);
   const [showModel, setShowModel] = useState<boolean>(true);
 
-  // パズルの初期化・シャッフル
-  const initPuzzle = useCallback((_c: Country, size: 2 | 3) => {
-    const count = size * size;
-    let initial = Array.from({ length: count }, (_, i) => i);
-    // シャッフル（完成状態にならないよう）
-    let shuffled: number[];
-    let attempts = 0;
-    do {
-      shuffled = [...initial].sort(() => Math.random() - 0.5);
-      attempts++;
-    } while (attempts < 20 && shuffled.every((v, i) => v === i));
+  // 同一絵柄・同色ピースの等価判定マトリクス (matrix[pieceVal][slotIdx] === true なら視覚的に同色・正解扱い)
+  const [equivMatrix, setEquivMatrix] = useState<boolean[][]>([]);
 
-    setTiles(shuffled);
-    setSelectedIdx(null);
-    setMoves(0);
-    setIsCompleted(false);
-  }, []);
+  // ドラッグ＆ドロップ状態管理
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
+  const [ghostSize, setGhostSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  const boardRef = useRef<HTMLDivElement>(null);
+  const justDraggedRef = useRef<boolean>(false);
+
+  const flagImgUrl = getFlagUrl(country.code, 640);
+
+  // タイルがそのスロットで視覚的に合っているか判定（本来の位置 または 同一絵柄・同色位置）
+  const isTileCorrect = useCallback(
+    (pieceVal: number, slotIdx: number, matrix: boolean[][] = equivMatrix) => {
+      if (pieceVal === slotIdx) return true;
+      if (matrix[pieceVal] && matrix[pieceVal][slotIdx]) return true;
+      return false;
+    },
+    [equivMatrix]
+  );
+
+  // 全体が完成しているか判定
+  const checkSolved = useCallback(
+    (tilesList: number[], matrix: boolean[][] = equivMatrix) => {
+      if (tilesList.length === 0) return false;
+      return tilesList.every((val, slotIdx) => isTileCorrect(val, slotIdx, matrix));
+    },
+    [isTileCorrect, equivMatrix]
+  );
+
+  // 画像から等価ピースマトリクスを解析し、パズルを初期化（依存配列なしで無限ループを完全防止）
+  const initPuzzle = useCallback(
+    async (targetCountry: Country, size: 2 | 3) => {
+      const count = size * size;
+      const imgUrl = getFlagUrl(targetCountry.code, 640);
+
+      // 同一絵柄・同色のピース判定をCanvasから事前解析
+      const matrix = await checkEquivalentTiles(imgUrl, size);
+      setEquivMatrix(matrix);
+
+      const initial = Array.from({ length: count }, (_, i) => i);
+      let shuffled: number[];
+      let attempts = 0;
+      do {
+        shuffled = [...initial].sort(() => Math.random() - 0.5);
+        attempts++;
+      } while (
+        attempts < 30 &&
+        shuffled.every((val, slotIdx) => {
+          if (val === slotIdx) return true;
+          if (matrix[val] && matrix[val][slotIdx]) return true;
+          return false;
+        })
+      );
+
+      setTiles(shuffled);
+      setSelectedIdx(null);
+      setMoves(0);
+      setIsCompleted(false);
+    },
+    []
+  );
 
   useEffect(() => {
     initPuzzle(country, gridSize);
-  }, [country, gridSize, initPuzzle]);
+  }, [country.code, gridSize, initPuzzle]);
 
-  // タイルタップ時の入れ替え処理
-  const handleTileClick = (index: number) => {
-    if (isCompleted) return;
+  // 2つのタイルを入れ替える共通処理
+  const swapTiles = useCallback(
+    (fromIdx: number, toIdx: number) => {
+      if (fromIdx === toIdx || fromIdx < 0 || toIdx < 0) return;
 
-    soundEffect.playTap();
+      setTiles((prevTiles) => {
+        const nextTiles = [...prevTiles];
+        const temp = nextTiles[fromIdx];
+        nextTiles[fromIdx] = nextTiles[toIdx];
+        nextTiles[toIdx] = temp;
 
-    if (selectedIdx === null) {
-      setSelectedIdx(index);
-    } else if (selectedIdx === index) {
-      // 選択解除
-      setSelectedIdx(null);
-    } else {
-      // 2つのタイルを入れ替え
-      const nextTiles = [...tiles];
-      const temp = nextTiles[selectedIdx];
-      nextTiles[selectedIdx] = nextTiles[index];
-      nextTiles[index] = temp;
+        // 完成判定（同一絵柄ピースの等価位置も正解とみなす）
+        const solved = checkSolved(nextTiles);
+        if (solved) {
+          setIsCompleted(true);
+          soundEffect.playCorrect();
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+          speech.speak(`せいかい！ ${country.name}の国旗が完成したよ！`);
+        }
 
-      setTiles(nextTiles);
+        return nextTiles;
+      });
+
       setSelectedIdx(null);
       setMoves((m) => m + 1);
+      soundEffect.playTap();
+    },
+    [country.name, checkSolved]
+  );
 
-      // 完成判定
-      const solved = nextTiles.every((val, i) => val === i);
-      if (solved) {
-        setIsCompleted(true);
-        soundEffect.playCorrect();
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
-        speech.speak(`せいかい！ ${country.name}の国旗が完成したよ！`);
+  // タイルタップ時の選択/入れ替え処理（クリック/タップ操作）
+  const handleTileClick = useCallback(
+    (index: number) => {
+      if (isCompleted) return;
+
+      if (selectedIdx === null) {
+        soundEffect.playTap();
+        setSelectedIdx(index);
+      } else if (selectedIdx === index) {
+        soundEffect.playTap();
+        setSelectedIdx(null);
+      } else {
+        swapTiles(selectedIdx, index);
       }
-    }
+    },
+    [isCompleted, selectedIdx, swapTiles]
+  );
+
+  // --- ポインター操作（マウスドラッグ＆スマホ・タブレットのタッチスワイプ共通） ---
+  const handlePointerDown = (e: React.PointerEvent, idx: number) => {
+    if (isCompleted) return;
+    if (e.button !== undefined && e.button > 0) return;
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const tileEl = e.currentTarget as HTMLElement;
+    const rect = tileEl.getBoundingClientRect();
+    setGhostSize({ width: rect.width, height: rect.height });
+
+    let hasDragged = false;
+    let currentTargetIdx: number | null = idx;
+
+    setDraggedIdx(idx);
+    setHoveredIdx(idx);
+    setDragPos({ x: startX, y: startY });
+    setIsDragging(false);
+
+    const onPointerMove = (moveEvt: PointerEvent) => {
+      const dist = Math.hypot(moveEvt.clientX - startX, moveEvt.clientY - startY);
+      if (dist > 6) {
+        hasDragged = true;
+        setIsDragging(true);
+      }
+
+      if (hasDragged) {
+        setDragPos({ x: moveEvt.clientX, y: moveEvt.clientY });
+
+        if (boardRef.current) {
+          const target = getTileIdxFromCoord(moveEvt.clientX, moveEvt.clientY, boardRef.current, gridSize);
+          currentTargetIdx = target;
+          setHoveredIdx(target);
+        }
+      }
+    };
+
+    const onPointerUp = (upEvt: PointerEvent) => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerCancel);
+
+      if (hasDragged) {
+        justDraggedRef.current = true;
+        setTimeout(() => {
+          justDraggedRef.current = false;
+        }, 150);
+
+        let finalTarget = currentTargetIdx;
+        if (boardRef.current) {
+          finalTarget = getTileIdxFromCoord(upEvt.clientX, upEvt.clientY, boardRef.current, gridSize);
+        }
+        if (finalTarget !== null && finalTarget !== idx) {
+          swapTiles(idx, finalTarget);
+        }
+      }
+
+      setDraggedIdx(null);
+      setHoveredIdx(null);
+      setDragPos(null);
+      setIsDragging(false);
+    };
+
+    const onPointerCancel = () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerCancel);
+      setDraggedIdx(null);
+      setHoveredIdx(null);
+      setDragPos(null);
+      setIsDragging(false);
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerCancel);
+  };
+
+  const handleTileClickWrapper = (idx: number) => {
+    if (justDraggedRef.current) return;
+    handleTileClick(idx);
   };
 
   // ランダムな次の国を選ぶ
@@ -94,8 +267,6 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
     const randomOne = otherCountries[Math.floor(Math.random() * otherCountries.length)];
     setCountry(randomOne);
   };
-
-  const flagImgUrl = getFlagUrl(country.code, 640);
 
   return (
     <div className="w-full max-w-xl mx-auto p-4 flex flex-col items-center min-h-[90vh]">
@@ -218,7 +389,10 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
       )}
 
       {/* パズルボード */}
-      <div className="relative w-full max-w-[340px] aspect-[3/2] bg-slate-200 rounded-2xl p-1.5 shadow-md border-2 border-slate-300 overflow-hidden select-none">
+      <div
+        ref={boardRef}
+        className="relative w-full max-w-[340px] aspect-[3/2] bg-slate-200 rounded-2xl p-1.5 shadow-md border-2 border-slate-300 overflow-hidden select-none touch-none"
+      >
         <div
           className="w-full h-full grid gap-1 rounded-xl overflow-hidden"
           style={{
@@ -227,14 +401,14 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
           }}
         >
           {tiles.map((pieceVal, idx) => {
-            // 本来の位置 (0 to gridSize*gridSize - 1)
             const origRow = Math.floor(pieceVal / gridSize);
             const origCol = pieceVal % gridSize;
             const isSelected = selectedIdx === idx;
-            const isCorrect = pieceVal === idx;
+            const isCorrect = isTileCorrect(pieceVal, idx);
+            const isThisDragging = isDragging && draggedIdx === idx;
+            const isThisHovered = isDragging && hoveredIdx === idx && draggedIdx !== idx;
 
             // background-positionの計算
-            // 2x2なら 0% or 100%, 3x3なら 0%, 50%, 100%
             const posX = gridSize === 2 ? origCol * 100 : origCol * 50;
             const posY = gridSize === 2 ? origRow * 100 : origRow * 50;
             const bgSize = `${gridSize * 100}% ${gridSize * 100}%`;
@@ -242,9 +416,15 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
             return (
               <div
                 key={idx}
-                onClick={() => handleTileClick(idx)}
-                className={`relative cursor-pointer transition-all duration-150 rounded-lg overflow-hidden flex items-center justify-center ${
-                  isSelected
+                data-tile-idx={idx}
+                onPointerDown={(e) => handlePointerDown(e, idx)}
+                onClick={() => handleTileClickWrapper(idx)}
+                className={`relative cursor-grab active:cursor-grabbing transition-all duration-150 rounded-lg overflow-hidden flex items-center justify-center select-none touch-none ${
+                  isThisDragging
+                    ? "opacity-25 scale-95 border-2 border-dashed border-indigo-500"
+                    : isThisHovered
+                    ? "ring-4 ring-indigo-500 scale-105 z-20 shadow-xl brightness-110"
+                    : isSelected
                     ? "ring-4 ring-amber-400 scale-[0.96] z-10 shadow-lg"
                     : "hover:opacity-95 active:scale-95"
                 } ${isCorrect && isCompleted ? "ring-0" : ""}`}
@@ -262,7 +442,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
                   </span>
                 )}
 
-                {/* 正解位置に入っている目印（小さく緑のドット） */}
+                {/* 正解位置に入っている目印（同色・同一絵柄の等価位置でも点灯） */}
                 {isCorrect && !isCompleted && (
                   <span className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white shadow-xs" />
                 )}
@@ -271,15 +451,41 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
           })}
         </div>
 
-        {/* タップ案内 */}
+        {/* 操作ガイド案内 */}
         {!isCompleted && moves === 0 && (
           <div className="absolute inset-x-0 bottom-2 text-center pointer-events-none">
-            <span className="bg-black/70 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-xs">
-              ピースを2つタップして いれかえよう！
+            <span className="bg-black/75 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-xs">
+              ピースをドラッグして いれかえよう！
             </span>
           </div>
         )}
       </div>
+
+      {/* ドラッグ中の浮遊プレビュー（ゴーストピース） */}
+      {isDragging && draggedIdx !== null && dragPos && ghostSize.width > 0 && (
+        <div
+          className="fixed pointer-events-none z-50 rounded-lg shadow-2xl ring-4 ring-indigo-500 scale-105 overflow-hidden transition-transform duration-75"
+          style={{
+            left: dragPos.x - ghostSize.width / 2,
+            top: dragPos.y - ghostSize.height / 2,
+            width: ghostSize.width,
+            height: ghostSize.height,
+            backgroundImage: `url(${flagImgUrl})`,
+            backgroundSize: `${gridSize * 100}% ${gridSize * 100}%`,
+            backgroundPosition: `${(tiles[draggedIdx] % gridSize) * (gridSize === 2 ? 100 : 50)}% ${
+              Math.floor(tiles[draggedIdx] / gridSize) * (gridSize === 2 ? 100 : 50)
+            }%`,
+            backgroundRepeat: "no-repeat",
+            opacity: 0.92,
+          }}
+        >
+          {showHint && (
+            <span className="absolute top-1 left-1 bg-black/75 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+              {tiles[draggedIdx] + 1}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* 完成時の祝福モーダル / メッセージ */}
       {isCompleted ? (
