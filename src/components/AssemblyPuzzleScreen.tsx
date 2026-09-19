@@ -54,24 +54,44 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
       return;
     }
 
-    // クリックされたスロットを取得
     let targetSlot = stage.slots.find((s) => s.id === clickedSlotId);
     if (!targetSlot) return;
 
-    // 前面・背面の重なり対策:
-    // クリックされたスロットが既に埋まっている場合、または選択中のパーツと合わない場合、
-    // 未配置のスロットの中に、現在選択中のパーツを求めているスロットがあればそちらをターゲットにする
-    if (placedParts[targetSlot.id] || targetSlot.requiredPartId !== selectedPartId) {
-      const matchSlot = stage.slots.find(
+    // クリックされたスロットが既に配置済みの場合のみ:
+    // その下に重なっている別の未配置スロット（親スロット/背景スロット）があれば、そこに転送する
+    if (placedParts[targetSlot.id]) {
+      const unfilledSlot = stage.slots.find(
         (s) => s.requiredPartId === selectedPartId && !placedParts[s.id]
       );
-      if (matchSlot) {
-        targetSlot = matchSlot;
+      if (unfilledSlot) {
+        // unfilledSlotがクリックされたスロットの領域と空間的に重なっているか確認
+        // 例: ブラジルのひし形(diamond)の中に天球儀(globe)がある場合
+        const targetLeft = targetSlot.xPercent - targetSlot.widthPercent / 2;
+        const targetRight = targetSlot.xPercent + targetSlot.widthPercent / 2;
+        const targetTop = targetSlot.yPercent - targetSlot.heightPercent / 2;
+        const targetBottom = targetSlot.yPercent + targetSlot.heightPercent / 2;
+
+        const uLeft = unfilledSlot.xPercent - unfilledSlot.widthPercent / 2;
+        const uRight = unfilledSlot.xPercent + unfilledSlot.widthPercent / 2;
+        const uTop = unfilledSlot.yPercent - unfilledSlot.heightPercent / 2;
+        const uBottom = unfilledSlot.yPercent + unfilledSlot.heightPercent / 2;
+
+        const overlaps = !(targetRight < uLeft || targetLeft > uRight || targetBottom < uTop || targetTop > uBottom);
+        if (overlaps) {
+          targetSlot = unfilledSlot;
+        } else {
+          // 重なっていない（全く別の場所）なら何もしない
+          soundEffect.playWrong();
+          return;
+        }
+      } else {
+        return;
       }
     }
 
-    // 正解チェック
+    // 正解判定: クリックされたスロットが、選択中パーツの指定スロットと一致しているか厳密にチェック
     if (targetSlot.requiredPartId === selectedPartId && !placedParts[targetSlot.id]) {
+      // 正解！
       soundEffect.playCorrect();
       const nextPlaced = { ...placedParts, [targetSlot.id]: selectedPartId };
       setPlacedParts(nextPlaced);
@@ -90,7 +110,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
         speech.speak(`せいかい！ ${stage.countryName}の国旗が完成！ ${stage.trivia}`);
       }
     } else {
-      // 不正解
+      // 不正解！（違うスロットに置こうとした）
       soundEffect.playWrong();
       setWrongSlotId(targetSlot.id);
       setTimeout(() => setWrongSlotId(null), 800);
@@ -187,12 +207,6 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
       {/* 国旗組み立てキャンバス */}
       <div
         className="relative w-full max-w-[340px] rounded-2xl shadow-lg border-4 border-white overflow-hidden select-none mb-4"
-        onClick={() => {
-          if (selectedPartId) {
-            const matchSlot = stage.slots.find((s) => s.requiredPartId === selectedPartId && !placedParts[s.id]);
-            if (matchSlot) handleSlotClick(matchSlot.id);
-          }
-        }}
         style={{
           aspectRatio: stage.aspectRatio || "3 / 2",
           backgroundColor: stage.baseBgColor,
