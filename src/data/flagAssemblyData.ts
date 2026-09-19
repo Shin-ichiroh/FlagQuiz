@@ -222,8 +222,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "十字",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 60,
-        "heightPercent": 60,
+        "widthPercent": 62.5,
+        "heightPercent": 62.5,
         "layer": 1,
         "requiredPartId": "white_cross"
       }
@@ -234,8 +234,8 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白い十字（スイスクロス）",
         "ruby": "しろいじゅうじ",
         "icon": "➕",
-        "svgContent": "<rect x=\"38\" y=\"10\" width=\"24\" height=\"80\" fill=\"#ffffff\"/><rect x=\"10\" y=\"38\" width=\"80\" height=\"24\" fill=\"#ffffff\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#ffffff\" d=\"M7,0 h6 v7 h7 v6 h-7 v7 h-6 v-7 h-7 v-6 h7 z\"/>",
+        "viewBox": "0 0 20 20",
         "targetSlotId": "cross_slot"
       },
       {

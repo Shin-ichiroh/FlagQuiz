@@ -262,8 +262,9 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
             handleCanvasClick(e);
           }
         }}
-        className="relative w-full max-w-[260px] sm:max-w-[300px] max-h-[25vh] rounded-xl shadow-md border-2 border-white overflow-hidden select-none mb-2"
+        className="relative rounded-xl shadow-md border-2 border-white overflow-hidden select-none mb-2 mx-auto"
         style={{
+          width: `min(100%, calc(min(25vh, 180px) * (${stage.aspectRatio || "3 / 2"})))`,
           aspectRatio: stage.aspectRatio || "3 / 2",
           backgroundColor: stage.baseBgColor,
         }}
