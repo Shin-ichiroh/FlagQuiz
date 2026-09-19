@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Volume2, VolumeX, Mic, MicOff, Zap, RotateCcw } from "lucide-react";
+import { ArrowLeft, Volume2, VolumeX, Mic, MicOff, Zap, RotateCcw, HelpCircle, Play } from "lucide-react";
 import confetti from "canvas-confetti";
 import { COUNTRIES } from "../data/countries";
 import { getCountryCapital } from "../data/countryCapitals";
@@ -45,12 +45,20 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
     COUNTRIES.filter((c) => !!getCountryCapital(c.code))
   );
 
-  const [isPlaying, setIsPlaying] = useState(true);
+  // 初回あそびかたモーダル表示（最初は停止状態）
+  const [showHowToPlay, setShowHowToPlay] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [score, setScore] = useState(0);
   const [matchedPairsCount, setMatchedPairsCount] = useState(0);
   const [combo, setCombo] = useState(0);
   const [maxCombo, setMaxCombo] = useState(0);
+
+  // リアルタイム案内メッセージ
+  const [guideText, setGuideText] = useState("👉 まず 左の【こっきカード】をタップしてね！");
+  const [guideType, setGuideType] = useState<"normal" | "selected" | "correct" | "wrong">("normal");
 
   // 現在のカード一覧
   const [flagCards, setFlagCards] = useState<MatchCard[]>([]);
@@ -130,6 +138,23 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
     return () => clearInterval(timer);
   }, [isPlaying, timeLeft, matchedPairsCount, score, speechOn]);
 
+  // ゲーム開始・再開
+  const handleStartGame = () => {
+    soundEffect.playTap();
+    setShowHowToPlay(false);
+    setIsPlaying(true);
+    setHasStarted(true);
+    setGuideText("👉 まず 左の【こっきカード】をタップしてね！");
+    setGuideType("normal");
+  };
+
+  // あそびかたを開く（一時停止）
+  const handleOpenHowToPlay = () => {
+    soundEffect.playTap();
+    setIsPlaying(false);
+    setShowHowToPlay(true);
+  };
+
   // 国旗カードクリック
   const handleFlagClick = (card: MatchCard) => {
     if (card.isMatched || !isPlaying) return;
@@ -137,6 +162,8 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
 
     if (selectedFlagId === card.id) {
       setSelectedFlagId(null);
+      setGuideText("👉 まず 左の【こっきカード】をタップしてね！");
+      setGuideType("normal");
       return;
     }
 
@@ -145,8 +172,12 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
     // 既に首都カードが選択されていれば判定
     if (selectedCapitalId) {
       checkMatch(card.id, selectedCapitalId);
-    } else if (speechOn) {
-      speech.speak(card.countryName);
+    } else {
+      setGuideText(`👉「${card.countryName}」の【しゅと】を右からタップ！`);
+      setGuideType("selected");
+      if (speechOn) {
+        speech.speak(card.countryName);
+      }
     }
   };
 
@@ -157,6 +188,8 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
 
     if (selectedCapitalId === card.id) {
       setSelectedCapitalId(null);
+      setGuideText("👉 まず 左の【こっきカード】をタップしてね！");
+      setGuideType("normal");
       return;
     }
 
@@ -165,8 +198,12 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
     // 既に国旗カードが選択されていれば判定
     if (selectedFlagId) {
       checkMatch(selectedFlagId, card.id);
-    } else if (speechOn) {
-      speech.speak(card.capital);
+    } else {
+      setGuideText(`👉「${card.capital}」が首都の【こっき】を左からタップ！`);
+      setGuideType("selected");
+      if (speechOn) {
+        speech.speak(card.capital);
+      }
     }
   };
 
@@ -188,6 +225,9 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
       setScore((s) => s + points);
       setMatchedPairsCount((c) => c + 1);
 
+      setGuideText(`✨ 正解！「${flagCard.countryName}」の首都は「${flagCard.capital}」！`);
+      setGuideType("correct");
+
       if (speechOn) {
         speech.speak(`正解！ ${flagCard.countryName}、首都${flagCard.capital}`);
       }
@@ -207,18 +247,25 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
         confetti({ particleCount: 50, spread: 60, origin: { y: 0.5 } });
         setTimeout(() => {
           generateNewRound();
-        }, 300);
+          setGuideText("👉 次のラウンド！ 左の【こっきカード】をタップしてね！");
+          setGuideType("normal");
+        }, 400);
       }
     } else {
       // 不正解
       soundEffect.playWrong();
       setCombo(0);
       setWrongCardIds([flagId, capId]);
+      setGuideText(`❌ おしい！ちがう国のペアだよ！もう一回！`);
+      setGuideType("wrong");
+
       setTimeout(() => {
         setWrongCardIds([]);
         setSelectedFlagId(null);
         setSelectedCapitalId(null);
-      }, 500);
+        setGuideText("👉 まず 左の【こっきカード】をタップしてね！");
+        setGuideType("normal");
+      }, 700);
     }
   };
 
@@ -230,6 +277,10 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
     setMatchedPairsCount(0);
     setCombo(0);
     setIsPlaying(true);
+    setHasStarted(true);
+    setShowHowToPlay(false);
+    setGuideText("👉 まず 左の【こっきカード】をタップしてね！");
+    setGuideType("normal");
     generateNewRound();
   };
 
@@ -258,17 +309,25 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
             </h2>
           </div>
 
-          {/* スコア・コンボ & 音声トグル */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg text-xs font-black text-amber-900">
+          {/* スコア・コンボ & あそびかた & 音声トグル */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-1.5 sm:px-2 py-0.5 rounded-lg text-xs font-black text-amber-900">
               <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
               <span>{score}</span>
             </div>
             {combo > 1 && (
               <span className="text-[10px] font-black bg-rose-500 text-white px-1.5 py-0.5 rounded-full animate-bounce">
-                {combo}連勝!
+                {combo}連!
               </span>
             )}
+            <button
+              onClick={handleOpenHowToPlay}
+              className="px-1.5 py-1 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 flex items-center gap-0.5 text-[11px] font-bold active:scale-95 transition-all"
+              title="あそびかた"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span className="hidden xs:inline">あそびかた</span>
+            </button>
             <button
               onClick={() => {
                 const next = !speechOn;
@@ -415,13 +474,91 @@ export const CapitalMatchingScreen: React.FC<CapitalMatchingScreenProps> = ({
         </div>
       </div>
 
-      {/* 下部ステータス/ヒント */}
-      <div className="w-full bg-indigo-50/80 border border-indigo-100 rounded-xl px-2.5 py-1 flex items-center justify-center text-[11px] font-bold text-indigo-900 mb-1 shadow-2xs">
-        <span>💡 左の「国旗」と 右の「首都」をタップしてペアをそろえよう！</span>
+      {/* 下部動的ガイダンス */}
+      <div
+        className={`w-full rounded-xl px-2.5 py-1.5 flex items-center justify-center text-xs font-bold mb-1 shadow-2xs transition-colors duration-200 border ${
+          guideType === "correct"
+            ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+            : guideType === "wrong"
+            ? "bg-rose-50 text-rose-800 border-rose-200"
+            : guideType === "selected"
+            ? "bg-amber-50 text-amber-900 border-amber-200 animate-pulse"
+            : "bg-indigo-50/90 text-indigo-900 border-indigo-100"
+        }`}
+      >
+        <span className="truncate">{guideText}</span>
       </div>
 
+      {/* あそびかた（チュートリアル）モーダル */}
+      {showHowToPlay && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn">
+          <div className="bg-white rounded-3xl p-4 sm:p-5 w-full max-w-sm shadow-2xl border-4 border-indigo-300 text-slate-800 animate-scaleUp">
+            <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🏛️</span>
+                <h3 className="text-base sm:text-lg font-black text-indigo-900">
+                  首都マッチのあそびかた
+                </h3>
+              </div>
+              {hasStarted && (
+                <button
+                  onClick={handleStartGame}
+                  className="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold text-sm"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* 4ステップ説明 */}
+            <div className="space-y-2 mb-4 text-xs font-bold text-slate-700">
+              <div className="bg-rose-50/80 border border-rose-100 rounded-xl p-2.5 flex items-start gap-2.5">
+                <span className="text-xl shrink-0">🚩</span>
+                <div>
+                  <p className="font-black text-rose-800 text-xs sm:text-sm">① 左の「国旗」をタップ！</p>
+                  <p className="text-[11px] text-slate-500 font-normal">知っている国旗や気になる国をえらぼう！</p>
+                </div>
+              </div>
+
+              <div className="bg-emerald-50/80 border border-emerald-100 rounded-xl p-2.5 flex items-start gap-2.5">
+                <span className="text-xl shrink-0">🏛️</span>
+                <div>
+                  <p className="font-black text-emerald-800 text-xs sm:text-sm">② 右の「首都」をタップ！</p>
+                  <p className="text-[11px] text-slate-500 font-normal">その国の正しい首都をえらぶとペアが消えるよ！</p>
+                </div>
+              </div>
+
+              <div className="bg-amber-50/80 border border-amber-100 rounded-xl p-2.5 flex items-start gap-2.5">
+                <span className="text-xl shrink-0">⚡</span>
+                <div>
+                  <p className="font-black text-amber-800 text-xs sm:text-sm">③ 連続正解でコンボ！</p>
+                  <p className="text-[11px] text-slate-500 font-normal">まちがえずに続けて消すとスコアがどんどんUP！</p>
+                </div>
+              </div>
+
+              <div className="bg-sky-50/80 border border-sky-100 rounded-xl p-2.5 flex items-start gap-2.5">
+                <span className="text-xl shrink-0">⏱️</span>
+                <div>
+                  <p className="font-black text-sky-800 text-xs sm:text-sm">④ 制限時間は50秒！</p>
+                  <p className="text-[11px] text-slate-500 font-normal">たくさんペアを消して新記録をめざそう！</p>
+                </div>
+              </div>
+            </div>
+
+            {/* スタート / つづける ボタン */}
+            <button
+              onClick={handleStartGame}
+              className="w-full py-3 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-black text-sm shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-white" />
+              <span>{hasStarted ? "ゲームをつづける！" : "ゲームをはじめる！"}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ゲームオーバー / タイムアップ結果モーダル */}
-      {!isPlaying && (
+      {!isPlaying && timeLeft <= 0 && !showHowToPlay && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
           <div className="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl border-4 border-amber-300 text-center animate-scaleUp">
             <span className="text-4xl sm:text-5xl block mb-2">🏆</span>
