@@ -408,27 +408,47 @@ export const COLORING_FLAGS: ColoringFlag[] = [
     "countryName": "イギリス",
     "countryRuby": "いぎりす",
     "aspectRatio": "2 / 1",
-    "viewBox": "0 0 300 150",
+    "viewBox": "0 0 60 30",
     "elements": [
-      { "id": "bg", "name": "青い地", "type": "rect", "props": { "x": 0, "y": 0, "width": 300, "height": 150 }, "correctColor": "#012169" },
+      {
+        "id": "bg",
+        "name": "青い地",
+        "type": "rect",
+        "props": { "x": 0, "y": 0, "width": 60, "height": 30 },
+        "correctColor": "#012169"
+      },
       {
         "id": "saltire_w",
         "name": "白い斜め十字",
-        "type": "path",
-        "props": { "d": "M0 0 L36 0 L300 132 L300 150 L264 150 L0 18 Z M300 0 L264 0 L0 132 L0 150 L36 150 L300 18 Z" },
-        "correctColor": "#ffffff"
+        "type": "g",
+        "props": {},
+        "correctColor": "#ffffff",
+        "svgContent": "<defs><clipPath id=\"uk_s_w\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath></defs><g clip-path=\"url(#uk_s_w)\"><path d=\"M0,0 L60,30 M60,0 L0,30\" stroke=\"#ffffff\" stroke-width=\"6\"/></g>"
       },
       {
         "id": "saltire_r",
         "name": "赤い斜め十字",
-        "type": "path",
-        "props": { "d": "M0 0 L18 0 L300 141 L300 150 L282 150 L0 9 Z M300 0 L282 0 L0 141 L0 150 L18 150 L300 9 Z" },
-        "correctColor": "#c8102e"
+        "type": "g",
+        "props": {},
+        "correctColor": "#c8102e",
+        "svgContent": "<defs><clipPath id=\"uk_s_r\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath><clipPath id=\"uk_t_r\"><path d=\"M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z\"/></clipPath></defs><g clip-path=\"url(#uk_s_r)\"><path d=\"M0,0 L60,30 M60,0 L0,30\" clip-path=\"url(#uk_t_r)\" stroke=\"#c8102e\" stroke-width=\"4\"/></g>"
       },
-      { "id": "cross_w_v", "name": "白い十字（たて）", "type": "rect", "props": { "x": 120, "y": 0, "width": 60, "height": 150 }, "correctColor": "#ffffff" },
-      { "id": "cross_w_h", "name": "白い十字（よこ）", "type": "rect", "props": { "x": 0, "y": 45, "width": 300, "height": 60 }, "correctColor": "#ffffff" },
-      { "id": "cross_r_v", "name": "赤い十字（たて）", "type": "rect", "props": { "x": 132, "y": 0, "width": 36, "height": 150 }, "correctColor": "#c8102e" },
-      { "id": "cross_r_h", "name": "赤い十字（よこ）", "type": "rect", "props": { "x": 0, "y": 57, "width": 300, "height": 36 }, "correctColor": "#c8102e" }
+      {
+        "id": "cross_w",
+        "name": "白い十字",
+        "type": "g",
+        "props": {},
+        "correctColor": "#ffffff",
+        "svgContent": "<defs><clipPath id=\"uk_c_w\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath></defs><g clip-path=\"url(#uk_c_w)\"><path d=\"M30,0 v30 M0,15 h60\" stroke=\"#ffffff\" stroke-width=\"10\"/></g>"
+      },
+      {
+        "id": "cross_r",
+        "name": "赤い十字",
+        "type": "g",
+        "props": {},
+        "correctColor": "#c8102e",
+        "svgContent": "<defs><clipPath id=\"uk_c_r\"><path d=\"M0,0 v30 h60 v-30 z\"/></clipPath></defs><g clip-path=\"url(#uk_c_r)\"><path d=\"M30,0 v30 M0,15 h60\" stroke=\"#c8102e\" stroke-width=\"6\"/></g>"
+      }
     ],
     "palette": ["#012169", "#c8102e", "#ffffff", "#ffce00", "#009246", "#000000"],
     "trivia": "イギリスの国旗「ユニオンジャック」は、イングランド・スコットランド・アイルランドの3つの十字架が合体したデザインです！"

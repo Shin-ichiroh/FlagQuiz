@@ -291,7 +291,9 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                   elem.id.includes("taegeuk") ||
                   elem.id.includes("trigram")
                 ? "#cbd5e1"
-                : elem.id.includes("cross")
+                : elem.id.includes("cross_r") || elem.id.includes("saltire_r")
+                ? "#cbd5e1"
+                : elem.id.includes("cross") || elem.id.includes("saltire")
                 ? "#e2e8f0"
                 : idx % 2 === 0
                 ? "#f8fafc"
@@ -309,12 +311,16 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
             if (elem.type === "g" && elem.svgContent) {
               let content = elem.svgContent;
               if (!isFilled) {
-                content = content
-                  .replaceAll("#f6b40e", "#e2e8f0")
-                  .replaceAll("#85340a", "#94a3b8")
-                  .replaceAll("#843511", "#94a3b8");
+                if (elem.id === "sun") {
+                  content = content
+                    .replaceAll("#f6b40e", "#e2e8f0")
+                    .replaceAll("#85340a", "#94a3b8")
+                    .replaceAll("#843511", "#94a3b8");
+                } else {
+                  content = content.replaceAll(elem.correctColor, defaultUnfilled);
+                }
               } else {
-                content = content.replaceAll("#f6b40e", fillColor);
+                content = content.replaceAll(elem.correctColor, fillColor);
               }
 
               return (
