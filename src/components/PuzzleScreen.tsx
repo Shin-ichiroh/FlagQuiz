@@ -457,7 +457,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
                     : "hover:opacity-95 active:scale-95"
                 } ${isCorrect && isCompleted ? "ring-0" : ""}`}
                 style={{
-                  backgroundImage: `url(${flagImgUrl})`,
+                  backgroundImage: `url("${flagImgUrl}")`,
                   backgroundSize: bgSize,
                   backgroundPosition: `${posX}% ${posY}%`,
                   backgroundRepeat: "no-repeat",
@@ -498,7 +498,7 @@ export const PuzzleScreen: React.FC<PuzzleScreenProps> = ({ onBack, showRuby = t
             top: dragPos.y - ghostSize.height / 2,
             width: ghostSize.width,
             height: ghostSize.height,
-            backgroundImage: `url(${flagImgUrl})`,
+            backgroundImage: `url("${flagImgUrl}")`,
             backgroundSize: `${gridSize * 100}% ${gridSize * 100}%`,
             backgroundPosition: `${(tiles[draggedIdx] % gridSize) * (100 / (gridSize - 1))}% ${
               Math.floor(tiles[draggedIdx] / gridSize) * (100 / (gridSize - 1))

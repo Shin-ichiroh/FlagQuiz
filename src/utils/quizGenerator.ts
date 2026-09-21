@@ -3,6 +3,7 @@ import { COUNTRIES } from "../data/countries";
 import { COUNTRY_FACTS } from "../data/countryFacts";
 import { COUNTRY_CAPITALS, getCountryCapital } from "../data/countryCapitals";
 import worldGeo from "../data/world_geo.json";
+import { PERU_FLAG_DATA_URI } from "../data/peruFlag";
 const geoCodes = new Set((worldGeo as any[]).map((g) => g.id));
 // 全199カ国の高精度地図データを使用
 const availableShapes = geoCodes;
@@ -40,7 +41,7 @@ function shuffle<T>(array: T[]): T[] {
 
 export function getFlagUrl(code: string, width: number = 320): string {
   if (code.toLowerCase() === "pe") {
-    return "/flags/pe.svg";
+    return PERU_FLAG_DATA_URI;
   }
   return `https://flagcdn.com/w${width}/${code.toLowerCase()}.png`;
 }
