@@ -39,6 +39,9 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 export function getFlagUrl(code: string, width: number = 320): string {
+  if (code.toLowerCase() === "pe") {
+    return "/flags/pe.svg";
+  }
   return `https://flagcdn.com/w${width}/${code.toLowerCase()}.png`;
 }
 
