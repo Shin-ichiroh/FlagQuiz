@@ -273,7 +273,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
         {stage.baseElementsSvg && (
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
-            viewBox="0 0 100 100"
+            viewBox={stage.baseViewBox || "0 0 100 100"}
             preserveAspectRatio="none"
             dangerouslySetInnerHTML={{ __html: stage.baseElementsSvg }}
           />
@@ -316,7 +316,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 placedPart.svgContent ? (
                   <svg
                     viewBox={placedPart.viewBox || "0 0 100 100"}
-                    preserveAspectRatio="none"
+                    preserveAspectRatio={placedPart.preserveAspectRatio || "none"}
                     className="w-full h-full drop-shadow-xs"
                     dangerouslySetInnerHTML={{ __html: placedPart.svgContent }}
                   />

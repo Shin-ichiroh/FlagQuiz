@@ -5,6 +5,7 @@ export interface AssemblyPart {
   icon: string;
   svgContent?: string;
   viewBox?: string;
+  preserveAspectRatio?: string;
   traySvgContent?: string;
   trayViewBox?: string;
   targetSlotId: string;
@@ -29,6 +30,7 @@ export interface AssemblyFlagStage {
   aspectRatio: string;
   baseBgColor: string;
   baseElementsSvg?: string;
+  baseViewBox?: string;
   slots: AssemblySlot[];
   availableParts: AssemblyPart[];
   hint: string;
@@ -997,26 +999,27 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryName": "オーストラリア",
     "countryRuby": "おーすとらりあ",
     "aspectRatio": "2 / 1",
-    "baseBgColor": "#00008b",
-    "baseElementsSvg": "<defs><clipPath id=\"au_canton_clip\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\"/></clipPath><clipPath id=\"au_canton_diag\"><path d=\"M25,12.5 h25 v12.5 z v12.5 h-25 z h-25 v-12.5 z v-12.5 h25 z\"/></clipPath></defs><g clip-path=\"url(#au_canton_clip)\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\" fill=\"#00008b\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" stroke=\"#ffffff\" stroke-width=\"5\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" clip-path=\"url(#au_canton_diag)\" stroke=\"#e4002b\" stroke-width=\"3.2\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#ffffff\" stroke-width=\"8\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#e4002b\" stroke-width=\"5\"/></g>",
+    "baseBgColor": "#012169",
+    "baseViewBox": "0 0 10080 5040",
+    "baseElementsSvg": "<defs><clipPath id=\"au_a\"><path d=\"M0 0h6v3H0z\"/></clipPath><clipPath id=\"au_b\"><path d=\"M0 0v1.5h6V3zm6 0H3v3H0z\"/></clipPath></defs><path fill=\"#012169\" d=\"M0 0h10080v5040H0z\"/><path d=\"m0 0 6 3m0-3L0 3\" stroke=\"#fff\" stroke-width=\".6\" clip-path=\"url(#au_a)\" transform=\"scale(840)\"/><path d=\"m0 0 6 3m0-3L0 3\" stroke=\"#e4002b\" stroke-width=\".4\" clip-path=\"url(#au_b)\" transform=\"scale(840)\"/><path d=\"M2520 0v2520M0 1260h5040\" stroke=\"#fff\" stroke-width=\"840\"/><path d=\"M2520 0v2520M0 1260h5040\" stroke=\"#e4002b\" stroke-width=\"504\"/>",
     "slots": [
       {
         "id": "cw_slot",
-        "name": "左下の七稜星",
+        "name": "連邦の七稜星",
         "xPercent": 25,
         "yPercent": 75,
-        "widthPercent": 24,
-        "heightPercent": 48,
+        "widthPercent": 16,
+        "heightPercent": 32,
         "layer": 1,
         "requiredPartId": "cw_star"
       },
       {
         "id": "sc_slot",
-        "name": "右側の南十字星",
-        "xPercent": 75,
+        "name": "南十字星（5つの星）",
+        "xPercent": 74.3,
         "yPercent": 50,
-        "widthPercent": 44,
-        "heightPercent": 88,
+        "widthPercent": 32,
+        "heightPercent": 82,
         "layer": 1,
         "requiredPartId": "southern_cross"
       }
@@ -1027,8 +1030,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "連邦の七稜星",
         "ruby": "ななりょうせい",
         "icon": "⭐",
-        "svgContent": "<polygon points=\"50,10 58.7,32.2 81.3,25.1 73.1,47.4 94.4,59 71.9,67.1 79.1,89.7 57.8,81.4 50,104 42.2,81.4 20.9,89.7 28.1,67.1 5.6,59 26.9,47.4 18.7,25.1 41.3,32.2\" transform=\"scale(0.85) translate(8, -2)\" fill=\"#ffffff\"/>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path fill=\"#ffffff\" d=\"m0-360 69.421 215.845 212.038-80.301L155.99-35.603l194.985 115.71-225.881 19.651 31.105 224.59L0 160l-156.198 164.349 31.105-224.59-225.881-19.651 194.986-115.711-125.471-188.853 212.038 80.301z\"/>",
+        "viewBox": "-360 -360 720 720",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "cw_slot"
       },
       {
@@ -1036,8 +1040,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "南十字星（5つの星）",
         "ruby": "みなみじゅうじせい",
         "icon": "✨",
-        "svgContent": "<g fill=\"#ffffff\"><polygon points=\"50,15 52,21 58,19 56,25 62,28 56,30 58,36 52,34 50,40 48,34 42,36 44,30 38,28 44,25 42,19 48,21\"/><polygon points=\"50,65 52,71 58,69 56,75 62,78 56,80 58,86 52,84 50,90 48,84 42,86 44,80 38,78 44,75 42,69 48,71\"/><polygon points=\"25,43 27,49 33,47 31,53 37,56 31,58 33,64 27,62 25,68 23,62 17,64 19,58 13,56 19,53 17,47 23,49\"/><polygon points=\"75,37 77,43 83,41 81,47 87,50 81,52 83,58 77,56 75,62 73,56 67,58 69,52 63,50 69,47 67,41 73,43\"/><polygon points=\"62,56 64,61 69,61 65,64 67,69 62,66 57,69 59,64 55,61 60,61\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<defs><path id=\"au_c\" d=\"m0-360 69.421 215.845 212.038-80.301L155.99-35.603l194.985 115.71-225.881 19.651 31.105 224.59L0 160l-156.198 164.349 31.105-224.59-225.881-19.651 194.986-115.711-125.471-188.853 212.038 80.301z\"/><path id=\"au_d\" d=\"M0-210 54.86-75.508l144.862 10.614L88.765 28.842l34.67 141.052L0 93.334l-123.435 76.56 34.67-141.052-110.957-93.736L-54.86-75.508z\"/></defs><g fill=\"#fff\"><use xlink:href=\"#au_c\" x=\"7560\" y=\"4200\"/><use xlink:href=\"#au_c\" x=\"6300\" y=\"2205\"/><use xlink:href=\"#au_c\" x=\"7560\" y=\"840\"/><use xlink:href=\"#au_c\" x=\"8680\" y=\"1869\"/><use xlink:href=\"#au_d\" x=\"8064\" y=\"2730\"/></g>",
+        "viewBox": "5940 480 3100 4080",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "sc_slot"
       },
       {
@@ -1060,16 +1065,17 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryName": "ニュージーランド",
     "countryRuby": "にゅーじーらんど",
     "aspectRatio": "2 / 1",
-    "baseBgColor": "#00247d",
-    "baseElementsSvg": "<defs><clipPath id=\"nz_canton_clip\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\"/></clipPath><clipPath id=\"nz_canton_diag\"><path d=\"M25,12.5 h25 v12.5 z v12.5 h-25 z h-25 v-12.5 z v-12.5 h25 z\"/></clipPath></defs><g clip-path=\"url(#nz_canton_clip)\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\" fill=\"#00247d\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" stroke=\"#ffffff\" stroke-width=\"5\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" clip-path=\"url(#nz_canton_diag)\" stroke=\"#cc142b\" stroke-width=\"3.2\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#ffffff\" stroke-width=\"8\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#cc142b\" stroke-width=\"5\"/></g>",
+    "baseBgColor": "#012169",
+    "baseViewBox": "0 0 1200 600",
+    "baseElementsSvg": "<defs><clipPath id=\"nz_b\"><path d=\"M0 0h600v300H0z\"/></clipPath><clipPath id=\"nz_c\"><path d=\"m0 0 300 150H0zm300 0h300L300 150zm0 150h300v150zm0 0v150H0z\"/></clipPath></defs><path fill=\"#012169\" d=\"M0 0h1200v600H0z\"/><path stroke=\"#FFF\" d=\"m0 0 600 300M0 300 600 0\" stroke-width=\"60\" clip-path=\"url(#nz_b)\"/><path stroke=\"#C8102E\" d=\"m0 0 600 300M0 300 600 0\" stroke-width=\"40\" clip-path=\"url(#nz_c)\"/><path stroke=\"#FFF\" d=\"M300 0v300M0 150h600\" stroke-width=\"100\" clip-path=\"url(#nz_b)\"/><path stroke=\"#C8102E\" d=\"M300 0v300M0 150h600\" stroke-width=\"60\" clip-path=\"url(#nz_b)\"/>",
     "slots": [
       {
         "id": "nz_sc_slot",
         "name": "赤い南十字星（4つの星）",
         "xPercent": 75,
         "yPercent": 50,
-        "widthPercent": 44,
-        "heightPercent": 88,
+        "widthPercent": 24,
+        "heightPercent": 78,
         "layer": 1,
         "requiredPartId": "nz_stars"
       }
@@ -1080,8 +1086,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白縁の赤い南十字星",
         "ruby": "あかいみなみじゅうじせい",
         "icon": "✨",
-        "svgContent": "<g><g stroke=\"#ffffff\" stroke-width=\"2\" fill=\"#cc142b\"><polygon points=\"50,15 54,26 66,26 56,33 60,45 50,38 40,45 44,33 34,26 46,26\"/><polygon points=\"50,65 54,76 66,76 56,83 60,95 50,88 40,95 44,83 34,76 46,76\"/><polygon points=\"25,45 28,54 38,54 30,60 33,69 25,64 17,69 20,60 12,54 22,54\"/><polygon points=\"75,38 78,47 88,47 80,53 83,62 75,57 67,62 70,53 62,47 72,47\"/></g></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<defs><g id=\"nz_d\"><g id=\"nz_a\"><path d=\"M0 0v.5L1 0z\" transform=\"translate(0 -.325)\"/><path d=\"M0 0v-.5L1 0z\" transform=\"rotate(-36 .5 -.162)\"/></g><use xlink:href=\"#nz_a\" transform=\"scale(-1 1)\"/><use xlink:href=\"#nz_a\" transform=\"rotate(72 0 0)\"/><use xlink:href=\"#nz_a\" transform=\"rotate(-72 0 0)\"/><use xlink:href=\"#nz_a\" transform=\"scale(-1 1) rotate(72)\"/></g></defs><g><use xlink:href=\"#nz_d\" fill=\"#FFF\" transform=\"matrix(45.4 0 0 45.4 900 120)\"/><use xlink:href=\"#nz_d\" fill=\"#C8102E\" transform=\"matrix(30 0 0 30 900 120)\"/><g transform=\"rotate(82 900 240)\"><use xlink:href=\"#nz_d\" fill=\"#FFF\" transform=\"rotate(-82 519.022 -457.666) scale(40.4)\"/><use xlink:href=\"#nz_d\" fill=\"#C8102E\" transform=\"rotate(-82 519.022 -457.666) scale(25)\"/></g><g transform=\"rotate(82 900 240)\"><use xlink:href=\"#nz_d\" fill=\"#FFF\" transform=\"rotate(-82 668.57 -327.666) scale(45.4)\"/><use xlink:href=\"#nz_d\" fill=\"#C8102E\" transform=\"rotate(-82 668.57 -327.666) scale(30)\"/></g><use xlink:href=\"#nz_d\" fill=\"#FFF\" transform=\"matrix(50.4 0 0 50.4 900 480)\"/><use xlink:href=\"#nz_d\" fill=\"#C8102E\" transform=\"matrix(35 0 0 35 900 480)\"/></g>",
+        "viewBox": "760 70 280 460",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "nz_sc_slot"
       },
       {
@@ -1105,15 +1112,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "いんど",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#ffffff",
-    "baseElementsSvg": "<rect width=\"100\" height=\"33.33\" fill=\"#ff9933\"/><rect y=\"33.33\" width=\"100\" height=\"33.33\" fill=\"#ffffff\"/><rect y=\"66.66\" width=\"100\" height=\"33.34\" fill=\"#138808\"/>",
+    "baseViewBox": "-45 -30 90 60",
+    "baseElementsSvg": "<path fill=\"#FFF\" d=\"M-45-30h90v60h-90z\"/><path fill=\"#FF6820\" d=\"M-45-30h90v20h-90z\"/><path fill=\"#046A38\" d=\"M-45 10h90v20h-90z\"/>",
     "slots": [
       {
         "id": "chakra_slot",
         "name": "アショカ・チャクラ",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 24,
-        "heightPercent": 36,
+        "widthPercent": 21,
+        "heightPercent": 31,
         "layer": 1,
         "requiredPartId": "ashoka_chakra"
       }
@@ -1124,8 +1132,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "アショカ・チャクラ（青い法輪）",
         "ruby": "あしょか・ちゃくら",
         "icon": "☸️",
-        "svgContent": "<g transform=\"translate(50,50)\" stroke=\"#000080\"><circle r=\"45\" fill=\"none\" stroke-width=\"4\"/><circle r=\"8\" fill=\"#000080\"/><path d=\"M0,-45 L0,45 M-45,0 L45,0 M-31.8,-31.8 L31.8,31.8 M-31.8,31.8 L31.8,-31.8 M-11.6,-43.5 L11.6,43.5 M-43.5,-11.6 L43.5,11.6 M-22.5,-39 L22.5,39 M-39,-22.5 L39,22.5 M-39,22.5 L39,-22.5 M-22.5,39 L22.5,-39 M-43.5,11.6 L43.5,-11.6 M-11.6,43.5 L11.6,-43.5\" stroke-width=\"2\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g fill=\"#07038D\"><circle r=\"9.25\"/><circle r=\"8\" fill=\"#FFF\"/><circle r=\"1.6\"/><g id=\"in_d\"><g id=\"in_c\"><g id=\"in_b\"><g id=\"in_a\"><path d=\"m0-8 .3 4.814L0-.802l-.3-2.384z\"/><circle cy=\"-8\" r=\".35\" transform=\"rotate(7.5)\"/></g><use xlink:href=\"#in_a\" transform=\"scale(-1)\"/></g><use xlink:href=\"#in_b\" transform=\"rotate(15)\"/></g><use xlink:href=\"#in_c\" transform=\"rotate(30)\"/></g><use xlink:href=\"#in_d\" transform=\"rotate(60)\"/><use xlink:href=\"#in_d\" transform=\"rotate(120)\"/></g>",
+        "viewBox": "-9.5 -9.5 19 19",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "chakra_slot"
       },
       {
@@ -1149,15 +1158,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "ふぃりぴん",
     "aspectRatio": "2 / 1",
     "baseBgColor": "#0038a8",
-    "baseElementsSvg": "<rect width=\"100\" height=\"50\" fill=\"#0038a8\"/><rect y=\"50\" width=\"100\" height=\"50\" fill=\"#ce1126\"/><polygon points=\"0,0 43.3,50 0,100\" fill=\"#ffffff\"/>",
+    "baseViewBox": "-28 -45 180 90",
+    "baseElementsSvg": "<path fill=\"#0038a8\" d=\"M-28-45h180V0L0 44z\"/><path fill=\"#ce1126\" d=\"M0 0h152v45H-28z\"/><path fill=\"#fff\" d=\"M49.942 0-28 45v-90z\"/>",
     "slots": [
       {
         "id": "ph_symbols_slot",
         "name": "太陽と3つの星",
-        "xPercent": 15,
+        "xPercent": 21.65,
         "yPercent": 50,
-        "widthPercent": 30,
-        "heightPercent": 60,
+        "widthPercent": 43.3,
+        "heightPercent": 100,
         "layer": 1,
         "requiredPartId": "ph_sun_stars"
       }
@@ -1168,8 +1178,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "黄金の太陽と3つの星",
         "ruby": "たいようとほし",
         "icon": "☀️",
-        "svgContent": "<g fill=\"#fcd116\"><circle cx=\"50\" cy=\"50\" r=\"13\"/><path d=\"M50 20 L50 80 M20 50 L80 50 M29 29 L71 71 M29 71 L71 29\" stroke=\"#fcd116\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"22,20 24,24 28,24 25,27 26,31 22,28 18,31 19,27 16,24 20,24\" transform=\"scale(0.8) translate(5,2)\"/><polygon points=\"22,80 24,84 28,84 25,87 26,91 22,88 18,91 19,87 16,84 20,84\" transform=\"scale(0.8) translate(5,-15)\"/><polygon points=\"78,50 80,54 84,54 81,57 82,61 78,58 74,61 75,57 72,54 76,54\" transform=\"scale(0.8) translate(-10,0)\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g fill=\"#fcd116\"><circle r=\"9\"/><g id=\"ph_c\"><g id=\"ph_b\"><path id=\"ph_a\" d=\"m0 0-3.164-15.909.945-.946zl-1.169-17.831L0-19l1.169 1.169zl2.219-16.855.945.946z\"/><use transform=\"scale(-1)\" xlink:href=\"#ph_a\"/></g><use transform=\"rotate(90)\" xlink:href=\"#ph_b\"/></g><use transform=\"rotate(45)\" xlink:href=\"#ph_c\"/><path id=\"ph_d\" d=\"M40.942 0 37.56 1.176l-.073 3.579-2.163-2.853-3.427 1.037L33.942 0l-2.045-2.939 3.427 1.037 2.163-2.853.073 3.579z\"/><use transform=\"rotate(120 -2.019 0)\" xlink:href=\"#ph_d\"/><use transform=\"rotate(240 -2.019 0)\" xlink:href=\"#ph_d\"/></g>",
+        "viewBox": "-28 -45 78 90",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "ph_symbols_slot"
       },
       {
@@ -1193,15 +1204,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "いすらえる",
     "aspectRatio": "11 / 8",
     "baseBgColor": "#ffffff",
-    "baseElementsSvg": "<rect y=\"12.5\" width=\"100\" height=\"12.5\" fill=\"#0038b8\"/><rect y=\"75\" width=\"100\" height=\"12.5\" fill=\"#0038b8\"/>",
+    "baseViewBox": "0 0 1100 800",
+    "baseElementsSvg": "<path d=\"M0 0h1100v800H0Z\" fill=\"#fff\"/><path d=\"M0 75h1100v125H0ZM0 600h1100v125H0Z\" fill=\"#0038b8\"/>",
     "slots": [
       {
         "id": "star_slot",
         "name": "ダビデの星",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 36,
-        "heightPercent": 50,
+        "widthPercent": 25.5,
+        "heightPercent": 40,
         "layer": 1,
         "requiredPartId": "star_of_david"
       }
@@ -1212,8 +1224,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "ダビデの星（青い六芒星）",
         "ruby": "だびでのほし",
         "icon": "✡️",
-        "svgContent": "<g fill=\"none\" stroke=\"#0038b8\" stroke-width=\"6\" stroke-linejoin=\"round\"><polygon points=\"50,15 80,68 20,68\"/><polygon points=\"50,85 80,32 20,32\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<path d=\"M423.816 472.853h252.368L550 254.295ZM550 545.705l126.184-218.558H423.816Z\" fill=\"none\" stroke=\"#0038b8\" stroke-width=\"27.5\" stroke-linejoin=\"round\"/>",
+        "viewBox": "410 240 280 320",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "star_slot"
       },
       {
@@ -1237,15 +1250,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "うるぐあい",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#ffffff",
-    "baseElementsSvg": "<rect width=\"100\" height=\"100\" fill=\"#ffffff\"/><rect y=\"11.11\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"33.33\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"55.55\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"77.77\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect width=\"37.5\" height=\"55.55\" fill=\"#ffffff\"/>",
+    "baseViewBox": "-5 -5 945 630",
+    "baseElementsSvg": "<path fill=\"#fff\" d=\"M-5-5h945v630H-5z\"/><path fill=\"#0038a8\" d=\"M345 65h595v70H345zm0 140h595v70H345zM-5 345h945v70H-5zm0 140h945v70H-5z\"/>",
     "slots": [
       {
         "id": "uy_sun_slot",
         "name": "5月の太陽（カントン部）",
-        "xPercent": 18.75,
-        "yPercent": 27.77,
-        "widthPercent": 30,
-        "heightPercent": 45,
+        "xPercent": 18.5,
+        "yPercent": 16.7,
+        "widthPercent": 27.5,
+        "heightPercent": 33.3,
         "layer": 1,
         "requiredPartId": "uy_sun"
       }
@@ -1256,8 +1270,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "5月の太陽（16条の光）",
         "ruby": "ごがつのたいよう",
         "icon": "🌞",
-        "svgContent": "<g transform=\"translate(50,50)\"><g fill=\"#fcd116\" stroke=\"#111111\" stroke-width=\"1.5\"><circle r=\"16\"/><path d=\"M0,-38 L5,-20 L-5,-20 Z M38,0 L20,5 L20,-5 Z M0,38 L-5,20 L5,20 Z M-38,0 L-20,-5 L-20,5 Z M27,-27 L20,-10 L10,-20 Z M27,27 L10,20 L20,10 Z M-27,27 L-20,10 L-10,20 Z M-27,-27 L-10,-20 L-20,-10 Z\"/><path d=\"M0,-35 Q8,-26 0,-18 Q-8,-26 0,-35 Z M35,0 Q26,8 18,0 Q26,-8 35,0 Z M0,35 Q-8,26 0,18 Q8,26 0,35 Z M-35,0 Q-26,-8 -18,0 Q-26,8 -35,0 Z M25,-25 Q23,-13 13,-13 Q13,-23 25,-25 Z M25,25 Q13,23 13,13 Q23,13 25,25 Z M-25,25 Q-23,13 -13,13 Q-13,23 -25,25 Z M-25,-25 Q-13,-23 -13,-13 Q-23,-13 -25,-25 Z\"/></g><circle cx=\"-6\" cy=\"-4\" r=\"2.5\" fill=\"#111\"/><circle cx=\"6\" cy=\"-4\" r=\"2.5\" fill=\"#111\"/><path d=\"M-6,7 Q0,12 6,7\" stroke=\"#111\" stroke-width=\"2\" fill=\"none\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<defs><style>.uy_c{stroke-width:.6}.uy_d{stroke-linecap:square}.uy_e{stroke-width:.27}.uy_f{fill:#7b3f00}.uy_g{stroke-width:.61}.uy_h{fill:#fcd116}</style><path id=\"uy_A\" d=\"M1.5 9 .2 11.03l.1.02c-.99 6.45.12 10.63.93 13.88.41 1.63.75 3.03.69 4.37a5.66 5.66 0 0 1-.71 2.54C5.86 26.68-1.46 24.12 6 12z\" class=\"uy_d uy_e uy_f\"/><path id=\"uy_B\" fill=\"none\" d=\"M0 11c-2 13 4.5 17 0 22\"/><path id=\"uy_C\" d=\"M0 0h-6l6 33L6 0zv33\"/><path id=\"uy_D\" stroke=\"none\" d=\"M0 0h6zv33L6 0\" class=\"uy_f\"/></defs><g transform=\"translate(234.285 -392.52)scale(3.7795)\"><g stroke=\"#7b3f00\" stroke-miterlimit=\"20\"><g class=\"uy_h\"><path d=\"m-19.11 157.89 3.07 4.58c-12.6 9.12-4.91 14.51-13.83 17.42 5.55-5.42-.73-6.25 3.94-17.55\" class=\"uy_d uy_g\"/><g transform=\"matrix(.3898 .9411 -.9411 .3898 -17.009 148.833)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-3.01-5.58-3.01-17.58\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><path d=\"m-17.01 148.83-4.32-4.32-19.45 28.09 28.09-19.45-4.32-4.32-23.77 23.77\" class=\"uy_g\"/><g transform=\"matrix(-.3898 .9412 -.941 -.3898 -17.009 148.833)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-3.03-5.45-3.03-17.45\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"matrix(0 1.0187 -1.0186 0 -17.009 148.833)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g><g transform=\"matrix(-.9411 .3898 -.3898 -.9411 -17.009 148.833)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-3.02-6.24-3.02-18.24\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"scale(-1.0187)rotate(-45 -168.018 -93.21)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g><g transform=\"rotate(-157.5 6.298 76.108)scale(1.0186)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-3.01-5.46-3.01-17.46\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"rotate(180 -8.504 74.417)scale(1.0186)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g><g transform=\"rotate(-112.5 41.22 80.1)scale(1.0186)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-2.95-5.79-2.95-17.79\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"rotate(-135 22.32 77.94)scale(1.0186)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g><g transform=\"matrix(.3898 -.941 .9412 .3898 -17.009 148.833)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-3.02-5.59-3.02-17.59\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"matrix(0 -1.0186 1.0187 0 -17.009 148.833)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g><g transform=\"matrix(.9411 -.3898 .3898 .9411 -17.009 148.833)\"><g class=\"uy_d\"><path d=\"M1.5 9 6 12c-8 13 1 15-6 21 3-7-2.98-5.66-2.98-17.66\" class=\"uy_c\"/><use xlink:href=\"#uy_A\" class=\"uy_e\"/></g><use xlink:href=\"#uy_B\" class=\"uy_c\"/></g><g class=\"uy_c\" transform=\"scale(1.0187)rotate(-45 168.018 93.21)\"><use xlink:href=\"#uy_C\"/><use xlink:href=\"#uy_D\"/></g></g><path stroke-width=\".28\" d=\"m-19.1 157.89-2.02 1.4.09.05c-3.44 5.68-4.03 10.05-4.53 13.43-.25 1.69-.48 3.14-1.06 4.38a5.76 5.76 0 0 1-1.66 2.11c6.38-3.04.5-8.3 12.24-16.8z\" class=\"uy_f\"/><g class=\"uy_g\"><path fill=\"none\" d=\"M-21.3 159.19c-6.95 11.45-2.39 17.75-8.58 20.7\"/><path d=\"M-17.01 148.83h-6.11l6.11 33.62 6.11-33.62h-6.11v33.62\" class=\"uy_h\"/></g></g><g class=\"uy_f\"><path d=\"M-17.01 148.83h6.11zv33.62l6.11-33.62\"/><path d=\"m-17.01 148.83 4.32 4.32zl-23.77 23.77 28.09-19.45\"/></g><circle cx=\"-17.01\" cy=\"148.83\" r=\"11.21\" stroke=\"#7b3f00\" class=\"uy_g uy_h\"/><g class=\"uy_f\"><path d=\"M-8.76 144.35c-.71.81-1.12-.61-3.67-.61s-2.95 1.53-3.36 1.22 2.14-2.14 2.95-2.24a7.2 7.2 0 0 1 4.07 1.63m-2.95.92a1.2 1.2 0 0 1-.61 1.94c-.71 0-2.04-1.22-1.43-2.04\"/><path d=\"M-15.07 146.18c.1-1.22 1.12-1.43 2.75-1.43s2.34 1.22 2.95 1.53c-.71 0-1.32-1.02-2.95-1.02s-1.63 0-2.75 1.02m.31.2c.41-.61.92.61 2.04.61a3.7 3.7 0 0 0 2.44-.81c.71-.51-1.02 1.22-2.14 1.22s-2.65-.61-2.34-1.02m-7.95-1.32c-.51.2-1.32 1.22 0 1.94-1.02-.71-.2-1.73 0-1.94\"/><path d=\"M-11.3 145.17c.2.2 1.02 1.22 0 1.94 1.32-.71.51-1.73 0-1.94m-7.33 4.38c-.92.2-.61 1.53-1.43 1.63s-1.22 1.02-1.12.92c.51-.41 1.63-.71 2.44-.71s1.02.51 1.73.51.92-.51 1.73-.51 1.94.31 2.44.71c.1.1-.31-.81-1.12-.92s-.51-1.43-1.43-1.63c0 .41.31.31.41.92 0 .51-.92.51-1.12 0 .2.81-.41.81-.92.81s-1.12 0-.92-.81c-.2.51-1.12.51-1.12 0 .1-.61.41-.51.41-.92zm-3.16 3.46c-.81.61-1.02.92-1.12 1.63a7 7 0 0 1 .55-.85l-.14-.06.17.02z\"/><path d=\"m-22.34 153.75-.01.02c.13.03.26.04.4.04zm.39.06a11.4 11.4 0 0 1 1.59.41c.57-.04 1.36-.19 3.35-.19s2.78.14 3.35.19a11.4 11.4 0 0 1 1.59-.41c-1.12 0-2.62-.8-3.31-.8-.81 0-1.02.2-1.63.2s-.81-.2-1.63-.2c-.69 0-2.19.8-3.31.8m9.88 0c.14 0 .28-.01.4-.04l-.01-.02z\"/><path d=\"m-11.68 153.75.17-.02-.14.06a7 7 0 0 1 .55.85c-.1-.71-.31-1.02-1.12-1.63z\"/><path d=\"M-11.65 153.78c-1.07.4-1.44.47-2.01.43-.97.31-1.76.63-3.35.63s-2.38-.32-3.35-.63c-.57.04-.94-.03-2-.44 3.19 1.38 2.85 1.88 5.35 1.88s2.16-.5 5.36-1.87m-10.71-.01c-.04-.03-.1-.04-.15-.05zm10.71 0 .15-.05a.8.8 0 0 1-.16.04zM-25.263 144.35c.714.815 1.121-.612 3.669-.612s2.955 1.529 3.362 1.223-2.14-2.14-2.955-2.242-3.159.714-4.076 1.63m2.955.918c-.713.611-.102 1.936.612 1.936s2.038-1.223 1.426-2.038\"/><path d=\"M-18.945 146.184c-.102-1.223-1.12-1.427-2.751-1.427s-2.344 1.223-2.955 1.529c.713 0 1.324-1.02 2.955-1.02s1.63 0 2.751 1.02m-.306.204c-.407-.612-.917.611-2.038.611s-1.732-.306-2.445-.815 1.019 1.223 2.14 1.223 2.649-.612 2.343-1.02M-17.01 156.58c-.51 0-1.83.31 0 .31s.51-.31 0-.31\"/></g></g>",
+        "viewBox": "40 -5 260 210",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "uy_sun_slot"
       },
       {
@@ -1281,15 +1296,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "ちゅにじあ",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#e70013",
-    "baseElementsSvg": "<circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#ffffff\"/>",
+    "baseViewBox": "-60 -40 120 80",
+    "baseElementsSvg": "<path fill=\"#e70013\" d=\"M-60-40H60v80H-60z\"/><circle fill=\"#fff\" r=\"20\"/>",
     "slots": [
       {
         "id": "tn_crescent_slot",
         "name": "赤い三日月と星",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 36,
-        "heightPercent": 54,
+        "widthPercent": 25,
+        "heightPercent": 37.5,
         "layer": 1,
         "requiredPartId": "tn_crescent"
       }
@@ -1300,8 +1316,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "赤い三日月と星",
         "ruby": "あかいみかづきとほし",
         "icon": "🌙",
-        "svgContent": "<g fill=\"#e70013\"><path d=\"M50 20 A30 30 0 1 0 50 80 A24 24 0 1 1 50 20 Z\"/><polygon points=\"56,40 60,47 68,48 62,54 64,62 57,58 50,62 52,54 46,48 54,47\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g fill=\"#e70013\"><circle r=\"15\"/><circle fill=\"#fff\" cx=\"4\" r=\"12\"/><path d=\"m-5 0 16.281-5.29L1.22 8.56V-8.56L11.28 5.29z\"/></g>",
+        "viewBox": "-15 -15 30 30",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "tn_crescent_slot"
       },
       {
@@ -1325,15 +1342,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "ぱきすたん",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#01411c",
-    "baseElementsSvg": "<rect width=\"25\" height=\"100\" fill=\"#ffffff\"/><rect x=\"25\" width=\"75\" height=\"100\" fill=\"#01411c\"/>",
+    "baseViewBox": "-75 -40 120 80",
+    "baseElementsSvg": "<path fill=\"#fff\" d=\"M-75-40H45v80H-75z\"/><path fill=\"#01411C\" d=\"M-45-40h90v80h-90z\"/>",
     "slots": [
       {
         "id": "pk_crescent_slot",
         "name": "傾いた白い三日月と星",
         "xPercent": 62.5,
         "yPercent": 50,
-        "widthPercent": 36,
-        "heightPercent": 54,
+        "widthPercent": 40,
+        "heightPercent": 60,
         "layer": 1,
         "requiredPartId": "pk_crescent"
       }
@@ -1344,8 +1362,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "傾いた白い三日月と星",
         "ruby": "かたむいたみかづきとほし",
         "icon": "🌙",
-        "svgContent": "<g transform=\"translate(50,50) rotate(-40)\" fill=\"#ffffff\"><path d=\"M0,-32 A32 32 0 1 0 0,32 A26 26 0 1 1 0,-32 Z\"/><polygon points=\"18,-15 22,-3 34,-3 25,5 28,17 18,10 8,17 11,5 2,-3 14,-3\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<g><circle r=\"24\" fill=\"#fff\"/><circle r=\"22\" cx=\"-7\" cy=\"-40\" fill=\"#01411C\" transform=\"rotate(-41.634 45 -40)\"/><path fill=\"#fff\" d=\"m8.751-17.959 10.11 11.373L3.997-9.844l13.94-6.1-7.692 13.129z\"/></g>",
+        "viewBox": "-24 -24 48 48",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "pk_crescent_slot"
       },
       {
@@ -1369,14 +1388,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "もろっこ",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#c1272d",
+    "baseViewBox": "0 0 90000 60000",
+    "baseElementsSvg": "<path fill=\"#c1272d\" d=\"M0 0h90000v60000H0z\"/>",
     "slots": [
       {
         "id": "ma_star_slot",
         "name": "ソロモンの印（緑の五芒星）",
         "xPercent": 50,
         "yPercent": 50,
-        "widthPercent": 36,
-        "heightPercent": 54,
+        "widthPercent": 45.1,
+        "heightPercent": 40.8,
         "layer": 1,
         "requiredPartId": "ma_star"
       }
@@ -1387,8 +1408,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "ソロモンの印（緑の細線五芒星）",
         "ruby": "そろもんのしるし",
         "icon": "✡️",
-        "svgContent": "<polygon points=\"50,15 62,52 98,52 69,73 80,108 50,86 20,108 31,73 2,52 38,52\" fill=\"none\" stroke=\"#006233\" stroke-width=\"6\" stroke-linejoin=\"round\"/>",
-        "viewBox": "0 0 100 120",
+        "svgContent": "<path fill=\"none\" stroke=\"#006233\" stroke-width=\"1426\" stroke-linejoin=\"round\" d=\"m45000 17308 7460 22960-19531-14190h24142L37540 40268z\"/>",
+        "viewBox": "24500 16500 41000 25000",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "ma_star_slot"
       },
       {
@@ -1412,15 +1434,16 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     "countryRuby": "しんがぽーる",
     "aspectRatio": "3 / 2",
     "baseBgColor": "#ffffff",
-    "baseElementsSvg": "<rect width=\"100\" height=\"50\" fill=\"#ed2939\"/><rect y=\"50\" width=\"100\" height=\"50\" fill=\"#ffffff\"/>",
+    "baseViewBox": "0 0 54 36",
+    "baseElementsSvg": "<path d=\"M0 0h54v36H0z\" fill=\"#fff\"/><path d=\"M0 0h54v18H0z\" fill=\"#ed2939\"/>",
     "slots": [
       {
         "id": "sg_crescent_slot",
         "name": "三日月と5つの星",
-        "xPercent": 22,
+        "xPercent": 23.4,
         "yPercent": 25,
-        "widthPercent": 28,
-        "heightPercent": 40,
+        "widthPercent": 29.1,
+        "heightPercent": 36.8,
         "layer": 1,
         "requiredPartId": "sg_crescent"
       }
@@ -1431,8 +1454,9 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
         "name": "白い三日月と5つの星",
         "ruby": "みかづきといつつのほし",
         "icon": "🌙",
-        "svgContent": "<g fill=\"#ffffff\"><path d=\"M38 18 A28 28 0 1 0 38 82 A23 23 0 1 1 38 18 Z\"/><polygon points=\"54,28 56,33 61,33 57,36 59,41 54,38 49,41 51,36 47,33 52,33\"/><polygon points=\"68,38 70,43 75,43 71,46 73,51 68,48 63,51 65,46 61,43 66,43\"/><polygon points=\"68,62 70,67 75,67 71,70 73,75 68,72 63,75 65,70 61,67 66,67\"/><polygon points=\"54,72 56,77 61,77 57,80 59,85 54,82 49,85 51,80 47,77 52,77\"/><polygon points=\"45,50 47,55 52,55 48,58 50,63 45,60 40,63 42,58 38,55 43,55\"/></g>",
-        "viewBox": "0 0 100 100",
+        "svgContent": "<defs><path id=\"sg_a\" d=\"m15.03 3.475-1.014 3.12 2.655-1.928h-3.282l2.655 1.929z\"/><g id=\"sg_b\"><use xlink:href=\"#sg_a\" transform=\"rotate(72 15.03 9)\"/><use xlink:href=\"#sg_a\" transform=\"rotate(216 15.03 9)\"/></g></defs><g fill=\"#fff\"><circle cx=\"11.405\" cy=\"9\" r=\"6.625\"/><circle cx=\"14.405\" cy=\"9\" r=\"6.625\" fill=\"#ed2939\"/><use xlink:href=\"#sg_a\"/><use xlink:href=\"#sg_b\" transform=\"rotate(72 15.03 9)\"/><use xlink:href=\"#sg_b\"/></g>",
+        "viewBox": "4.78 2.375 15.72 13.25",
+        "preserveAspectRatio": "xMidYMid meet",
         "targetSlotId": "sg_crescent_slot"
       },
       {
