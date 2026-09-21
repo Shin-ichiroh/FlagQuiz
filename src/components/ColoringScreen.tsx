@@ -15,7 +15,8 @@ function prefixSvgIds(svg: string, prefix: string): string {
     .replace(/\bid="([^"]+)"/g, `id="${prefix}_$1"`)
     .replace(/(?:xlink:)?href="#([^"]+)"/g, (match, id) =>
       match.startsWith("xlink:") ? `xlink:href="#${prefix}_${id}"` : `href="#${prefix}_${id}"`
-    );
+    )
+    .replace(/url\(#([^)]+)\)/g, `url(#${prefix}_$1)`);
 }
 
 export const ColoringScreen: React.FC<ColoringScreenProps> = ({
