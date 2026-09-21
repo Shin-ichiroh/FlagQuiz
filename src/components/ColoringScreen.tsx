@@ -317,11 +317,20 @@ export const ColoringScreen: React.FC<ColoringScreenProps> = ({
                     .replaceAll("#f6b40e", "#e2e8f0")
                     .replaceAll("#85340a", "#94a3b8")
                     .replaceAll("#843511", "#94a3b8");
+                } else if (elem.id === "coat") {
+                  content = content
+                    .replaceAll("#00a854", "#cbd5e1")
+                    .replaceAll("#d91023", "#e2e8f0")
+                    .replaceAll("#d4af37", "#94a3b8")
+                    .replaceAll("#00873d", "#cbd5e1")
+                    .replaceAll("#4a90e2", "#e2e8f0");
                 } else {
                   content = content.replaceAll(elem.correctColor, defaultUnfilled);
                 }
               } else {
-                content = content.replaceAll(elem.correctColor, fillColor);
+                if (elem.id !== "sun" && elem.id !== "coat") {
+                  content = content.replaceAll(elem.correctColor, fillColor);
+                }
               }
 
               return (
