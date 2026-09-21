@@ -27,7 +27,7 @@ export const RankingScreen: React.FC<RankingScreenProps> = ({ onBack }) => {
         </button>
         <h2 className="text-xl font-black text-indigo-950 flex items-center gap-2">
           <Trophy className="w-6 h-6 text-amber-500 fill-amber-400" />
-          こんしゅうのランキング
+          この1週間のランキング
         </h2>
         <div className="w-6" />
       </div>

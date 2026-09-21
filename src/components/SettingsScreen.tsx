@@ -33,7 +33,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "capital", label: "🏛️ 首都クイズ", sub: "国旗と首都をあてる！" },
     { id: "trivia", label: "📖 ゆらいクイズ", sub: "デザインや いろのいみ" },
     { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
-    { id: "location", label: "📍 ばしょ・ちず", sub: "まわりの国と いっしょに出題！" },
+    { id: "location", label: "📍 かたちあて（ちず）", sub: "まわりの国と いっしょに出題！" },
     { id: "compare", label: "⚔️ 国くらべ", sub: "どっちが大きい？ 人口が多い？" },
   ];
 
@@ -104,20 +104,20 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
       </header>
 
       {/* 2大ジャンル切り替えタブ */}
-      <div className="w-full bg-slate-200/80 p-1.5 rounded-2xl flex items-center gap-1.5 mb-4 shadow-inner">
+      <div className="w-full bg-slate-200/90 p-1.5 sm:p-2 rounded-3xl flex items-center gap-2 mb-4 shadow-sm border border-slate-300/60">
         <button
           onClick={() => {
             soundEffect.playTap();
             setActiveTab("quiz");
           }}
-          className={`flex-1 py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+          className={`flex-1 py-3 px-2 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer ${
             activeTab === "quiz"
-              ? "bg-white text-indigo-950 shadow-md scale-[1.02]"
-              : "text-slate-600 hover:text-slate-800"
+              ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md shadow-indigo-300/60 scale-[1.02] ring-2 ring-indigo-300"
+              : "bg-white/80 text-slate-600 hover:text-slate-900 hover:bg-white shadow-xs"
           }`}
         >
-          <Trophy className={`w-4 h-4 ${activeTab === "quiz" ? "text-amber-500 fill-amber-400" : "text-slate-400"}`} />
-          <span>4択クイズ ＆ 順位</span>
+          <span className="text-base sm:text-lg">🎯</span>
+          <span>4択クイズ</span>
         </button>
 
         <button
@@ -125,13 +125,13 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
             soundEffect.playTap();
             setActiveTab("puzzle");
           }}
-          className={`flex-1 py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+          className={`flex-1 py-3 px-2 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer ${
             activeTab === "puzzle"
-              ? "bg-white text-amber-950 shadow-md scale-[1.02]"
-              : "text-slate-600 hover:text-slate-800"
+              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-orange-300/60 scale-[1.02] ring-2 ring-amber-300"
+              : "bg-white/80 text-slate-600 hover:text-slate-900 hover:bg-white shadow-xs"
           }`}
         >
-          <span className="text-base">🧩</span>
+          <span className="text-base sm:text-lg">🧩</span>
           <span>パズル ＆ あそび</span>
         </button>
       </div>
@@ -157,7 +157,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-3xl p-2 rounded-2xl bg-indigo-50 group-hover:scale-110 transition-transform">🧩</span>
                   <span className="text-[10px] font-black bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
-                    9ピース
+                    4・9・16ピース
                   </span>
                 </div>
                 <h3 className="text-base font-black text-slate-800 leading-tight">こっきパズル</h3>

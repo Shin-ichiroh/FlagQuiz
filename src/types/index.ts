@@ -69,4 +69,6 @@ export interface RankingEntry {
   timeLimit: number;
   date: string; // YYYY-MM-DD
   weekKey: string; // YYYY-Wxx (週の識別子)
+  timestamp?: number; // 記録時のタイムスタンプ (ミリ秒)
 }
+

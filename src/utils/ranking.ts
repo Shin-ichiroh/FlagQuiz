@@ -14,28 +14,41 @@ export function getISOWeekKey(d: Date = new Date()): string {
   return `${date.getFullYear()}-W${weekNumber.toString().padStart(2, "0")}`;
 }
 
-// 今週の日付範囲の文字列（例: "9/7(月) 〜 9/13(日)"）
+// 直近1週間（6日前〜今日）の日付範囲の文字列（例: "9/15(火) 〜 9/21(月)"）
 export function getWeeklyRangeLabel(d: Date = new Date()): string {
-  const current = new Date(d.getTime());
-  const day = current.getDay();
-  const diffToMonday = current.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(current.setDate(diffToMonday));
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
+  const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
+  const end = new Date(d.getTime());
+  const start = new Date(d.getTime());
+  start.setDate(start.getDate() - 6);
 
-  return `${monday.getMonth() + 1}/${monday.getDate()}(月) 〜 ${sunday.getMonth() + 1}/${sunday.getDate()}(日)`;
+  return `${start.getMonth() + 1}/${start.getDate()}(${dayNames[start.getDay()]}) 〜 ${end.getMonth() + 1}/${end.getDate()}(${dayNames[end.getDay()]})`;
 }
 
-// 週間ランキングの読み出し
-export function getWeeklyRankings(): RankingEntry[] {
+// 直近1週間（過去7日間）のランキングの読み出し
+export function getWeeklyRankings(d: Date = new Date()): RankingEntry[] {
   try {
     const raw = localStorage.getItem(RANKING_STORAGE_KEY);
     if (!raw) return [];
     const all: RankingEntry[] = JSON.parse(raw);
-    const currentWeekKey = getISOWeekKey();
-    // 今週のデータのみ抽出してスコア降順ソート
+
+    // 7日前の00:00:00.000 (開始時点)
+    const startTime = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 6, 0, 0, 0, 0).getTime();
+    // 今日の23:59:59.999 (終了時点)
+    const endTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999).getTime();
+
     return all
-      .filter((entry) => entry.weekKey === currentWeekKey)
+      .filter((entry) => {
+        let entryTime = entry.timestamp;
+        if (!entryTime) {
+          const parsed = parseInt(entry.id, 10);
+          if (!isNaN(parsed) && parsed > 1600000000000) {
+            entryTime = parsed;
+          } else {
+            entryTime = Date.now();
+          }
+        }
+        return entryTime >= startTime && entryTime <= endTime;
+      })
       .sort((a, b) => b.score - a.score);
   } catch (e) {
     console.error("Failed to load rankings", e);
@@ -52,6 +65,7 @@ export function saveRankingEntry(entry: Omit<RankingEntry, "id" | "date" | "week
       id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
       date: `${now.getMonth() + 1}/${now.getDate()}`,
       weekKey: getISOWeekKey(now),
+      timestamp: now.getTime(),
     };
 
     const raw = localStorage.getItem(RANKING_STORAGE_KEY);
