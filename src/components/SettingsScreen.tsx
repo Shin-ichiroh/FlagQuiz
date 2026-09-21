@@ -49,6 +49,8 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "oceania", label: "🦘 オセアニア" },
   ];
 
+  const [activeTab, setActiveTab] = React.useState<"quiz" | "puzzle">("quiz");
+
   const questionCounts = [5, 10, 20, 50, 100];
   const timeLimits = [
     { value: 3, label: "⚡ 3秒", desc: "ちょうスピード！" },
@@ -79,7 +81,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-sky-50 to-amber-50 p-4 pb-12 flex flex-col items-center justify-start max-w-md mx-auto">
       {/* ヘッダー */}
-      <header className="w-full flex items-center justify-between pt-2 pb-4">
+      <header className="w-full flex items-center justify-between pt-2 pb-3">
         <div className="flex items-center gap-2">
           <span className="text-3xl">🚩</span>
           <div>
@@ -87,24 +89,13 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
               こっきクイズ
               <Sparkles className="w-5 h-5 text-amber-500 fill-amber-400 inline" />
             </h1>
-            <p className="text-xs font-bold text-indigo-500">すばやく答えてハイスコアをめざそう！</p>
+            <p className="text-xs font-bold text-indigo-500">あそんでまなべる世界の国旗</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           <button
-            onClick={() => {
-              soundEffect.playTap();
-              onViewRanking();
-            }}
-            className="p-2.5 rounded-full bg-white shadow-xs border border-amber-200 text-amber-600 active:scale-95 transition-all"
-            aria-label="ランキングをみる"
-            title="ランキング"
-          >
-            <Trophy className="w-5 h-5" />
-          </button>
-          <button
             onClick={handleSoundToggle}
-            className="p-2.5 rounded-full bg-white shadow-xs border border-indigo-100 text-indigo-600 active:scale-95 transition-all"
+            className="p-2.5 rounded-full bg-white shadow-xs border border-indigo-100 text-indigo-600 active:scale-95 transition-all cursor-pointer"
             aria-label="おんせいせってい"
           >
             {settings.soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5 text-slate-400" />}
@@ -112,93 +103,189 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
         </div>
       </header>
 
-      {/* 知育・あそびコーナー */}
-      <div className="w-full bg-gradient-to-r from-amber-400/20 via-pink-400/20 to-indigo-400/20 p-3.5 rounded-3xl border-2 border-amber-300/60 shadow-sm mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-1.5 text-xs font-black text-slate-800">
-            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400" />
-            <span>たのしい知育・パズルコーナー</span>
-          </div>
-          <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full">
-            あたらしく登場！
-          </span>
-        </div>
+      {/* 2大ジャンル切り替えタブ */}
+      <div className="w-full bg-slate-200/80 p-1.5 rounded-2xl flex items-center gap-1.5 mb-4 shadow-inner">
+        <button
+          onClick={() => {
+            soundEffect.playTap();
+            setActiveTab("quiz");
+          }}
+          className={`flex-1 py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            activeTab === "quiz"
+              ? "bg-white text-indigo-950 shadow-md scale-[1.02]"
+              : "text-slate-600 hover:text-slate-800"
+          }`}
+        >
+          <Trophy className={`w-4 h-4 ${activeTab === "quiz" ? "text-amber-500 fill-amber-400" : "text-slate-400"}`} />
+          <span>4択クイズ ＆ 順位</span>
+        </button>
 
-        <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
-          {/* 1. こっきパズル */}
-          <button
-            onClick={() => {
-              soundEffect.playTap();
-              onStartPuzzle();
-            }}
-            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
-          >
-            <span className="text-xl sm:text-2xl mb-1">🧩</span>
-            <span className="text-[11px] sm:text-xs font-black text-indigo-900 leading-tight">こっき<br/>パズル</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">9ピース</span>
-          </button>
-
-          {/* 2. マークパズル */}
-          <button
-            onClick={() => {
-              soundEffect.playTap();
-              onStartAssembly();
-            }}
-            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
-          >
-            <span className="text-xl sm:text-2xl mb-1">⭐</span>
-            <span className="text-[11px] sm:text-xs font-black text-amber-900 leading-tight">マーク<br/>パズル</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">絵柄を置く</span>
-          </button>
-
-          {/* 3. こっきぬりえ */}
-          <button
-            onClick={() => {
-              soundEffect.playTap();
-              onStartColoring();
-            }}
-            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
-          >
-            <span className="text-xl sm:text-2xl mb-1">🎨</span>
-            <span className="text-[11px] sm:text-xs font-black text-rose-900 leading-tight">こっき<br/>ぬりえ</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">色を塗る</span>
-          </button>
-
-          {/* 4. 首都マッチ */}
-          <button
-            onClick={() => {
-              soundEffect.playTap();
-              onStartCapitalMatch();
-            }}
-            className="p-2 sm:p-2.5 rounded-2xl bg-white border-2 border-emerald-200 hover:border-emerald-400 active:scale-95 transition-all shadow-xs flex flex-col items-center text-center cursor-pointer"
-          >
-            <span className="text-xl sm:text-2xl mb-1">🏛️</span>
-            <span className="text-[11px] sm:text-xs font-black text-emerald-900 leading-tight">首都<br/>マッチ</span>
-            <span className="text-[9px] text-slate-500 font-semibold mt-1">ペア消し</span>
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            soundEffect.playTap();
+            setActiveTab("puzzle");
+          }}
+          className={`flex-1 py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            activeTab === "puzzle"
+              ? "bg-white text-amber-950 shadow-md scale-[1.02]"
+              : "text-slate-600 hover:text-slate-800"
+          }`}
+        >
+          <span className="text-base">🧩</span>
+          <span>パズル ＆ あそび</span>
+        </button>
       </div>
 
-      {/* メイン設定カード */}
-      <div className="w-full space-y-4 bg-white/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg border border-indigo-100">
-        {/* 0. なまえ入力 */}
-        <div className="bg-indigo-50/70 p-3.5 rounded-2xl border border-indigo-100">
-          <label className="flex items-center gap-1.5 text-xs font-black text-indigo-900 mb-1.5">
-            <User className="w-4 h-4 text-indigo-600" />
-            プレイヤーの なまえ（ニックネーム）
-          </label>
-          <input
-            type="text"
-            value={settings.playerName}
-            onChange={handleNameChange}
-            placeholder="例: たろう、はなこ"
-            maxLength={10}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-indigo-200 font-black text-slate-800 text-base placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 shadow-xs"
-          />
-          <span className="text-[10px] text-indigo-500 font-bold block mt-1">
-            ※ ランキングに なまえが のるよ！
-          </span>
+      {/* 【タブ1: パズル・知育系】 */}
+      {activeTab === "puzzle" && (
+        <div className="w-full space-y-3 animate-in fade-in duration-200">
+          <div className="bg-amber-100/60 border border-amber-200 px-3 py-2 rounded-2xl flex items-center gap-2 text-xs font-bold text-amber-900">
+            <span className="text-lg">💡</span>
+            <span>時間制限なし！じっくり手を使って国旗をおぼえよう</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            {/* 1. こっきパズル */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartPuzzle();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-indigo-100 hover:border-indigo-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-indigo-50 group-hover:scale-110 transition-transform">🧩</span>
+                  <span className="text-[10px] font-black bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
+                    9ピース
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">こっきパズル</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">バラバラになったタイルを並べ替えよう！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-indigo-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 2. マークパズル */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartAssembly();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-amber-100 hover:border-amber-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-amber-50 group-hover:scale-110 transition-transform">⭐</span>
+                  <span className="text-[10px] font-black bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
+                    絵柄を置く
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">マークパズル</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">星や太陽などのマークを正しい位置に配置！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-amber-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 3. こっきぬりえ */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartColoring();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-rose-100 hover:border-rose-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-rose-50 group-hover:scale-110 transition-transform">🎨</span>
+                  <span className="text-[10px] font-black bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">
+                    色を塗る
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">こっきぬりえ</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">絵の具パレットから色を選んで国旗を塗ろう！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-rose-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 4. 首都マッチ */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartCapitalMatch();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-emerald-100 hover:border-emerald-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-emerald-50 group-hover:scale-110 transition-transform">🏛️</span>
+                  <span className="text-[10px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
+                    ペア消し
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">首都マッチ</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">国旗と首都のペアを見つけてすばやく消そう！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-emerald-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+          </div>
         </div>
+      )}
+
+      {/* 【タブ2: 4択クイズ ＆ ランキング系】 */}
+      {activeTab === "quiz" && (
+        <div className="w-full space-y-4 animate-in fade-in duration-200">
+          {/* プレイヤー登録 ＆ 全国ランキング一体化カード */}
+          <div className="w-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-indigo-500/15 p-3.5 rounded-3xl border-2 border-amber-300/80 shadow-sm">
+            <div className="flex items-center justify-between gap-2">
+              {/* 名前入力 */}
+              <div className="flex-1 min-w-0">
+                <label className="flex items-center gap-1.5 text-xs font-black text-slate-800 mb-1">
+                  <User className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>プレイヤー名（ランキング用）</span>
+                </label>
+                <input
+                  type="text"
+                  value={settings.playerName}
+                  onChange={handleNameChange}
+                  placeholder="例: たろう、はなこ"
+                  maxLength={10}
+                  className="w-full px-3 py-1.5 rounded-xl bg-white border-2 border-amber-200 font-black text-slate-800 text-sm placeholder:text-slate-400 focus:outline-none focus:border-amber-500 shadow-2xs"
+                />
+              </div>
+
+              {/* ランキングを見るボタン */}
+              <button
+                onClick={() => {
+                  soundEffect.playTap();
+                  onViewRanking();
+                }}
+                className="shrink-0 px-3 py-2 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-black text-xs shadow-sm border border-amber-300 flex flex-col items-center justify-center gap-0.5 active:scale-95 transition-all cursor-pointer"
+              >
+                <Trophy className="w-5 h-5 text-amber-900 fill-amber-300" />
+                <span className="leading-tight">ランキング<br/>をみる</span>
+              </button>
+            </div>
+            <div className="mt-1.5 text-[10px] font-bold text-amber-800 flex items-center gap-1">
+              <span>⚡</span>
+              <span>すばやく答えるとスピード加点！全国ハイスコアをめざそう</span>
+            </div>
+          </div>
+
+          {/* クイズ設定カード */}
+          <div className="w-full space-y-4 bg-white/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg border border-indigo-100">
 
         {/* 1. プレイモード選択 */}
         <div>
@@ -373,6 +460,8 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
           <span>クイズをはじめよう！</span>
         </button>
       </div>
+        </div>
+      )}
     </div>
   );
 };
