@@ -359,7 +359,7 @@ export const AssemblyPuzzleScreen: React.FC<AssemblyPuzzleScreenProps> = ({
                 }`}
               >
                 {/* ミニアイコン/SVG */}
-                <div className="w-8 h-8 rounded-md border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden" style={{ backgroundColor: stage.baseBgColor === "#ffffff" ? "#f1f5f9" : stage.baseBgColor }}>
+                <div className="w-8 h-8 rounded-md border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden" style={{ backgroundColor: part.trayBgColor || (stage.baseBgColor === "#ffffff" ? "#f1f5f9" : stage.baseBgColor) }}>
                   {part.traySvgContent || part.svgContent ? (
                     <svg
                       viewBox={part.trayViewBox || part.viewBox || "0 0 100 100"}
