@@ -811,5 +811,174 @@ export const COLORING_FLAGS: ColoringFlag[] = [
     ],
     "palette": ["#0d5eaf", "#ffffff", "#ed2939", "#ffce00", "#009246", "#000000"],
     "trivia": "ギリシャの国旗は青と白の美しい海と空！9本のしま模様は「自由か死か」というギリシャ語の9つの音節を表しています。"
+  },
+  // 26. アイルランド
+  {
+    "id": "ie",
+    "countryCode": "ie",
+    "countryName": "アイルランド",
+    "countryRuby": "あいるらんど",
+    "aspectRatio": "2 / 1",
+    "viewBox": "0 0 600 300",
+    "elements": [
+      { "id": "green", "name": "左の緑", "type": "rect", "props": { "x": 0, "y": 0, "width": 200, "height": 300 }, "correctColor": "#169b62" },
+      { "id": "white", "name": "中央の白", "type": "rect", "props": { "x": 200, "y": 0, "width": 200, "height": 300 }, "correctColor": "#ffffff" },
+      { "id": "orange", "name": "右のオレンジ", "type": "rect", "props": { "x": 400, "y": 0, "width": 200, "height": 300 }, "correctColor": "#ff883e" }
+    ],
+    "palette": ["#169b62", "#ffffff", "#ff883e", "#002654", "#ed2939", "#ffce00"],
+    "trivia": "アイルランドの三色旗は、緑がカトリック、オレンジがプロテスタント、白がふたつの融和と平和を表しています。"
+  },
+  // 27. ベルギー
+  {
+    "id": "be",
+    "countryCode": "be",
+    "countryName": "ベルギー",
+    "countryRuby": "べるぎー",
+    "aspectRatio": "15 / 13",
+    "viewBox": "0 0 450 390",
+    "elements": [
+      { "id": "black", "name": "左の黒", "type": "rect", "props": { "x": 0, "y": 0, "width": 150, "height": 390 }, "correctColor": "#000000" },
+      { "id": "yellow", "name": "中央の黄", "type": "rect", "props": { "x": 150, "y": 0, "width": 150, "height": 390 }, "correctColor": "#ffe936" },
+      { "id": "red", "name": "右の赤", "type": "rect", "props": { "x": 300, "y": 0, "width": 150, "height": 390 }, "correctColor": "#ed2939" }
+    ],
+    "palette": ["#000000", "#ffe936", "#ed2939", "#ffffff", "#002654", "#009246"],
+    "trivia": "ベルギーの国旗は黒・黄・赤の3色。ブラバント公国のライオンの紋章に由来する伝統ある配色です。"
+  },
+  // 28. コロンビア
+  {
+    "id": "co",
+    "countryCode": "co",
+    "countryName": "コロンビア",
+    "countryRuby": "ころんびあ",
+    "aspectRatio": "3 / 2",
+    "viewBox": "0 0 300 200",
+    "elements": [
+      { "id": "yellow", "name": "上の黄色（半分）", "type": "rect", "props": { "x": 0, "y": 0, "width": 300, "height": 100 }, "correctColor": "#fcd116" },
+      { "id": "blue", "name": "中央の青", "type": "rect", "props": { "x": 0, "y": 100, "width": 300, "height": 50 }, "correctColor": "#003893" },
+      { "id": "red", "name": "下の赤", "type": "rect", "props": { "x": 0, "y": 150, "width": 300, "height": 50 }, "correctColor": "#ce1126" }
+    ],
+    "palette": ["#fcd116", "#003893", "#ce1126", "#ffffff", "#000000", "#009246"],
+    "trivia": "コロンビアの国旗は、黄色が豊かな天然資源と太陽、青が二つの大洋、赤が自由のために流された血を表しています。"
+  },
+  // 29. チェコ
+  {
+    "id": "cz",
+    "countryCode": "cz",
+    "countryName": "チェコ",
+    "countryRuby": "ちぇこ",
+    "aspectRatio": "3 / 2",
+    "viewBox": "0 0 300 200",
+    "elements": [
+      { "id": "white", "name": "上の白", "type": "path", "props": { "d": "M 0 0 L 300 0 L 300 100 L 150 100 Z" }, "correctColor": "#ffffff" },
+      { "id": "red", "name": "下の赤", "type": "path", "props": { "d": "M 150 100 L 300 100 L 300 200 L 0 200 Z" }, "correctColor": "#d7141a" },
+      { "id": "triangle", "name": "左の青い三角", "type": "polygon", "props": { "points": "0,0 150,100 0,200" }, "correctColor": "#11457e" }
+    ],
+    "palette": ["#11457e", "#ffffff", "#d7141a", "#ffce00", "#009246", "#000000"],
+    "trivia": "チェコの国旗の青い三角形はスロバキアやモラビア、白と赤は歴史あるボヘミア王国の紋章の色です。"
+  },
+  // 30. デンマーク
+  {
+    "id": "dk",
+    "countryCode": "dk",
+    "countryName": "デンマーク",
+    "countryRuby": "でんまーく",
+    "aspectRatio": "37 / 28",
+    "viewBox": "0 0 370 280",
+    "elements": [
+      { "id": "r1", "name": "左上の赤", "type": "rect", "props": { "x": 0, "y": 0, "width": 120, "height": 120 }, "correctColor": "#c8102e" },
+      { "id": "r2", "name": "左下の赤", "type": "rect", "props": { "x": 0, "y": 160, "width": 120, "height": 120 }, "correctColor": "#c8102e" },
+      { "id": "r3", "name": "右上の赤", "type": "rect", "props": { "x": 160, "y": 0, "width": 210, "height": 120 }, "correctColor": "#c8102e" },
+      { "id": "r4", "name": "右下の赤", "type": "rect", "props": { "x": 160, "y": 160, "width": 210, "height": 120 }, "correctColor": "#c8102e" },
+      { "id": "cross", "name": "白い十字（ダンネブロ）", "type": "path", "props": { "d": "M 120 0 H 160 V 120 H 370 V 160 H 160 V 280 H 120 V 160 H 0 V 120 H 120 Z" }, "correctColor": "#ffffff" }
+    ],
+    "palette": ["#c8102e", "#ffffff", "#00205b", "#ffce00", "#009246", "#000000"],
+    "trivia": "デンマークの国旗（ダンネブロ）は1219年に空から降ってきたという伝説があり、現存する世界最古の国旗です。"
+  },
+  // 31. アイスランド
+  {
+    "id": "is",
+    "countryCode": "is",
+    "countryName": "アイスランド",
+    "countryRuby": "あいすらんど",
+    "aspectRatio": "25 / 18",
+    "viewBox": "0 0 250 180",
+    "elements": [
+      { "id": "b1", "name": "左上の青", "type": "rect", "props": { "x": 0, "y": 0, "width": 70, "height": 70 }, "correctColor": "#02529c" },
+      { "id": "b2", "name": "左下の青", "type": "rect", "props": { "x": 0, "y": 110, "width": 70, "height": 70 }, "correctColor": "#02529c" },
+      { "id": "b3", "name": "右上の青", "type": "rect", "props": { "x": 110, "y": 0, "width": 140, "height": 70 }, "correctColor": "#02529c" },
+      { "id": "b4", "name": "右下の青", "type": "rect", "props": { "x": 110, "y": 110, "width": 140, "height": 70 }, "correctColor": "#02529c" },
+      { "id": "w_cross", "name": "白の縁取り十字", "type": "path", "props": { "d": "M 70 0 H 110 V 70 H 250 V 110 H 110 V 180 H 70 V 110 H 0 V 70 H 70 Z" }, "correctColor": "#ffffff" },
+      { "id": "r_cross", "name": "赤い十字", "type": "path", "props": { "d": "M 80 0 H 100 V 80 H 250 V 100 H 100 V 180 H 80 V 100 H 0 V 80 H 80 Z" }, "correctColor": "#dc1e35" }
+    ],
+    "palette": ["#02529c", "#ffffff", "#dc1e35", "#ffce00", "#009246", "#000000"],
+    "trivia": "アイスランドの国旗は、青が大西洋の海と空、白が氷河と雪、赤が島にある火山の炎を表しています。"
+  },
+  // 32. ジャマイカ
+  {
+    "id": "jm",
+    "countryCode": "jm",
+    "countryName": "ジャマイカ",
+    "countryRuby": "じゃまいか",
+    "aspectRatio": "2 / 1",
+    "viewBox": "0 0 600 300",
+    "elements": [
+      { "id": "top_green", "name": "上の緑の三角", "type": "polygon", "props": { "points": "70,0 530,0 300,115" }, "correctColor": "#007749" },
+      { "id": "bottom_green", "name": "下の緑の三角", "type": "polygon", "props": { "points": "70,300 530,300 300,185" }, "correctColor": "#007749" },
+      { "id": "left_black", "name": "左の黒い三角", "type": "polygon", "props": { "points": "0,35 0,265 230,150" }, "correctColor": "#000000" },
+      { "id": "right_black", "name": "右の黒い三角", "type": "polygon", "props": { "points": "600,35 600,265 370,150" }, "correctColor": "#000000" },
+      { "id": "cross", "name": "黄金のX字クロス", "type": "path", "props": { "d": "M 0 0 L 70 0 L 300 115 L 530 0 L 600 0 L 600 35 L 370 150 L 600 265 L 600 300 L 530 300 L 300 185 L 70 300 L 0 300 L 0 265 L 230 150 L 0 35 Z" }, "correctColor": "#fed100" }
+    ],
+    "palette": ["#fed100", "#007749", "#000000", "#ffffff", "#ed2939", "#002654"],
+    "trivia": "ジャマイカの国旗は、赤・白・青のいずれも使われていない珍しい国旗。緑は豊かな農業、黒は克服した苦難、黄色は太陽の輝きを表します。"
+  },
+  // 33. タイ
+  {
+    "id": "th",
+    "countryCode": "th",
+    "countryName": "タイ",
+    "countryRuby": "たい",
+    "aspectRatio": "3 / 2",
+    "viewBox": "0 0 900 600",
+    "elements": [
+      { "id": "r1", "name": "一番上の赤", "type": "rect", "props": { "x": 0, "y": 0, "width": 900, "height": 100 }, "correctColor": "#a51931" },
+      { "id": "w1", "name": "上の白しま", "type": "rect", "props": { "x": 0, "y": 100, "width": 900, "height": 100 }, "correctColor": "#ffffff" },
+      { "id": "blue", "name": "中央の太い紺しま", "type": "rect", "props": { "x": 0, "y": 200, "width": 900, "height": 200 }, "correctColor": "#2d2a4a" },
+      { "id": "w2", "name": "下の白しま", "type": "rect", "props": { "x": 0, "y": 400, "width": 900, "height": 100 }, "correctColor": "#ffffff" },
+      { "id": "r2", "name": "一番下の赤", "type": "rect", "props": { "x": 0, "y": 500, "width": 900, "height": 100 }, "correctColor": "#a51931" }
+    ],
+    "palette": ["#a51931", "#ffffff", "#2d2a4a", "#ffce00", "#009246", "#000000"],
+    "trivia": "タイの国旗「トン・トライロング」は、赤が国民の命、白が仏教の純粋さ、紺が歴代の国王を表しています。"
+  },
+  // 34. ペルー
+  {
+    "id": "pe",
+    "countryCode": "pe",
+    "countryName": "ペルー",
+    "countryRuby": "ぺるー",
+    "aspectRatio": "3 / 2",
+    "viewBox": "0 0 300 200",
+    "elements": [
+      { "id": "left_red", "name": "左の赤", "type": "rect", "props": { "x": 0, "y": 0, "width": 100, "height": 200 }, "correctColor": "#d91023" },
+      { "id": "center_white", "name": "中央の白", "type": "rect", "props": { "x": 100, "y": 0, "width": 100, "height": 200 }, "correctColor": "#ffffff" },
+      { "id": "right_red", "name": "右の赤", "type": "rect", "props": { "x": 200, "y": 0, "width": 100, "height": 200 }, "correctColor": "#d91023" }
+    ],
+    "palette": ["#d91023", "#ffffff", "#002654", "#ffce00", "#009246", "#000000"],
+    "trivia": "ペルーの国旗の赤は独立のために戦った勇士たちの血、白は平和と正義を表しています。"
+  },
+  // 35. エストニア
+  {
+    "id": "ee",
+    "countryCode": "ee",
+    "countryName": "エストニア",
+    "countryRuby": "えすとにあ",
+    "aspectRatio": "11 / 7",
+    "viewBox": "0 0 330 210",
+    "elements": [
+      { "id": "top_blue", "name": "上の青", "type": "rect", "props": { "x": 0, "y": 0, "width": 330, "height": 70 }, "correctColor": "#0072ce" },
+      { "id": "mid_black", "name": "中央の黒", "type": "rect", "props": { "x": 0, "y": 70, "width": 330, "height": 70 }, "correctColor": "#000000" },
+      { "id": "bottom_white", "name": "下の白", "type": "rect", "props": { "x": 0, "y": 140, "width": 330, "height": 70 }, "correctColor": "#ffffff" }
+    ],
+    "palette": ["#0072ce", "#000000", "#ffffff", "#ffce00", "#009246", "#ed2939"],
+    "trivia": "エストニアの国旗は、青が美しい空とバルト海、黒が肥沃な大地と過去の苦難、白が国民の純粋さと希望を表しています。"
   }
 ];

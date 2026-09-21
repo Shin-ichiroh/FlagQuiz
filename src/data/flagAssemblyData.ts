@@ -989,5 +989,463 @@ export const ASSEMBLY_STAGES: AssemblyFlagStage[] = [
     ],
     "hint": "青い海の上に、まず斜め十字を重ね、最後に聖ジョージの赤十字をのせよう！",
     "trivia": "イギリスの「ユニオンジャック」は、イングランドの聖ジョージ十字、スコットランドの聖アンドリュー十字、アイルランドの聖パトリック十字が合体して生まれました！"
+  },
+  // 17. オーストラリア
+  {
+    "id": "au",
+    "countryCode": "au",
+    "countryName": "オーストラリア",
+    "countryRuby": "おーすとらりあ",
+    "aspectRatio": "2 / 1",
+    "baseBgColor": "#00008b",
+    "baseElementsSvg": "<defs><clipPath id=\"au_canton_clip\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\"/></clipPath><clipPath id=\"au_canton_diag\"><path d=\"M25,12.5 h25 v12.5 z v12.5 h-25 z h-25 v-12.5 z v-12.5 h25 z\"/></clipPath></defs><g clip-path=\"url(#au_canton_clip)\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\" fill=\"#00008b\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" stroke=\"#ffffff\" stroke-width=\"5\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" clip-path=\"url(#au_canton_diag)\" stroke=\"#e4002b\" stroke-width=\"3.2\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#ffffff\" stroke-width=\"8\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#e4002b\" stroke-width=\"5\"/></g>",
+    "slots": [
+      {
+        "id": "cw_slot",
+        "name": "左下の七稜星",
+        "xPercent": 25,
+        "yPercent": 75,
+        "widthPercent": 24,
+        "heightPercent": 48,
+        "layer": 1,
+        "requiredPartId": "cw_star"
+      },
+      {
+        "id": "sc_slot",
+        "name": "右側の南十字星",
+        "xPercent": 75,
+        "yPercent": 50,
+        "widthPercent": 44,
+        "heightPercent": 88,
+        "layer": 1,
+        "requiredPartId": "southern_cross"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "cw_star",
+        "name": "連邦の七稜星",
+        "ruby": "ななりょうせい",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,10 58.7,32.2 81.3,25.1 73.1,47.4 94.4,59 71.9,67.1 79.1,89.7 57.8,81.4 50,104 42.2,81.4 20.9,89.7 28.1,67.1 5.6,59 26.9,47.4 18.7,25.1 41.3,32.2\" transform=\"scale(0.85) translate(8, -2)\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "cw_slot"
+      },
+      {
+        "id": "southern_cross",
+        "name": "南十字星（5つの星）",
+        "ruby": "みなみじゅうじせい",
+        "icon": "✨",
+        "svgContent": "<g fill=\"#ffffff\"><polygon points=\"50,15 52,21 58,19 56,25 62,28 56,30 58,36 52,34 50,40 48,34 42,36 44,30 38,28 44,25 42,19 48,21\"/><polygon points=\"50,65 52,71 58,69 56,75 62,78 56,80 58,86 52,84 50,90 48,84 42,86 44,80 38,78 44,75 42,69 48,71\"/><polygon points=\"25,43 27,49 33,47 31,53 37,56 31,58 33,64 27,62 25,68 23,62 17,64 19,58 13,56 19,53 17,47 23,49\"/><polygon points=\"75,37 77,43 83,41 81,47 87,50 81,52 83,58 77,56 75,62 73,56 67,58 69,52 63,50 69,47 67,41 73,43\"/><polygon points=\"62,56 64,61 69,61 65,64 67,69 62,66 57,69 59,64 55,61 60,61\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "sc_slot"
+      },
+      {
+        "id": "yellow_crescent_au",
+        "name": "黄色い三日月",
+        "ruby": "みかづき",
+        "icon": "🌙",
+        "svgContent": "<path d=\"M50 15 A35 35 0 1 0 85 50 A28 28 0 1 1 50 15 Z\" fill=\"#ffcc00\" />",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "左下にオーストラリア連邦を表す大きな七稜星、右側に南十字星の星々を置こう！",
+    "trivia": "オーストラリアの国旗には、イギリスとの絆を表すユニオンジャックと、南半球の夜空に輝く南十字星、7つの州と地域を表す七稜星が描かれています。"
+  },
+  // 18. ニュージーランド
+  {
+    "id": "nz",
+    "countryCode": "nz",
+    "countryName": "ニュージーランド",
+    "countryRuby": "にゅーじーらんど",
+    "aspectRatio": "2 / 1",
+    "baseBgColor": "#00247d",
+    "baseElementsSvg": "<defs><clipPath id=\"nz_canton_clip\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\"/></clipPath><clipPath id=\"nz_canton_diag\"><path d=\"M25,12.5 h25 v12.5 z v12.5 h-25 z h-25 v-12.5 z v-12.5 h25 z\"/></clipPath></defs><g clip-path=\"url(#nz_canton_clip)\"><rect x=\"0\" y=\"0\" width=\"50\" height=\"50\" fill=\"#00247d\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" stroke=\"#ffffff\" stroke-width=\"5\"/><path d=\"M0,0 L50,50 M50,0 L0,50\" clip-path=\"url(#nz_canton_diag)\" stroke=\"#cc142b\" stroke-width=\"3.2\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#ffffff\" stroke-width=\"8\"/><path d=\"M25,0 v50 M0,25 h50\" stroke=\"#cc142b\" stroke-width=\"5\"/></g>",
+    "slots": [
+      {
+        "id": "nz_sc_slot",
+        "name": "赤い南十字星（4つの星）",
+        "xPercent": 75,
+        "yPercent": 50,
+        "widthPercent": 44,
+        "heightPercent": 88,
+        "layer": 1,
+        "requiredPartId": "nz_stars"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "nz_stars",
+        "name": "白縁の赤い南十字星",
+        "ruby": "あかいみなみじゅうじせい",
+        "icon": "✨",
+        "svgContent": "<g><g stroke=\"#ffffff\" stroke-width=\"2\" fill=\"#cc142b\"><polygon points=\"50,15 54,26 66,26 56,33 60,45 50,38 40,45 44,33 34,26 46,26\"/><polygon points=\"50,65 54,76 66,76 56,83 60,95 50,88 40,95 44,83 34,76 46,76\"/><polygon points=\"25,45 28,54 38,54 30,60 33,69 25,64 17,69 20,60 12,54 22,54\"/><polygon points=\"75,38 78,47 88,47 80,53 83,62 75,57 67,62 70,53 62,47 72,47\"/></g></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "nz_sc_slot"
+      },
+      {
+        "id": "white_sc_fake",
+        "name": "白い南十字星",
+        "ruby": "しろいみなみじゅうじせい",
+        "icon": "⭐",
+        "svgContent": "<g fill=\"#ffffff\"><polygon points=\"50,15 53,24 62,24 55,29 58,38 50,33 42,38 45,29 38,24 47,24\"/><polygon points=\"50,65 53,74 62,74 55,79 58,88 50,83 42,88 45,79 38,74 47,74\"/><polygon points=\"25,45 27,52 35,52 29,56 31,63 25,59 19,63 21,56 15,52 23,52\"/><polygon points=\"75,38 77,45 85,45 79,49 81,56 75,52 69,56 71,49 65,45 73,45\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "右側の夜空に、白い縁取りがある4つの赤い南十字星を配置しよう！",
+    "trivia": "ニュージーランドの国旗の南十字星は赤い星に白い縁取りがあるのが特徴！オーストラリア（白の5つの星）との違いに注目です。"
+  },
+  // 19. インド
+  {
+    "id": "in",
+    "countryCode": "in",
+    "countryName": "インド",
+    "countryRuby": "いんど",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#ffffff",
+    "baseElementsSvg": "<rect width=\"100\" height=\"33.33\" fill=\"#ff9933\"/><rect y=\"33.33\" width=\"100\" height=\"33.33\" fill=\"#ffffff\"/><rect y=\"66.66\" width=\"100\" height=\"33.34\" fill=\"#138808\"/>",
+    "slots": [
+      {
+        "id": "chakra_slot",
+        "name": "アショカ・チャクラ",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 24,
+        "heightPercent": 36,
+        "layer": 1,
+        "requiredPartId": "ashoka_chakra"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "ashoka_chakra",
+        "name": "アショカ・チャクラ（青い法輪）",
+        "ruby": "あしょか・ちゃくら",
+        "icon": "☸️",
+        "svgContent": "<g transform=\"translate(50,50)\" stroke=\"#000080\"><circle r=\"45\" fill=\"none\" stroke-width=\"4\"/><circle r=\"8\" fill=\"#000080\"/><path d=\"M0,-45 L0,45 M-45,0 L45,0 M-31.8,-31.8 L31.8,31.8 M-31.8,31.8 L31.8,-31.8 M-11.6,-43.5 L11.6,43.5 M-43.5,-11.6 L43.5,11.6 M-22.5,-39 L22.5,39 M-39,-22.5 L39,22.5 M-39,22.5 L39,-22.5 M-22.5,39 L22.5,-39 M-43.5,11.6 L43.5,-11.6 M-11.6,43.5 L11.6,-43.5\" stroke-width=\"2\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "chakra_slot"
+      },
+      {
+        "id": "blue_flower",
+        "name": "青いハス",
+        "ruby": "はす",
+        "icon": "🪷",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#000080\" stroke-width=\"6\"/><circle cx=\"50\" cy=\"50\" r=\"15\" fill=\"#000080\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "白い帯の真ん中に、24本のスポークをもつ神聖な青い車輪を置こう！",
+    "trivia": "インド国旗の中央の車輪「アショカ・チャクラ」は、古代アショカ王の石柱に刻まれた24本の法輪で、一日24時間と進歩・正義を表しています。"
+  },
+  // 20. フィリピン
+  {
+    "id": "ph",
+    "countryCode": "ph",
+    "countryName": "フィリピン",
+    "countryRuby": "ふぃりぴん",
+    "aspectRatio": "2 / 1",
+    "baseBgColor": "#0038a8",
+    "baseElementsSvg": "<rect width=\"100\" height=\"50\" fill=\"#0038a8\"/><rect y=\"50\" width=\"100\" height=\"50\" fill=\"#ce1126\"/><polygon points=\"0,0 43.3,50 0,100\" fill=\"#ffffff\"/>",
+    "slots": [
+      {
+        "id": "ph_symbols_slot",
+        "name": "太陽と3つの星",
+        "xPercent": 15,
+        "yPercent": 50,
+        "widthPercent": 30,
+        "heightPercent": 60,
+        "layer": 1,
+        "requiredPartId": "ph_sun_stars"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "ph_sun_stars",
+        "name": "黄金の太陽と3つの星",
+        "ruby": "たいようとほし",
+        "icon": "☀️",
+        "svgContent": "<g fill=\"#fcd116\"><circle cx=\"50\" cy=\"50\" r=\"13\"/><path d=\"M50 20 L50 80 M20 50 L80 50 M29 29 L71 71 M29 71 L71 29\" stroke=\"#fcd116\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"22,20 24,24 28,24 25,27 26,31 22,28 18,31 19,27 16,24 20,24\" transform=\"scale(0.8) translate(5,2)\"/><polygon points=\"22,80 24,84 28,84 25,87 26,91 22,88 18,91 19,87 16,84 20,84\" transform=\"scale(0.8) translate(5,-15)\"/><polygon points=\"78,50 80,54 84,54 81,57 82,61 78,58 74,61 75,57 72,54 76,54\" transform=\"scale(0.8) translate(-10,0)\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "ph_symbols_slot"
+      },
+      {
+        "id": "red_sun_ph",
+        "name": "赤い太陽",
+        "ruby": "あかいたいよう",
+        "icon": "🔴",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#ce1126\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "左の白い三角の中に、8本の光条を放つ黄金の太陽と3つの星を配置しよう！",
+    "trivia": "フィリピンの太陽の8本の光は独立運動が起きた主要8州を、3つの星はルソン・ビサヤ・ミンダナオの3つの大島・地域を表しています。"
+  },
+  // 21. イスラエル
+  {
+    "id": "il",
+    "countryCode": "il",
+    "countryName": "イスラエル",
+    "countryRuby": "いすらえる",
+    "aspectRatio": "11 / 8",
+    "baseBgColor": "#ffffff",
+    "baseElementsSvg": "<rect y=\"12.5\" width=\"100\" height=\"12.5\" fill=\"#0038b8\"/><rect y=\"75\" width=\"100\" height=\"12.5\" fill=\"#0038b8\"/>",
+    "slots": [
+      {
+        "id": "star_slot",
+        "name": "ダビデの星",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 36,
+        "heightPercent": 50,
+        "layer": 1,
+        "requiredPartId": "star_of_david"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "star_of_david",
+        "name": "ダビデの星（青い六芒星）",
+        "ruby": "だびでのほし",
+        "icon": "✡️",
+        "svgContent": "<g fill=\"none\" stroke=\"#0038b8\" stroke-width=\"6\" stroke-linejoin=\"round\"><polygon points=\"50,15 80,68 20,68\"/><polygon points=\"50,85 80,32 20,32\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "star_slot"
+      },
+      {
+        "id": "blue_crescent",
+        "name": "青い三日月",
+        "ruby": "みかづき",
+        "icon": "🌙",
+        "svgContent": "<path d=\"M50 15 A35 35 0 1 0 85 50 A28 28 0 1 1 50 15 Z\" fill=\"#0038b8\" />",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "上下の青いしま模様の真ん中に、青い正三角形が交差した「ダビデの星」を置こう！",
+    "trivia": "イスラエルの国旗は、ユダヤ教の礼拝用ショール（タリート）の青い縞と、古代ダビデ王の盾に由来する六芒星「ダビデの星」で構成されています。"
+  },
+  // 22. ウルグアイ
+  {
+    "id": "uy",
+    "countryCode": "uy",
+    "countryName": "ウルグアイ",
+    "countryRuby": "うるぐあい",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#ffffff",
+    "baseElementsSvg": "<rect width=\"100\" height=\"100\" fill=\"#ffffff\"/><rect y=\"11.11\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"33.33\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"55.55\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect y=\"77.77\" width=\"100\" height=\"11.11\" fill=\"#0038a8\"/><rect width=\"37.5\" height=\"55.55\" fill=\"#ffffff\"/>",
+    "slots": [
+      {
+        "id": "uy_sun_slot",
+        "name": "5月の太陽（カントン部）",
+        "xPercent": 18.75,
+        "yPercent": 27.77,
+        "widthPercent": 30,
+        "heightPercent": 45,
+        "layer": 1,
+        "requiredPartId": "uy_sun"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "uy_sun",
+        "name": "5月の太陽（16条の光）",
+        "ruby": "ごがつのたいよう",
+        "icon": "🌞",
+        "svgContent": "<g transform=\"translate(50,50)\"><g fill=\"#fcd116\" stroke=\"#111111\" stroke-width=\"1.5\"><circle r=\"16\"/><path d=\"M0,-38 L5,-20 L-5,-20 Z M38,0 L20,5 L20,-5 Z M0,38 L-5,20 L5,20 Z M-38,0 L-20,-5 L-20,5 Z M27,-27 L20,-10 L10,-20 Z M27,27 L10,20 L20,10 Z M-27,27 L-20,10 L-10,20 Z M-27,-27 L-10,-20 L-20,-10 Z\"/><path d=\"M0,-35 Q8,-26 0,-18 Q-8,-26 0,-35 Z M35,0 Q26,8 18,0 Q26,-8 35,0 Z M0,35 Q-8,26 0,18 Q8,26 0,35 Z M-35,0 Q-26,-8 -18,0 Q-26,8 -35,0 Z M25,-25 Q23,-13 13,-13 Q13,-23 25,-25 Z M25,25 Q13,23 13,13 Q23,13 25,25 Z M-25,25 Q-23,13 -13,13 Q-13,23 -25,25 Z M-25,-25 Q-13,-23 -13,-13 Q-23,-13 -25,-25 Z\"/></g><circle cx=\"-6\" cy=\"-4\" r=\"2.5\" fill=\"#111\"/><circle cx=\"6\" cy=\"-4\" r=\"2.5\" fill=\"#111\"/><path d=\"M-6,7 Q0,12 6,7\" stroke=\"#111\" stroke-width=\"2\" fill=\"none\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "uy_sun_slot"
+      },
+      {
+        "id": "golden_star",
+        "name": "金色の星",
+        "ruby": "きんのほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,15 61,38 85,38 66,54 73,78 50,62 27,78 34,54 15,38 39,38\" fill=\"#fcd116\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "左上の白い四角の中に、顔と16条の光線をもつ黄金の「5月の太陽」を置こう！",
+    "trivia": "ウルグアイの「5月の太陽」は16本の光線を持ち、1810年の5月革命を記念しています。9本の白青の縞模様は当時の9つの県を表します。"
+  },
+  // 23. チュニジア
+  {
+    "id": "tn",
+    "countryCode": "tn",
+    "countryName": "チュニジア",
+    "countryRuby": "ちゅにじあ",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#e70013",
+    "baseElementsSvg": "<circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#ffffff\"/>",
+    "slots": [
+      {
+        "id": "tn_crescent_slot",
+        "name": "赤い三日月と星",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 36,
+        "heightPercent": 54,
+        "layer": 1,
+        "requiredPartId": "tn_crescent"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "tn_crescent",
+        "name": "赤い三日月と星",
+        "ruby": "あかいみかづきとほし",
+        "icon": "🌙",
+        "svgContent": "<g fill=\"#e70013\"><path d=\"M50 20 A30 30 0 1 0 50 80 A24 24 0 1 1 50 20 Z\"/><polygon points=\"56,40 60,47 68,48 62,54 64,62 57,58 50,62 52,54 46,48 54,47\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "tn_crescent_slot"
+      },
+      {
+        "id": "white_crescent_tn",
+        "name": "白い三日月と星",
+        "ruby": "しろいみかづきとほし",
+        "icon": "⭐",
+        "svgContent": "<g fill=\"#ffffff\"><path d=\"M50 20 A30 30 0 1 0 50 80 A24 24 0 1 1 50 20 Z\"/><polygon points=\"56,40 60,47 68,48 62,54 64,62 57,58 50,62 52,54 46,48 54,47\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "中央の白い丸の中に、オスマン帝国の伝統を受け継ぐ赤い三日月と星を配置しよう！",
+    "trivia": "チュニジアの国旗は1830年頃に制定された歴史あるデザイン。白い丸は太陽、赤い三日月と星はイスラムの象徴と幸運を表しています。"
+  },
+  // 24. パキスタン
+  {
+    "id": "pk",
+    "countryCode": "pk",
+    "countryName": "パキスタン",
+    "countryRuby": "ぱきすたん",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#01411c",
+    "baseElementsSvg": "<rect width=\"25\" height=\"100\" fill=\"#ffffff\"/><rect x=\"25\" width=\"75\" height=\"100\" fill=\"#01411c\"/>",
+    "slots": [
+      {
+        "id": "pk_crescent_slot",
+        "name": "傾いた白い三日月と星",
+        "xPercent": 62.5,
+        "yPercent": 50,
+        "widthPercent": 36,
+        "heightPercent": 54,
+        "layer": 1,
+        "requiredPartId": "pk_crescent"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "pk_crescent",
+        "name": "傾いた白い三日月と星",
+        "ruby": "かたむいたみかづきとほし",
+        "icon": "🌙",
+        "svgContent": "<g transform=\"translate(50,50) rotate(-40)\" fill=\"#ffffff\"><path d=\"M0,-32 A32 32 0 1 0 0,32 A26 26 0 1 1 0,-32 Z\"/><polygon points=\"18,-15 22,-3 34,-3 25,5 28,17 18,10 8,17 11,5 2,-3 14,-3\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "pk_crescent_slot"
+      },
+      {
+        "id": "yellow_crescent_pk",
+        "name": "黄色い三日月",
+        "ruby": "きいろいみかづき",
+        "icon": "🌙",
+        "svgContent": "<g transform=\"translate(50,50) rotate(-40)\" fill=\"#fcd116\"><path d=\"M0,-32 A32 32 0 1 0 0,32 A26 26 0 1 1 0,-32 Z\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "濃い緑色のエリアの真ん中に、右上に向かって輝く白い三日月と星を置こう！",
+    "trivia": "パキスタンの緑はイスラム教徒、白は他宗教の人々を表し、三日月は国家の進歩、星は知識と光明を象徴しています。"
+  },
+  // 25. モロッコ
+  {
+    "id": "ma",
+    "countryCode": "ma",
+    "countryName": "モロッコ",
+    "countryRuby": "もろっこ",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#c1272d",
+    "slots": [
+      {
+        "id": "ma_star_slot",
+        "name": "ソロモンの印（緑の五芒星）",
+        "xPercent": 50,
+        "yPercent": 50,
+        "widthPercent": 36,
+        "heightPercent": 54,
+        "layer": 1,
+        "requiredPartId": "ma_star"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "ma_star",
+        "name": "ソロモンの印（緑の細線五芒星）",
+        "ruby": "そろもんのしるし",
+        "icon": "✡️",
+        "svgContent": "<polygon points=\"50,15 62,52 98,52 69,73 80,108 50,86 20,108 31,73 2,52 38,52\" fill=\"none\" stroke=\"#006233\" stroke-width=\"6\" stroke-linejoin=\"round\"/>",
+        "viewBox": "0 0 100 120",
+        "targetSlotId": "ma_star_slot"
+      },
+      {
+        "id": "green_solid_star",
+        "name": "塗りつぶされた緑の星",
+        "ruby": "みどりのほし",
+        "icon": "⭐",
+        "svgContent": "<polygon points=\"50,15 61,38 85,38 66,54 73,78 50,62 27,78 34,54 15,38 39,38\" fill=\"#006233\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "真っ赤な大地の中央に、緑の細い線で一筆書きされた「ソロモンの印（五芒星）」を置こう！",
+    "trivia": "モロッコの赤い地色は預言者ムハンマドの子孫である王家を、緑の一筆書きの五芒星は知恵・平和・健康を象徴するソロモンの印です。"
+  },
+  // 26. シンガポール
+  {
+    "id": "sg",
+    "countryCode": "sg",
+    "countryName": "シンガポール",
+    "countryRuby": "しんがぽーる",
+    "aspectRatio": "3 / 2",
+    "baseBgColor": "#ffffff",
+    "baseElementsSvg": "<rect width=\"100\" height=\"50\" fill=\"#ed2939\"/><rect y=\"50\" width=\"100\" height=\"50\" fill=\"#ffffff\"/>",
+    "slots": [
+      {
+        "id": "sg_crescent_slot",
+        "name": "三日月と5つの星",
+        "xPercent": 22,
+        "yPercent": 25,
+        "widthPercent": 28,
+        "heightPercent": 40,
+        "layer": 1,
+        "requiredPartId": "sg_crescent"
+      }
+    ],
+    "availableParts": [
+      {
+        "id": "sg_crescent",
+        "name": "白い三日月と5つの星",
+        "ruby": "みかづきといつつのほし",
+        "icon": "🌙",
+        "svgContent": "<g fill=\"#ffffff\"><path d=\"M38 18 A28 28 0 1 0 38 82 A23 23 0 1 1 38 18 Z\"/><polygon points=\"54,28 56,33 61,33 57,36 59,41 54,38 49,41 51,36 47,33 52,33\"/><polygon points=\"68,38 70,43 75,43 71,46 73,51 68,48 63,51 65,46 61,43 66,43\"/><polygon points=\"68,62 70,67 75,67 71,70 73,75 68,72 63,75 65,70 61,67 66,67\"/><polygon points=\"54,72 56,77 61,77 57,80 59,85 54,82 49,85 51,80 47,77 52,77\"/><polygon points=\"45,50 47,55 52,55 48,58 50,63 45,60 40,63 42,58 38,55 43,55\"/></g>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": "sg_crescent_slot"
+      },
+      {
+        "id": "white_sun_sg",
+        "name": "白い太陽",
+        "ruby": "しろいたいよう",
+        "icon": "⚪",
+        "svgContent": "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"#ffffff\"/>",
+        "viewBox": "0 0 100 100",
+        "targetSlotId": ""
+      }
+    ],
+    "hint": "赤い帯の左上に、若い国を表す白い三日月と円形に並ぶ5つの星を置こう！",
+    "trivia": "シンガポールの三日月は「若く台頭する国家」を、5つの星は民主・平和・進歩・正義・平等の5つの理想を表しています。"
   }
 ];
