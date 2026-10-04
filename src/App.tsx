@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { GameSettings, QuizQuestion, QuizResultRecord } from "./types";
+import type { AppScreen, GameSettings, QuizQuestion, QuizResultRecord } from "./types";
 import { SettingsScreen } from "./components/SettingsScreen";
 import { QuizScreen } from "./components/QuizScreen";
 import { ResultScreen } from "./components/ResultScreen";
@@ -8,11 +8,13 @@ import { PuzzleScreen } from "./components/PuzzleScreen";
 import { AssemblyPuzzleScreen } from "./components/AssemblyPuzzleScreen";
 import { ColoringScreen } from "./components/ColoringScreen";
 import { CapitalMatchingScreen } from "./components/CapitalMatchingScreen";
+import { FlagDominoScreen } from "./components/FlagDominoScreen";
+import { FlagAkinatorScreen } from "./components/FlagAkinatorScreen";
 import { generateQuizQuestions } from "./utils/quizGenerator";
 import { getSavedPlayerName } from "./utils/ranking";
 
 export function App() {
-  const [screen, setScreen] = useState<"settings" | "quiz" | "result" | "ranking" | "puzzle" | "assembly" | "coloring" | "capital_match">("settings");
+  const [screen, setScreen] = useState<AppScreen>("settings");
   const [settings, setSettings] = useState<GameSettings>({
     playerName: getSavedPlayerName(),
     questionCount: 10,
@@ -57,6 +59,8 @@ export function App() {
           onStartAssembly={() => setScreen("assembly")}
           onStartColoring={() => setScreen("coloring")}
           onStartCapitalMatch={() => setScreen("capital_match")}
+          onStartDomino={() => setScreen("domino")}
+          onStartAkinator={() => setScreen("akinator")}
         />
       )}
 
@@ -105,6 +109,20 @@ export function App() {
 
       {screen === "capital_match" && (
         <CapitalMatchingScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "domino" && (
+        <FlagDominoScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "akinator" && (
+        <FlagAkinatorScreen
           onBack={() => setScreen("settings")}
           showRuby={settings.showRuby}
         />

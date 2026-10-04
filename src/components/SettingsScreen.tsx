@@ -14,6 +14,8 @@ interface SettingsModalProps {
   onStartAssembly: () => void;
   onStartColoring: () => void;
   onStartCapitalMatch: () => void;
+  onStartDomino: () => void;
+  onStartAkinator: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
@@ -25,6 +27,8 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   onStartAssembly,
   onStartColoring,
   onStartCapitalMatch,
+  onStartDomino,
+  onStartAkinator,
 }) => {
   const modes: { id: GameMode; label: string; sub: string }[] = [
     { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
@@ -236,6 +240,54 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                 <p className="text-[11px] text-slate-500 font-semibold mt-1">国旗と首都のペアを見つけてすばやく消そう！</p>
               </div>
               <div className="mt-3 flex items-center gap-1 text-xs font-black text-emerald-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 5. こっきドミノ */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartDomino();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-cyan-100 hover:border-cyan-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-cyan-50 group-hover:scale-110 transition-transform">🀄</span>
+                  <span className="text-[10px] font-black bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full">
+                    連鎖カード
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">こっきドミノ</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">色やマークをつなげて手札を出し切ろう！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-cyan-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 6. こっき探偵（アキネーター） */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartAkinator();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-purple-100 hover:border-purple-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-purple-50 group-hover:scale-110 transition-transform">🕵️</span>
+                  <span className="text-[10px] font-black bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                    推理ゲーム
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">こっき探偵</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">質問でカードを倒して秘密の国を暴こう！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-purple-600">
                 <span>あそぶ</span>
                 <span>➔</span>
               </div>

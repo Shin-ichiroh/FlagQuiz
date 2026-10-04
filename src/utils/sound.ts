@@ -120,6 +120,36 @@ class SoundEffectManager {
     osc.start(now);
     osc.stop(now + 0.04);
   }
+
+  // 勝利・クリアファンファーレ: パパパーン♪
+  public playFanfare() {
+    if (!this.enabled) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+    const now = this.ctx.currentTime;
+
+    notes.forEach((freq, idx) => {
+      if (!this.ctx) return;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const startTime = now + idx * 0.12;
+      const duration = idx === notes.length - 1 ? 0.6 : 0.15;
+
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      gain.gain.setValueAtTime(0.18, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    });
+  }
 }
 
 export const soundEffect = new SoundEffectManager();
