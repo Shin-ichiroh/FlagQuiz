@@ -231,17 +231,17 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       {/* 最後の質問回答トースト */}
       {lastAnswer && (
         <div
-          className={`mb-2 px-3 py-1.5 rounded-2xl border text-xs font-black flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-200 ${
+          className={`mb-2 px-3 py-2 rounded-2xl border text-xs font-black flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-2 duration-200 ${
             lastAnswer.isYes
               ? "bg-emerald-950/80 border-emerald-500/50 text-emerald-300"
               : "bg-rose-950/80 border-rose-500/50 text-rose-300"
           }`}
         >
-          <div className="flex items-center gap-1.5 truncate mr-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
             {lastAnswer.isYes ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <XCircle className="w-4 h-4 text-rose-400 shrink-0" />}
-            <span className="truncate">{lastAnswer.text}</span>
+            <span className="leading-snug break-words text-[11px] sm:text-xs">{lastAnswer.text}</span>
           </div>
-          <div className="shrink-0 flex items-center gap-1">
+          <div className="shrink-0 flex items-center gap-1.5">
             <span className="px-2 py-0.5 rounded-full bg-white/10 text-[11px] font-black">
               {lastAnswer.isYes ? "YES! ⭕" : "NO! ❌"}
             </span>
@@ -251,7 +251,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       )}
 
       {/* 3. 国旗ボードグリッド */}
-      <div className="w-full flex-1 bg-slate-950/60 rounded-3xl p-2.5 border border-slate-800 shadow-inner flex flex-col justify-center overflow-hidden mb-2">
+      <div className="w-full flex-1 min-h-0 bg-slate-950/60 rounded-3xl p-2 sm:p-2.5 border border-slate-800 shadow-inner flex flex-col justify-center overflow-y-auto mb-2">
         <div
           className={`grid gap-1.5 w-full ${
             boardSize === 16 ? "grid-cols-4" : boardSize === 20 ? "grid-cols-4 sm:grid-cols-5" : "grid-cols-4 sm:grid-cols-6"
@@ -277,7 +277,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
                 }`}
               >
                 {/* 国旗画像 */}
-                <div className="w-full h-9 sm:h-11 rounded-lg overflow-hidden bg-slate-900 border border-slate-700/60 flex items-center justify-center">
+                <div className="w-full h-8 sm:h-11 rounded-lg overflow-hidden bg-slate-900 border border-slate-700/60 flex items-center justify-center">
                   <img
                     src={getFlagUrl(flag.code, 160)}
                     alt={flag.name}
@@ -314,7 +314,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       </div>
 
       {/* 4. 質問選択エリア */}
-      <div className="w-full bg-slate-800/95 backdrop-blur-sm rounded-3xl p-3 border border-slate-700 shadow-xl">
+      <div className="w-full bg-slate-800/95 backdrop-blur-sm rounded-3xl p-2.5 sm:p-3 border border-slate-700 shadow-xl shrink-0">
         {/* カテゴリタブ切替 */}
         <div className="flex bg-slate-900 p-0.5 rounded-2xl text-xs font-black mb-2 border border-slate-700">
           <button
@@ -347,7 +347,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         </div>
 
         {/* 質問リストボタン群 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 max-h-40 overflow-y-auto pr-1 scrollbar-thin">
+        <div className="flex flex-col gap-1.5 max-h-40 sm:max-h-48 overflow-y-auto pr-1 scrollbar-thin">
           {currentCategoryQuestions.map((q) => {
             const isAsked = askedQuestionIds.has(q.id);
             return (
@@ -355,17 +355,22 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
                 key={q.id}
                 onClick={() => handleAskQuestion(q)}
                 disabled={isAsked || !!gameResult}
-                className={`py-2 px-2.5 rounded-xl text-left text-xs font-bold transition-all border flex items-center justify-between cursor-pointer active:scale-98 ${
+                className={`py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold transition-all border flex items-center justify-between gap-2.5 cursor-pointer active:scale-98 group ${
                   isAsked
                     ? "bg-slate-900/60 border-slate-800 text-slate-500 line-through opacity-50 cursor-not-allowed"
                     : "bg-slate-700/80 hover:bg-slate-700 border-slate-600 text-slate-100 hover:border-indigo-400 shadow-2xs"
                 }`}
               >
-                <span className="truncate mr-1">{q.text}</span>
+                <span className="flex-1 leading-snug break-words">{q.text}</span>
                 {isAsked ? (
-                  <span className="text-[10px] text-slate-500 shrink-0">質問済</span>
+                  <span className="text-[10px] text-slate-500 shrink-0 font-medium px-2 py-0.5 rounded-md bg-slate-800">
+                    質問済
+                  </span>
                 ) : (
-                  <span className="text-[10px] text-indigo-300 shrink-0">質問する ➔</span>
+                  <span className="text-[11px] text-indigo-300 group-hover:text-white shrink-0 font-bold bg-indigo-950/70 border border-indigo-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                    <span>質問する</span>
+                    <span className="text-xs">➔</span>
+                  </span>
                 )}
               </button>
             );
