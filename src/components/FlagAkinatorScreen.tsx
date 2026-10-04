@@ -107,7 +107,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
     }
 
     setLastAnswer({
-      text: q.text,
+      text: showRuby && q.textRuby ? q.textRuby : q.text,
       isYes,
       countEliminated: newlyEliminated.length,
     });
@@ -202,9 +202,11 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         <div className="flex items-center gap-2">
           <span className="p-1.5 rounded-xl bg-amber-500/20 text-amber-400">🕵️</span>
           <div>
-            <div className="text-[10px] font-bold text-slate-400">ターゲットの国を推理せよ！</div>
+            <div className="text-[10px] font-bold text-slate-400">
+              {showRuby ? "ターゲットの くにを すいりせよ！" : "ターゲットの国を推理せよ！"}
+            </div>
             <div className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-              <span>しつもん: <strong className="text-white text-sm">{questionCount}</strong> 回</span>
+              <span>{showRuby ? "しつもん" : "質問"}: <strong className="text-white text-sm">{questionCount}</strong> 回</span>
               <span>•</span>
               <span>のこり: <strong className="text-emerald-400 text-sm">{remainingFlags.length}</strong> / {boardFlags.length} 国</span>
             </div>
@@ -224,7 +226,15 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
           }`}
         >
           <Search className="w-3.5 h-3.5" />
-          <span>{isAccuseMode ? "推理をやめる" : "この国だ！🎯"}</span>
+          <span>
+            {isAccuseMode
+              ? showRuby
+                ? "すいりをやめる"
+                : "推理をやめる"
+              : showRuby
+              ? "このくにだ！🎯"
+              : "この国だ！🎯"}
+          </span>
         </button>
       </div>
 
@@ -308,7 +318,11 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         {isAccuseMode && (
           <div className="mt-2 text-center text-xs font-black text-rose-400 animate-pulse flex items-center justify-center gap-1">
             <Search className="w-3.5 h-3.5" />
-            <span>ターゲットだと思う国旗カードをタップしてください！</span>
+            <span>
+              {showRuby
+                ? "ターゲットだと おもう こっきカードを タップしてください！"
+                : "ターゲットだと思う国旗カードをタップしてください！"}
+            </span>
           </div>
         )}
       </div>
@@ -324,7 +338,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
             }`}
           >
             <span>🎨</span>
-            <span>色</span>
+            <span>{showRuby ? "いろ" : "色"}</span>
           </button>
           <button
             onClick={() => setActiveCategory("symbol")}
@@ -333,7 +347,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
             }`}
           >
             <span>⭐</span>
-            <span>マーク・模様</span>
+            <span>{showRuby ? "マーク・もよう" : "マーク・模様"}</span>
           </button>
           <button
             onClick={() => setActiveCategory("geo")}
@@ -342,7 +356,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
             }`}
           >
             <span>🌍</span>
-            <span>地域・特徴</span>
+            <span>{showRuby ? "ちいき・とくちょう" : "地域・特徴"}</span>
           </button>
         </div>
 
@@ -350,6 +364,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         <div className="flex flex-col gap-1.5 max-h-40 sm:max-h-48 overflow-y-auto pr-1 scrollbar-thin">
           {currentCategoryQuestions.map((q) => {
             const isAsked = askedQuestionIds.has(q.id);
+            const questionLabel = showRuby && q.textRuby ? q.textRuby : q.text;
             return (
               <button
                 key={q.id}
@@ -361,14 +376,14 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
                     : "bg-slate-700/80 hover:bg-slate-700 border-slate-600 text-slate-100 hover:border-indigo-400 shadow-2xs"
                 }`}
               >
-                <span className="flex-1 leading-snug break-words">{q.text}</span>
+                <span className="flex-1 leading-snug break-words">{questionLabel}</span>
                 {isAsked ? (
                   <span className="text-[10px] text-slate-500 shrink-0 font-medium px-2 py-0.5 rounded-md bg-slate-800">
-                    質問済
+                    {showRuby ? "しつもんずみ" : "質問済"}
                   </span>
                 ) : (
                   <span className="text-[11px] text-indigo-300 group-hover:text-white shrink-0 font-bold bg-indigo-950/70 border border-indigo-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                    <span>質問する</span>
+                    <span>{showRuby ? "しつもんする" : "質問する"}</span>
                     <span className="text-xs">➔</span>
                   </span>
                 )}
