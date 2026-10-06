@@ -798,17 +798,16 @@ export function getSharedAttributes(
 ): SharedAttributeResult {
   const sharedReasons: SharedAttributeResult["sharedReasons"] = [];
 
-  // 1. 色の一致
-  for (const c of flag1.colors) {
-    if (flag2.colors.includes(c)) {
-      const info = COLOR_LABELS[c];
-      sharedReasons.push({
-        type: "color",
-        id: c,
-        label: `${info.label}が共通`,
-        icon: info.icon,
-      });
-    }
+  // 1. 色の一致: 難易度調整のため、2色以上が共通している場合のみ接続可能！（1色だけでは不可）
+  const sharedColors = flag1.colors.filter((c) => flag2.colors.includes(c));
+  if (sharedColors.length >= 2) {
+    const colorNames = sharedColors.map((c) => COLOR_LABELS[c]?.label || c).join("・");
+    sharedReasons.push({
+      type: "color",
+      id: sharedColors.join("_"),
+      label: `${colorNames}が共通（${sharedColors.length}色一致）`,
+      icon: "🎨",
+    });
   }
 
   // 2. シンボルの一致
@@ -848,6 +847,9 @@ export interface AkinatorQuestion {
   categoryLabel: string;
   text: string;
   textRuby?: string;
+  shortText: string;
+  shortTextRuby: string;
+  icon: string;
   evaluate: (flag: FlagAttribute) => boolean;
 }
 
@@ -859,6 +861,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【赤色】は入っていますか？",
     textRuby: "こっきに【あかいろ】は はいっていますか？",
+    shortText: "赤色はある？",
+    shortTextRuby: "あかいろはある？",
+    icon: "🔴",
     evaluate: (f) => f.colors.includes("red"),
   },
   {
@@ -867,6 +872,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【青色・水色】は入っていますか？",
     textRuby: "こっきに【あおいろ・みずいろ】は はいっていますか？",
+    shortText: "青・水色はある？",
+    shortTextRuby: "あお・みずいろは？",
+    icon: "🔵",
     evaluate: (f) => f.colors.includes("blue"),
   },
   {
@@ -875,6 +883,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【白色】は入っていますか？",
     textRuby: "こっきに【しろいろ】は はいっていますか？",
+    shortText: "白色はある？",
+    shortTextRuby: "しろいろはある？",
+    icon: "⚪",
     evaluate: (f) => f.colors.includes("white"),
   },
   {
@@ -883,6 +894,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【黄色・金色】は入っていますか？",
     textRuby: "こっきに【きいろ・きんいろ】は はいっていますか？",
+    shortText: "黄色・金色は？",
+    shortTextRuby: "きいろ・きんいろは？",
+    icon: "🟡",
     evaluate: (f) => f.colors.includes("yellow"),
   },
   {
@@ -891,6 +905,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【緑色】は入っていますか？",
     textRuby: "こっきに【みどりいろ】は はいっていますか？",
+    shortText: "緑色はある？",
+    shortTextRuby: "みどりいろはある？",
+    icon: "🟢",
     evaluate: (f) => f.colors.includes("green"),
   },
   {
@@ -899,6 +916,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "国旗に【黒色】は入っていますか？",
     textRuby: "こっきに【くろいろ】は はいっていますか？",
+    shortText: "黒色はある？",
+    shortTextRuby: "くろいろはある？",
+    icon: "⚫",
     evaluate: (f) => f.colors.includes("black"),
   },
   {
@@ -907,6 +927,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "【4色以上】のカラフルな国旗ですか？",
     textRuby: "【4しょく いじょう】の カラフルな こっきですか？",
+    shortText: "4色以上ある？",
+    shortTextRuby: "4しょく いじょう？",
+    icon: "🎨",
     evaluate: (f) => f.colors.length >= 4,
   },
   {
@@ -915,6 +938,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "色",
     text: "使われている色は【2色だけ】ですか？",
     textRuby: "つかわれている いろは【2しょく だけ】ですか？",
+    shortText: "2色だけ？",
+    shortTextRuby: "2しょくだけ？",
+    icon: "✌️",
     evaluate: (f) => f.colors.length === 2,
   },
 
@@ -925,6 +951,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【星（スター）】のマークはありますか？",
     textRuby: "【ほし（スター）】の マークは ありますか？",
+    shortText: "星（スター）は？",
+    shortTextRuby: "ほし（スター）は？",
+    icon: "⭐",
     evaluate: (f) => f.symbols.includes("star"),
   },
   {
@@ -933,6 +962,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【太陽または月】が描かれていますか？",
     textRuby: "【たいよう または つき】が えがかれていますか？",
+    shortText: "太陽や月はある？",
+    shortTextRuby: "たいよう・つきは？",
+    icon: "☀️",
     evaluate: (f) => f.symbols.includes("sun") || f.symbols.includes("moon"),
   },
   {
@@ -941,6 +973,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【十字架（クロス）】の模様はありますか？",
     textRuby: "【じゅうじか（クロス）】の もようは ありますか？",
+    shortText: "十字架（クロス）？",
+    shortTextRuby: "じゅうじかはある？",
+    icon: "✝️",
     evaluate: (f) => f.symbols.includes("cross"),
   },
   {
@@ -949,6 +984,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "しましま模様（ストライプ）ですか？",
     textRuby: "しましまもよう（ストライプ）ですか？",
+    shortText: "しましま模様？",
+    shortTextRuby: "しましまもよう？",
+    icon: "🦓",
     evaluate: (f) => f.symbols.includes("stripes_h") || f.symbols.includes("stripes_v"),
   },
   {
@@ -957,6 +995,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【縦のストライプ（縦縞）】ですか？",
     textRuby: "【たての ストライプ（たてじま）】ですか？",
+    shortText: "縦のストライプ？",
+    shortTextRuby: "たてストライプ？",
+    icon: "💈",
     evaluate: (f) => f.symbols.includes("stripes_v"),
   },
   {
@@ -965,6 +1006,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【丸（円）】の形やマークが入っていますか？",
     textRuby: "【まる（えん）】の かたちや マークが はいっていますか？",
+    shortText: "丸（円）のマーク？",
+    shortTextRuby: "まるのマーク？",
+    icon: "⭕",
     evaluate: (f) => f.symbols.includes("circle"),
   },
   {
@@ -973,6 +1017,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【動物・鳥・または国章（盾）】が描かれていますか？",
     textRuby: "【どうぶつ・とり・たて（紋章）】が えがかれていますか？",
+    shortText: "動物・鳥・国章？",
+    shortTextRuby: "どうぶつ・たて？",
+    icon: "🦁",
     evaluate: (f) => f.symbols.includes("animal") || f.symbols.includes("emblem"),
   },
   {
@@ -981,6 +1028,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "マーク",
     text: "【ユニオンジャック（イギリス国旗）】が入っていますか？",
     textRuby: "【ユニオンジャック（イギリスのこっき）】が はいっていますか？",
+    shortText: "イギリス国旗入り？",
+    shortTextRuby: "イギリスのこっき？",
+    icon: "🇬🇧",
     evaluate: (f) => f.symbols.includes("union_jack"),
   },
 
@@ -991,6 +1041,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "【アジア】の国ですか？",
     textRuby: "【アジア】の くにですか？",
+    shortText: "アジアの国？",
+    shortTextRuby: "アジアのくに？",
+    icon: "🌏",
     evaluate: (f) => f.region === "asia",
   },
   {
@@ -999,6 +1052,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "【ヨーロッパ】の国ですか？",
     textRuby: "【ヨーロッパ】の くにですか？",
+    shortText: "ヨーロッパの国？",
+    shortTextRuby: "ヨーロッパのくに？",
+    icon: "🏰",
     evaluate: (f) => f.region === "europe",
   },
   {
@@ -1007,6 +1063,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "【アフリカ】の国ですか？",
     textRuby: "【アフリカ】の くにですか？",
+    shortText: "アフリカの国？",
+    shortTextRuby: "アフリカのくに？",
+    icon: "🦒",
     evaluate: (f) => f.region === "africa",
   },
   {
@@ -1015,6 +1074,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "【南北アメリカ】の国ですか？",
     textRuby: "【なんぼくアメリカ】の くにですか？",
+    shortText: "アメリカ大陸？",
+    shortTextRuby: "アメリカたいりく？",
+    icon: "🗽",
     evaluate: (f) => f.region === "north_america" || f.region === "south_america",
   },
   {
@@ -1023,6 +1085,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "【オセアニア】の国ですか？",
     textRuby: "【オセアニア】の くにですか？",
+    shortText: "オセアニアの国？",
+    shortTextRuby: "オセアニアのくに？",
+    icon: "🦘",
     evaluate: (f) => f.region === "oceania",
   },
   {
@@ -1031,6 +1096,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "海に囲まれた【島国】ですか？",
     textRuby: "うみに かこまれた【しまぐに】ですか？",
+    shortText: "海に囲まれた島国？",
+    shortTextRuby: "うみの しまぐに？",
+    icon: "🏝️",
     evaluate: (f) => f.isIsland,
   },
   {
@@ -1039,6 +1107,9 @@ export const AKINATOR_QUESTIONS: AkinatorQuestion[] = [
     categoryLabel: "ちいき",
     text: "海に面していない【内陸国】ですか？",
     textRuby: "うみに めんしていない【ないりくこく】ですか？",
+    shortText: "海がない内陸国？",
+    shortTextRuby: "うみがない くに？",
+    icon: "🏔️",
     evaluate: (f) => f.isLandlocked,
   },
 ];

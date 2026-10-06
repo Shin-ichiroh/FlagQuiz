@@ -101,7 +101,7 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
     const connection = getSharedAttributes(fieldCard, card);
     if (!connection.canConnect) {
       soundEffect.playWrong();
-      setInfoMessage(`「${card.name}」は、場の「${fieldCard.name}」と色・マーク・地域が共通していません❌`);
+      setInfoMessage(`「${card.name}」は場の「${fieldCard.name}」とつながりません❌（色は2色以上一致、または同じマーク・同じ地域が必要）`);
       return;
     }
 
@@ -567,10 +567,10 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
                 場に出ている国旗に対して、**共通点がある国旗**を手札から出していくゲームです！
               </p>
               <div className="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 space-y-1">
-                <div className="font-bold text-slate-800">つながる条件（1つ以上一致）:</div>
-                <div>🔴 **同じ色がある**（例: フランスの青白赤 ➔ 日本の白赤）</div>
-                <div>⭐ **同じマークがある**（例: 星がある国旗同士、月、十字など）</div>
-                <div>🌏 **同じ地域（大陸）**（例: アジア同士、ヨーロッパ同士）</div>
+                <div className="font-bold text-slate-800">つながる条件:</div>
+                <div>🎨 **2色以上が共通**（赤と白、青と黄など 2色以上の一致が必要）</div>
+                <div>⭐ **同じマークがある**（星、月、十字架、ストライプ、丸、動物など）</div>
+                <div>🌏 **同じ地域（大陸）**（アジア同士、ヨーロッパ同士など）</div>
               </div>
               <p>
                 出せるカードはピカピカ光って教えてくれます！手札に出せるカードがない時は「カードをひく」ボタンを押そう。

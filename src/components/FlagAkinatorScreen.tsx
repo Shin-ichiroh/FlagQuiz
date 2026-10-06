@@ -156,29 +156,29 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
   }, [activeCategory]);
 
   return (
-    <div className="w-full max-w-xl mx-auto min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-between p-3 sm:p-4 select-none">
+    <div className="w-full max-w-xl mx-auto min-h-screen bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white flex flex-col justify-start p-2 sm:p-3 select-none">
       {/* 1. ヘッダーバー */}
-      <header className="flex items-center justify-between mb-2">
+      <header className="flex items-center justify-between mb-1.5 shrink-0">
         <button
           onClick={() => {
             soundEffect.playTap();
             onBack();
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs hover:bg-slate-700 active:scale-95 transition-all shadow-xs cursor-pointer"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs hover:bg-slate-700 active:scale-95 transition-all shadow-xs cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>もどる</span>
         </button>
 
         {/* 候補数切り替え */}
-        <div className="flex bg-slate-800 p-0.5 rounded-2xl text-[11px] font-black border border-slate-700">
+        <div className="flex bg-slate-800 p-0.5 rounded-xl text-[11px] font-black border border-slate-700">
           {([16, 20, 24] as const).map((size) => (
             <button
               key={size}
               onClick={() => {
                 if (boardSize !== size) setBoardSize(size);
               }}
-              className={`px-2.5 py-1 rounded-xl transition-all ${
+              className={`px-2 py-0.5 rounded-lg transition-all ${
                 boardSize === size ? "bg-amber-500 text-slate-950 font-black shadow-xs" : "text-slate-400 hover:text-white"
               }`}
             >
@@ -190,7 +190,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         {/* ヘルプモーダルボタン */}
         <button
           onClick={() => setShowHelpModal(true)}
-          className="p-2 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-amber-400 active:scale-95 transition-all cursor-pointer"
+          className="p-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-amber-400 active:scale-95 transition-all cursor-pointer"
           title="あそびかた"
         >
           <HelpCircle className="w-4 h-4" />
@@ -198,9 +198,9 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       </header>
 
       {/* 2. 探偵ステータスバー */}
-      <div className="w-full bg-slate-800/90 backdrop-blur-xs rounded-2xl border border-indigo-500/30 p-2.5 shadow-md mb-2 flex items-center justify-between">
+      <div className="w-full bg-slate-800/90 backdrop-blur-xs rounded-2xl border border-indigo-500/30 p-2 shadow-md mb-1.5 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
-          <span className="p-1.5 rounded-xl bg-amber-500/20 text-amber-400">🕵️</span>
+          <span className="p-1 rounded-lg bg-amber-500/20 text-amber-400 text-sm">🕵️</span>
           <div>
             <div className="text-[10px] font-bold text-slate-400">
               {showRuby ? "ターゲットの くにを すいりせよ！" : "ターゲットの国を推理せよ！"}
@@ -241,7 +241,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       {/* 最後の質問回答トースト */}
       {lastAnswer && (
         <div
-          className={`mb-2 px-3 py-2 rounded-2xl border text-xs font-black flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-2 duration-200 ${
+          className={`mb-1.5 px-3 py-1.5 rounded-2xl border text-xs font-black flex items-center justify-between gap-2 animate-in fade-in slide-in-from-top-2 duration-200 shrink-0 ${
             lastAnswer.isYes
               ? "bg-emerald-950/80 border-emerald-500/50 text-emerald-300"
               : "bg-rose-950/80 border-rose-500/50 text-rose-300"
@@ -261,9 +261,9 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
       )}
 
       {/* 3. 国旗ボードグリッド */}
-      <div className="w-full flex-1 min-h-0 bg-slate-950/60 rounded-3xl p-2 sm:p-2.5 border border-slate-800 shadow-inner flex flex-col justify-center overflow-y-auto mb-2">
+      <div className="w-full bg-slate-950/60 rounded-2xl p-1.5 sm:p-2 border border-slate-800 shadow-inner flex flex-col justify-center mb-1.5 shrink-0">
         <div
-          className={`grid gap-1.5 w-full ${
+          className={`grid gap-1 w-full ${
             boardSize === 16 ? "grid-cols-4" : boardSize === 20 ? "grid-cols-4 sm:grid-cols-5" : "grid-cols-4 sm:grid-cols-6"
           }`}
         >
@@ -278,7 +278,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
                   }
                 }}
                 disabled={isEliminated || !isAccuseMode}
-                className={`relative p-1 rounded-xl border transition-all duration-300 flex flex-col items-center justify-center text-center group ${
+                className={`relative p-0.5 sm:p-1 rounded-xl border transition-all duration-300 flex flex-col items-center justify-center text-center group ${
                   isEliminated
                     ? "bg-slate-900/40 border-slate-800/40 opacity-20 scale-90 blur-[0.5px] cursor-not-allowed"
                     : isAccuseMode
@@ -287,7 +287,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
                 }`}
               >
                 {/* 国旗画像 */}
-                <div className="w-full h-8 sm:h-11 rounded-lg overflow-hidden bg-slate-900 border border-slate-700/60 flex items-center justify-center">
+                <div className="w-full h-6 sm:h-7 rounded-lg overflow-hidden bg-slate-900 border border-slate-700/60 flex items-center justify-center">
                   <img
                     src={getFlagUrl(flag.code, 160)}
                     alt={flag.name}
@@ -297,8 +297,8 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
 
                 {/* 国名 */}
                 <div className="mt-0.5 w-full truncate px-0.5">
-                  {showRuby && <ruby className="text-[8px] text-slate-400 block truncate">{flag.ruby}</ruby>}
-                  <span className="text-[10px] font-bold text-slate-200 block truncate leading-tight">
+                  {showRuby && <ruby className="text-[7px] text-slate-400 block truncate leading-none">{flag.ruby}</ruby>}
+                  <span className="text-[8.5px] sm:text-[9.5px] font-bold text-slate-200 block truncate leading-tight">
                     {flag.name}
                   </span>
                 </div>
@@ -316,7 +316,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
 
         {/* 告発モード時の案内バナー */}
         {isAccuseMode && (
-          <div className="mt-2 text-center text-xs font-black text-rose-400 animate-pulse flex items-center justify-center gap-1">
+          <div className="mt-1 text-center text-xs font-black text-rose-400 animate-pulse flex items-center justify-center gap-1">
             <Search className="w-3.5 h-3.5" />
             <span>
               {showRuby
@@ -327,13 +327,13 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
         )}
       </div>
 
-      {/* 4. 質問選択エリア */}
-      <div className="w-full bg-slate-800/95 backdrop-blur-sm rounded-3xl p-2.5 sm:p-3 border border-slate-700 shadow-xl shrink-0">
+      {/* 4. 質問選択エリア（スクロールをなくし全問を常時表示） */}
+      <div className="w-full bg-slate-800/95 backdrop-blur-sm rounded-2xl p-1.5 sm:p-2 border border-slate-700 shadow-xl shrink-0">
         {/* カテゴリタブ切替 */}
-        <div className="flex bg-slate-900 p-0.5 rounded-2xl text-xs font-black mb-2 border border-slate-700">
+        <div className="flex bg-slate-900 p-0.5 rounded-xl text-xs font-black mb-1 border border-slate-700">
           <button
             onClick={() => setActiveCategory("color")}
-            className={`flex-1 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1 ${
+            className={`flex-1 py-1 rounded-lg transition-all flex items-center justify-center gap-1 ${
               activeCategory === "color" ? "bg-indigo-600 text-white shadow-xs" : "text-slate-400 hover:text-white"
             }`}
           >
@@ -342,7 +342,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
           </button>
           <button
             onClick={() => setActiveCategory("symbol")}
-            className={`flex-1 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1 ${
+            className={`flex-1 py-1 rounded-lg transition-all flex items-center justify-center gap-1 ${
               activeCategory === "symbol" ? "bg-indigo-600 text-white shadow-xs" : "text-slate-400 hover:text-white"
             }`}
           >
@@ -351,7 +351,7 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
           </button>
           <button
             onClick={() => setActiveCategory("geo")}
-            className={`flex-1 py-1.5 rounded-xl transition-all flex items-center justify-center gap-1 ${
+            className={`flex-1 py-1 rounded-lg transition-all flex items-center justify-center gap-1 ${
               activeCategory === "geo" ? "bg-indigo-600 text-white shadow-xs" : "text-slate-400 hover:text-white"
             }`}
           >
@@ -360,31 +360,35 @@ export const FlagAkinatorScreen: React.FC<FlagAkinatorScreenProps> = ({ onBack, 
           </button>
         </div>
 
-        {/* 質問リストボタン群 */}
-        <div className="flex flex-col gap-1.5 max-h-40 sm:max-h-48 overflow-y-auto pr-1 scrollbar-thin">
+        {/* 質問リストボタン群（スクロールなし・2列グリッドで全問直接アクセス可能） */}
+        <div className="grid grid-cols-2 gap-1">
           {currentCategoryQuestions.map((q) => {
             const isAsked = askedQuestionIds.has(q.id);
-            const questionLabel = showRuby && q.textRuby ? q.textRuby : q.text;
+            const label = showRuby ? q.shortTextRuby : q.shortText;
             return (
               <button
                 key={q.id}
                 onClick={() => handleAskQuestion(q)}
                 disabled={isAsked || !!gameResult}
-                className={`py-2 px-3 rounded-xl text-left text-xs sm:text-sm font-bold transition-all border flex items-center justify-between gap-2.5 cursor-pointer active:scale-98 group ${
+                className={`py-1 px-2 rounded-lg text-left font-bold transition-all border flex items-center justify-between gap-1 active:scale-98 group cursor-pointer ${
                   isAsked
                     ? "bg-slate-900/60 border-slate-800 text-slate-500 line-through opacity-50 cursor-not-allowed"
                     : "bg-slate-700/80 hover:bg-slate-700 border-slate-600 text-slate-100 hover:border-indigo-400 shadow-2xs"
                 }`}
               >
-                <span className="flex-1 leading-snug break-words">{questionLabel}</span>
+                <div className="flex items-center gap-1 min-w-0 flex-1">
+                  <span className="text-xs shrink-0">{q.icon}</span>
+                  <span className="text-[10.5px] sm:text-xs leading-tight truncate">
+                    {label}
+                  </span>
+                </div>
                 {isAsked ? (
-                  <span className="text-[10px] text-slate-500 shrink-0 font-medium px-2 py-0.5 rounded-md bg-slate-800">
-                    {showRuby ? "しつもんずみ" : "質問済"}
+                  <span className="text-[9px] text-slate-500 shrink-0 font-medium px-1.5 py-0.5 rounded bg-slate-800">
+                    {showRuby ? "ずみ" : "済"}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-indigo-300 group-hover:text-white shrink-0 font-bold bg-indigo-950/70 border border-indigo-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                    <span>{showRuby ? "しつもんする" : "質問する"}</span>
-                    <span className="text-xs">➔</span>
+                  <span className="text-[10px] text-indigo-300 group-hover:text-white shrink-0 font-bold bg-indigo-950/70 border border-indigo-500/30 px-1 py-0.5 rounded flex items-center">
+                    ➔
                   </span>
                 )}
               </button>
