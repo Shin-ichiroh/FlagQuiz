@@ -71,7 +71,7 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
         setPlayerHand(pHand);
         setCpuHand([]);
         setDeck(shuffled);
-        setInfoMessage("色・マーク・地域が同じ国旗をつなげよう！");
+        setInfoMessage("色（3色以上一致）や同じマークの国旗をつなげよう！");
       }
     },
     [mode, createShuffledDeck]
@@ -101,7 +101,7 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
     const connection = getSharedAttributes(fieldCard, card);
     if (!connection.canConnect) {
       soundEffect.playWrong();
-      setInfoMessage(`「${card.name}」は場の「${fieldCard.name}」とつながりません❌（色は2色以上一致、または同じマーク・同じ地域が必要）`);
+      setInfoMessage(`「${card.name}」は場の「${fieldCard.name}」とつながりません❌（3色以上一致、または同じマークが必要です）`);
       return;
     }
 
@@ -426,6 +426,24 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
 
       {/* 5. プレイヤーの手札エリア */}
       <div className="w-full bg-white/95 backdrop-blur-sm rounded-3xl p-3 border-2 border-slate-200 shadow-lg">
+        {/* 常時表示のルールガイドバー */}
+        <div className="mb-2.5 bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border border-indigo-200 rounded-2xl px-3 py-1.5 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1.5 font-bold text-slate-800 flex-wrap">
+            <span className="bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded-full font-black shadow-2xs">
+              ルール
+            </span>
+            <span className="text-[11px] sm:text-xs">
+              🎨 <strong className="text-indigo-900">3色以上一致</strong>（2色旗は全色一致） または ⭐ <strong className="text-indigo-900">同じマーク</strong>
+            </span>
+          </div>
+          <button
+            onClick={() => setShowHelpModal(true)}
+            className="text-[11px] text-indigo-600 hover:text-indigo-800 underline font-black shrink-0 ml-1 cursor-pointer"
+          >
+            くわしく
+          </button>
+        </div>
+
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-xs font-black text-slate-700">
             <span>あなたのお手札:</span>
@@ -564,13 +582,27 @@ export const FlagDominoScreen: React.FC<FlagDominoScreenProps> = ({ onBack, show
 
             <div className="space-y-2.5 text-xs text-slate-600 font-medium">
               <p>
-                場に出ている国旗に対して、**共通点がある国旗**を手札から出していくゲームです！
+                場に出ている国旗に対して、<strong className="text-indigo-600 font-bold">共通点がある国旗</strong>を手札から出していくゲームです！
               </p>
-              <div className="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 space-y-1">
-                <div className="font-bold text-slate-800">つながる条件:</div>
-                <div>🎨 **2色以上が共通**（赤と白、青と黄など 2色以上の一致が必要）</div>
-                <div>⭐ **同じマークがある**（星、月、十字架、ストライプ、丸、動物など）</div>
-                <div>🌏 **同じ地域（大陸）**（アジア同士、ヨーロッパ同士など）</div>
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                <div className="font-bold text-slate-800 text-xs">つながる条件:</div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">🎨</span>
+                  <div>
+                    <strong className="text-slate-900">3色以上が一致</strong>
+                    <div className="text-[11px] text-slate-500">赤・白・青など3色以上が同じならつながる！（2色国旗同士は全2色完全一致でOK）</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">⭐</span>
+                  <div>
+                    <strong className="text-slate-900">同じマーク・模様</strong>
+                    <div className="text-[11px] text-slate-500">星、月、太陽、十字、しま模様（横/縦）、丸、動物など</div>
+                  </div>
+                </div>
+                <div className="text-[11px] text-rose-600 bg-rose-50 p-2 rounded-xl border border-rose-200 font-bold">
+                  ⚠️ ※難易度調整のため、同じ地域（アジア同士など）だけではつながりません！
+                </div>
               </div>
               <p>
                 出せるカードはピカピカ光って教えてくれます！手札に出せるカードがない時は「カードをひく」ボタンを押そう。

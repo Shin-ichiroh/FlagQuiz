@@ -798,9 +798,12 @@ export function getSharedAttributes(
 ): SharedAttributeResult {
   const sharedReasons: SharedAttributeResult["sharedReasons"] = [];
 
-  // 1. 色の一致: 難易度調整のため、2色以上が共通している場合のみ接続可能！（1色だけでは不可）
+  // 1. 色の一致: 難易度調整のため、3色以上が共通している場合のみ接続可能！（2色国旗同士なら2色すべて完全一致で接続可能）
   const sharedColors = flag1.colors.filter((c) => flag2.colors.includes(c));
-  if (sharedColors.length >= 2) {
+  const isBothTwoColorExact =
+    flag1.colors.length === 2 && flag2.colors.length === 2 && sharedColors.length === 2;
+
+  if (sharedColors.length >= 3) {
     const colorNames = sharedColors.map((c) => COLOR_LABELS[c]?.label || c).join("・");
     sharedReasons.push({
       type: "color",
@@ -808,9 +811,17 @@ export function getSharedAttributes(
       label: `${colorNames}が共通（${sharedColors.length}色一致）`,
       icon: "🎨",
     });
+  } else if (isBothTwoColorExact) {
+    const colorNames = sharedColors.map((c) => COLOR_LABELS[c]?.label || c).join("・");
+    sharedReasons.push({
+      type: "color",
+      id: sharedColors.join("_"),
+      label: `${colorNames}の2色すべてが完全一致`,
+      icon: "🎨",
+    });
   }
 
-  // 2. シンボルの一致
+  // 2. シンボル・模様の一致
   for (const s of flag1.symbols) {
     if (flag2.symbols.includes(s)) {
       const info = SYMBOL_LABELS[s];
@@ -823,16 +834,7 @@ export function getSharedAttributes(
     }
   }
 
-  // 3. 地域の一致
-  if (flag1.region === flag2.region) {
-    const info = REGION_LABELS[flag1.region];
-    sharedReasons.push({
-      type: "region",
-      id: flag1.region,
-      label: `同じ${info.label}`,
-      icon: info.icon,
-    });
-  }
+  // ※ 地域（大陸）単独での接続は難易度調整（つながりやすすぎるのを防ぐ）のため廃止
 
   return {
     canConnect: sharedReasons.length > 0,
