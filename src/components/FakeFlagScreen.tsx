@@ -426,10 +426,10 @@ export const FakeFlagScreen: React.FC<FakeFlagScreenProps> = ({
                 )}
               </div>
 
-              {/* SVG国旗キャンバス */}
-              <div className="h-20 sm:h-24 aspect-[3/2] rounded-lg overflow-hidden border border-slate-200/90 shadow-inner bg-slate-50 flex items-center justify-center">
+              {/* SVG国旗キャンバス（四隅は直角） */}
+              <div className="h-20 sm:h-24 aspect-[3/2] rounded-none overflow-hidden border border-slate-300 shadow-inner bg-slate-50 flex items-center justify-center">
                 <svg
-                  viewBox="0 0 300 200"
+                  viewBox={currentStage.viewBox || "0 0 300 200"}
                   className="w-full h-full block"
                   preserveAspectRatio="none"
                 >
