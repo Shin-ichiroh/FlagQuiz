@@ -17,6 +17,7 @@ interface SettingsModalProps {
   onStartDomino: () => void;
   onStartAkinator: () => void;
   onStartFakeFlag: () => void;
+  onStartSugoroku: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
@@ -31,6 +32,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   onStartDomino,
   onStartAkinator,
   onStartFakeFlag,
+  onStartSugoroku,
 }) => {
   const modes: { id: GameMode; label: string; sub: string }[] = [
     { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
@@ -301,25 +303,43 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                 soundEffect.playTap();
                 onStartFakeFlag();
               }}
-              className="col-span-2 p-3.5 rounded-3xl bg-gradient-to-r from-white via-amber-50/40 to-orange-50/50 border-2 border-orange-200 hover:border-orange-400 active:scale-95 transition-all shadow-sm flex items-center justify-between text-left cursor-pointer group hover:shadow-md gap-3"
+              className="p-3.5 rounded-3xl bg-white border-2 border-orange-100 hover:border-orange-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-3xl p-2.5 rounded-2xl bg-orange-100/80 group-hover:scale-110 transition-transform shrink-0">
-                  🔍
-                </span>
-                <div>
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <h3 className="text-base font-black text-slate-800 leading-tight">ニセモノさがし</h3>
-                    <span className="text-[10px] font-black bg-orange-500 text-white px-2 py-0.5 rounded-full">
-                      NEW! ほんもの鑑定
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 font-semibold">
-                    そっくりなニセモノ国旗にだまされず、1枚だけの「ほんもの」を見抜こう！
-                  </p>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-orange-50 group-hover:scale-110 transition-transform">🔍</span>
+                  <span className="text-[10px] font-black bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
+                    ほんもの鑑定
+                  </span>
                 </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">ニセモノさがし</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">そっくりな4枚から1枚だけの「ほんもの」を見抜こう！</p>
               </div>
-              <div className="shrink-0 flex items-center gap-1 text-xs font-black text-orange-600 bg-white px-3 py-1.5 rounded-2xl border border-orange-200 shadow-2xs">
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-orange-600">
+                <span>あそぶ</span>
+                <span>➔</span>
+              </div>
+            </button>
+
+            {/* 8. こっきすごろく（世界一周トラベル） */}
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                onStartSugoroku();
+              }}
+              className="p-3.5 rounded-3xl bg-white border-2 border-sky-100 hover:border-sky-400 active:scale-95 transition-all shadow-sm flex flex-col justify-between text-left cursor-pointer group hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-3xl p-2 rounded-2xl bg-sky-50 group-hover:scale-110 transition-transform">🧭</span>
+                  <span className="text-[10px] font-black bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full">
+                    世界一周ボード
+                  </span>
+                </div>
+                <h3 className="text-base font-black text-slate-800 leading-tight">こっきすごろく</h3>
+                <p className="text-[11px] text-slate-500 font-semibold mt-1">サイコロと空港ワープで世界一周レースに出発！</p>
+              </div>
+              <div className="mt-3 flex items-center gap-1 text-xs font-black text-sky-600">
                 <span>あそぶ</span>
                 <span>➔</span>
               </div>
