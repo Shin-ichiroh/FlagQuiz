@@ -12,7 +12,8 @@ export type AppScreen =
   | "domino"
   | "akinator"
   | "fake_flag"
-  | "sugoroku";
+  | "sugoroku"
+  | "flashlight";
 
 export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location" | "compare" | "capital";
 

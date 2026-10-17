@@ -12,6 +12,7 @@ import { FlagDominoScreen } from "./components/FlagDominoScreen";
 import { FlagAkinatorScreen } from "./components/FlagAkinatorScreen";
 import { FakeFlagScreen } from "./components/FakeFlagScreen";
 import { FlagSugorokuScreen } from "./components/FlagSugorokuScreen";
+import { FlagFlashlightScreen } from "./components/FlagFlashlightScreen";
 import { generateQuizQuestions } from "./utils/quizGenerator";
 import { getSavedPlayerName } from "./utils/ranking";
 
@@ -65,6 +66,7 @@ export function App() {
           onStartAkinator={() => setScreen("akinator")}
           onStartFakeFlag={() => setScreen("fake_flag")}
           onStartSugoroku={() => setScreen("sugoroku")}
+          onStartFlashlight={() => setScreen("flashlight")}
         />
       )}
 
@@ -141,6 +143,13 @@ export function App() {
 
       {screen === "sugoroku" && (
         <FlagSugorokuScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "flashlight" && (
+        <FlagFlashlightScreen
           onBack={() => setScreen("settings")}
           showRuby={settings.showRuby}
         />
