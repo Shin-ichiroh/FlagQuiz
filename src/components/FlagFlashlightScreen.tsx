@@ -14,7 +14,8 @@ import {
   Volume2,
   Compass,
 } from "lucide-react";
-import { FLAG_ATTRIBUTES, type FlagAttribute } from "../data/flagAttributes";
+import { COUNTRIES } from "../data/countries";
+import { FLAG_ATTRIBUTES } from "../data/flagAttributes";
 import { getFlagUrl } from "../utils/quizGenerator";
 import { soundEffect } from "../utils/sound";
 import { speech } from "../utils/speech";
@@ -25,6 +26,86 @@ interface FlagFlashlightScreenProps {
 }
 
 type DifficultyLevel = "easy" | "normal" | "hard";
+type RegionScope = "all" | "popular" | "asia" | "europe" | "africa" | "americas" | "oceania";
+
+interface FlashlightFlagItem {
+  code: string;
+  name: string;
+  ruby: string;
+  region: string;
+  regionLabel: string;
+  triviaShort: string;
+  isPopular: boolean;
+}
+
+const REGION_LABEL_MAP: Record<string, string> = {
+  asia: "アジア",
+  europe: "ヨーロッパ",
+  africa: "アフリカ",
+  north_america: "北・中米",
+  south_america: "南アメリカ",
+  oceania: "オセアニア",
+};
+
+// 人気・特徴的な国旗75カ国コード（初級〜中級でも楽しく遊べる拡張リスト）
+const POPULAR_CODES = new Set([
+  ...FLAG_ATTRIBUTES.map((f) => f.code),
+  "FI", "DK", "IS", "IE", "BE", "PT", "PL", "AT", "HU", "CZ", "RO", "HR", "UA",
+  "TH", "MY", "SG", "PH", "ID", "MM", "NP", "PK", "BD", "LK", "MN", "KP", "TW",
+  "IL", "AE", "QA", "IR", "IQ", "SY", "LB", "JO", "KW",
+  "MA", "DZ", "TN", "GH", "ET", "TZ", "CM", "SN", "CI", "MG",
+  "CO", "PE", "VE", "UY", "PY", "BO", "EC", "CR", "PA", "BS", "TT",
+  "NZ", "FJ", "PG", "WS", "TO",
+]);
+
+// 全197カ国のデータプールを構築
+const ALL_FLASHLIGHT_FLAGS: FlashlightFlagItem[] = COUNTRIES.map((c) => {
+  const upperCode = c.code.toUpperCase();
+  const attr = FLAG_ATTRIBUTES.find((a) => a.code.toUpperCase() === upperCode);
+  return {
+    code: upperCode,
+    name: c.name,
+    ruby: c.ruby,
+    region: c.region,
+    regionLabel: attr?.regionLabel || REGION_LABEL_MAP[c.region] || "世界",
+    triviaShort:
+      attr?.triviaShort ||
+      c.trivia?.[0]?.explanation ||
+      `${c.name}（${REGION_LABEL_MAP[c.region] || "世界"}）の国旗です。`,
+    isPopular: POPULAR_CODES.has(upperCode),
+  };
+});
+
+const SCOPE_OPTIONS: { id: RegionScope; label: string }[] = [
+  { id: "all", label: `🌍 全世界(${ALL_FLASHLIGHT_FLAGS.length})` },
+  { id: "popular", label: "⭐ 有名国旗(75)" },
+  { id: "asia", label: "🌏 アジア" },
+  { id: "europe", label: "🏰 ヨーロッパ" },
+  { id: "africa", label: "🦁 アフリカ" },
+  { id: "americas", label: "🗽 南北アメリカ" },
+  { id: "oceania", label: "🦘 オセアニア" },
+];
+
+const getPoolByScope = (scope: RegionScope): FlashlightFlagItem[] => {
+  switch (scope) {
+    case "popular":
+      return ALL_FLASHLIGHT_FLAGS.filter((f) => f.isPopular);
+    case "asia":
+      return ALL_FLASHLIGHT_FLAGS.filter((f) => f.region === "asia");
+    case "europe":
+      return ALL_FLASHLIGHT_FLAGS.filter((f) => f.region === "europe");
+    case "africa":
+      return ALL_FLASHLIGHT_FLAGS.filter((f) => f.region === "africa");
+    case "americas":
+      return ALL_FLASHLIGHT_FLAGS.filter(
+        (f) => f.region === "north_america" || f.region === "south_america"
+      );
+    case "oceania":
+      return ALL_FLASHLIGHT_FLAGS.filter((f) => f.region === "oceania");
+    default:
+      return ALL_FLASHLIGHT_FLAGS;
+  }
+};
 
 const DIFFICULTY_CONFIG: Record<
   DifficultyLevel,
@@ -60,6 +141,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
   showRuby = true,
 }) => {
   const [difficulty, setDifficulty] = useState<DifficultyLevel>("normal");
+  const [regionScope, setRegionScope] = useState<RegionScope>("all");
 
   // クイズ進行状態
   const [questionIndex, setQuestionIndex] = useState<number>(0);
@@ -69,8 +151,8 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   // 現在の問題データ
-  const [targetFlag, setTargetFlag] = useState<FlagAttribute>(FLAG_ATTRIBUTES[0]);
-  const [options, setOptions] = useState<FlagAttribute[]>([]);
+  const [targetFlag, setTargetFlag] = useState<FlashlightFlagItem>(ALL_FLASHLIGHT_FLAGS[0]);
+  const [options, setOptions] = useState<FlashlightFlagItem[]>([]);
   const [wrongCodes, setWrongCodes] = useState<string[]>([]);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
 
@@ -89,18 +171,24 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
 
   // 1問分の出題生成
   const generateQuestion = useCallback(
-    (diff: DifficultyLevel) => {
-      const available = FLAG_ATTRIBUTES.filter((f) => !usedCodesRef.current.includes(f.code));
-      const pool = available.length >= 4 ? available : FLAG_ATTRIBUTES;
+    (diff: DifficultyLevel, scope: RegionScope) => {
+      const scopePool = getPoolByScope(scope);
+      const available = scopePool.filter((f) => !usedCodesRef.current.includes(f.code));
+      const pool = available.length >= 4 ? available : scopePool;
 
       const target = pool[Math.floor(Math.random() * pool.length)];
       usedCodesRef.current = [...usedCodesRef.current, target.code];
 
-      // ダミー選択肢3つ（同じ色や地域が近いものを優先して混ぜると面白い）
-      const others = FLAG_ATTRIBUTES.filter((f) => f.code !== target.code).sort(
+      // ダミー選択肢3つ（同じ地域または現在のスコープから優先して選ぶ）
+      const sameScopeOthers = scopePool
+        .filter((f) => f.code !== target.code)
+        .sort(() => Math.random() - 0.5);
+      const sameRegionOthers = sameScopeOthers.filter((f) => f.region === target.region);
+      const diffRegionOthers = sameScopeOthers.filter((f) => f.region !== target.region);
+      const dummyCandidates = [...sameRegionOthers.slice(0, 2), ...diffRegionOthers, ...sameRegionOthers.slice(2)];
+      const fourOptions = [target, ...dummyCandidates.slice(0, 3)].sort(
         () => Math.random() - 0.5
       );
-      const fourOptions = [target, ...others.slice(0, 3)].sort(() => Math.random() - 0.5);
 
       setTargetFlag(target);
       setOptions(fourOptions);
@@ -125,21 +213,21 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
 
   // ゲーム全体の初期化
   const startNewExpedition = useCallback(
-    (diff: DifficultyLevel) => {
+    (diff: DifficultyLevel, scope: RegionScope) => {
       usedCodesRef.current = [];
       setQuestionIndex(0);
       setScore(0);
       setCombo(0);
       setFirstTryCount(0);
       setIsFinished(false);
-      generateQuestion(diff);
+      generateQuestion(diff, scope);
     },
     [generateQuestion]
   );
 
   useEffect(() => {
-    startNewExpedition(difficulty);
-  }, [difficulty, startNewExpedition]);
+    startNewExpedition(difficulty, regionScope);
+  }, [difficulty, regionScope, startNewExpedition]);
 
   // オート巡回アニメーション（指で触っていない間、懐中電灯が8の字でゆっくり国旗を照らす）
   useEffect(() => {
@@ -187,7 +275,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
   };
 
   // 選択肢をタップした時
-  const handleSelectOption = (option: FlagAttribute) => {
+  const handleSelectOption = (option: FlashlightFlagItem) => {
     if (isRevealed || wrongCodes.includes(option.code)) return;
 
     if (option.code === targetFlag.code) {
@@ -234,7 +322,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
       confetti({ particleCount: 90, spread: 80, origin: { y: 0.5 } });
     } else {
       setQuestionIndex((i) => i + 1);
-      generateQuestion(difficulty);
+      generateQuestion(difficulty, regionScope);
     }
   };
 
@@ -308,13 +396,36 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
         </div>
 
         <button
-          onClick={() => startNewExpedition(difficulty)}
+          onClick={() => startNewExpedition(difficulty, regionScope)}
           className="p-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-amber-400 active:scale-95 transition-all cursor-pointer"
           title="はじめから"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
       </header>
+
+      {/* 1.5. 出題エリア切り替えバー（全世界197カ国・有名75カ国・地域別） */}
+      <div className="flex gap-1 overflow-x-auto pb-1 mb-1 bg-slate-800/75 p-1 rounded-xl border border-slate-700/80 scrollbar-none">
+        {SCOPE_OPTIONS.map((sc) => {
+          const isActive = regionScope === sc.id;
+          return (
+            <button
+              key={sc.id}
+              onClick={() => {
+                soundEffect.playTap();
+                setRegionScope(sc.id);
+              }}
+              className={`shrink-0 px-2.5 py-0.5 rounded-lg text-[10px] font-black transition-all cursor-pointer ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-2xs ring-1 ring-indigo-400"
+                  : "bg-slate-900/70 text-slate-300 hover:bg-slate-700 hover:text-white"
+              }`}
+            >
+              {sc.label}
+            </button>
+          );
+        })}
+      </div>
 
       {/* 2. ステータス＆バッテリーゲージバー */}
       <div className="w-full bg-slate-800/90 rounded-2xl px-3 py-1.5 border border-slate-700 mb-2 flex items-center justify-between gap-2">
@@ -395,7 +506,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
           </div>
         </div>
 
-        {/* 国旗＆暗闇マスクボックス */}
+        {/* 国旗＆暗闇マスクボックス（四隅は直角） */}
         <div
           ref={containerRef}
           onMouseMove={(e) => updateLightFromClientXY(e.clientX, e.clientY)}
@@ -410,7 +521,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
               updateLightFromClientXY(e.touches[0].clientX, e.touches[0].clientY);
             }
           }}
-          className={`relative w-full max-w-[340px] sm:max-w-[380px] aspect-[3/2] rounded-2xl overflow-hidden border-4 transition-all duration-300 shadow-2xl cursor-crosshair touch-none ${
+          className={`relative w-full max-w-[340px] sm:max-w-[380px] aspect-[3/2] rounded-none overflow-hidden border-4 transition-all duration-300 shadow-2xl cursor-crosshair touch-none ${
             isRevealed
               ? "border-amber-400 ring-4 ring-amber-400/30"
               : "border-slate-700 bg-slate-950"
@@ -563,7 +674,7 @@ export const FlagFlashlightScreen: React.FC<FlagFlashlightScreenProps> = ({
 
             <div className="flex gap-2">
               <button
-                onClick={() => startNewExpedition(difficulty)}
+                onClick={() => startNewExpedition(difficulty, regionScope)}
                 className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs shadow-md active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1"
               >
                 <RotateCcw className="w-4 h-4" />

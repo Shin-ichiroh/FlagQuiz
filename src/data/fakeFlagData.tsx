@@ -1501,4 +1501,1978 @@ export const FAKE_FLAG_STAGES: FakeFlagStage[] = [
       },
     ],
   },
+
+  // 21. ベルギー
+  {
+    id: "be",
+    countryCode: "be",
+    countryName: "ベルギー",
+    countryRuby: "べるぎー",
+    difficulty: 1,
+    hint: "左から「黒・黄・赤」にならぶ縦の3色旗だよ！（ドイツは横しま！）",
+    trivia: "ベルギーの国旗は左（ポール側）から「黒・黄・赤」の縦三色旗です。ドイツと同じ3色ですが、向きと順番が異なります。",
+    variants: [
+      {
+        id: "be_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#000000" />
+            <rect x="100" y="0" width="100" height="200" fill="#fae042" />
+            <rect x="200" y="0" width="100" height="200" fill="#ed2939" />
+          </>
+        ),
+      },
+      {
+        id: "be_fake_midred",
+        isReal: false,
+        fakeReason: "真ん中が黄色ではなく赤（黒・赤・黄）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#000000" />
+            <rect x="100" y="0" width="100" height="200" fill="#ed2939" />
+            <rect x="200" y="0" width="100" height="200" fill="#fae042" />
+          </>
+        ),
+      },
+      {
+        id: "be_fake_rev",
+        isReal: false,
+        fakeReason: "左が赤で右が黒（左右が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ed2939" />
+            <rect x="100" y="0" width="100" height="200" fill="#fae042" />
+            <rect x="200" y="0" width="100" height="200" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "be_fake_horiz",
+        isReal: false,
+        fakeReason: "縦しまではなく横しまになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#000000" />
+            <rect x="0" y="67" width="300" height="66" fill="#fae042" />
+            <rect x="0" y="133" width="300" height="67" fill="#ed2939" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 22. オランダ
+  {
+    id: "nl",
+    countryCode: "nl",
+    countryName: "オランダ",
+    countryRuby: "おらんだ",
+    difficulty: 1,
+    hint: "上から「赤・白・青」の横3色旗だよ！（フランスは縦しま！）",
+    trivia: "オランダの国旗は上から「赤・白・青」の横三色旗。世界中の三色旗のお手本になった歴史ある国旗です。",
+    variants: [
+      {
+        id: "nl_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ae1c28" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#21468b" />
+          </>
+        ),
+      },
+      {
+        id: "nl_fake_upside",
+        isReal: false,
+        fakeReason: "上が青で下が赤（上下が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#21468b" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#ae1c28" />
+          </>
+        ),
+      },
+      {
+        id: "nl_fake_russia",
+        isReal: false,
+        fakeReason: "上から白・青・赤（ロシアの国旗）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ffffff" />
+            <rect x="0" y="67" width="300" height="66" fill="#21468b" />
+            <rect x="0" y="133" width="300" height="67" fill="#ae1c28" />
+          </>
+        ),
+      },
+      {
+        id: "nl_fake_vert",
+        isReal: false,
+        fakeReason: "横しまではなく縦しまになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ae1c28" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#21468b" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 23. ロシア
+  {
+    id: "ru",
+    countryCode: "ru",
+    countryName: "ロシア",
+    countryRuby: "ろしあ",
+    difficulty: 1,
+    hint: "上から「白・青・赤」の横3色旗だよ！",
+    trivia: "ロシアの国旗は上から「白・青・赤」の横三色旗。オランダの国旗を参考にして作られたと言われています。",
+    variants: [
+      {
+        id: "ru_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ffffff" />
+            <rect x="0" y="67" width="300" height="66" fill="#0039a6" />
+            <rect x="0" y="133" width="300" height="67" fill="#d52b1e" />
+          </>
+        ),
+      },
+      {
+        id: "ru_fake_nl",
+        isReal: false,
+        fakeReason: "上から赤・白・青（オランダの順番）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#d52b1e" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#0039a6" />
+          </>
+        ),
+      },
+      {
+        id: "ru_fake_upside",
+        isReal: false,
+        fakeReason: "上から赤・青・白（上下が逆・セルビア風）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#d52b1e" />
+            <rect x="0" y="67" width="300" height="66" fill="#0039a6" />
+            <rect x="0" y="133" width="300" height="67" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "ru_fake_midwhite",
+        isReal: false,
+        fakeReason: "上から青・白・赤になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#0039a6" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#d52b1e" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 24. アイルランド
+  {
+    id: "ie",
+    countryCode: "ie",
+    countryName: "アイルランド",
+    countryRuby: "あいるらんど",
+    difficulty: 2,
+    hint: "左から「緑・白・オレンジ」の縦3色旗だよ！（左が緑！）",
+    trivia: "アイルランドの国旗は左から「緑・白・オレンジ」。左右が逆（オレンジ・白・緑）になるとコートジボワールの国旗になります！",
+    variants: [
+      {
+        id: "ie_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#169b62" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#ff883e" />
+          </>
+        ),
+      },
+      {
+        id: "ie_fake_ci",
+        isReal: false,
+        fakeReason: "左がオレンジで右が緑（コートジボワール国旗）！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ff883e" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#169b62" />
+          </>
+        ),
+      },
+      {
+        id: "ie_fake_horiz",
+        isReal: false,
+        fakeReason: "縦しまではなく横しま（インド風）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ff883e" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#169b62" />
+          </>
+        ),
+      },
+      {
+        id: "ie_fake_midgreen",
+        isReal: false,
+        fakeReason: "真ん中が白ではなく緑になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="100" height="200" fill="#169b62" />
+            <rect x="200" y="0" width="100" height="200" fill="#ff883e" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 25. コートジボワール
+  {
+    id: "ci",
+    countryCode: "ci",
+    countryName: "コートジボワール",
+    countryRuby: "こーとじぼわーる",
+    difficulty: 2,
+    hint: "左から「オレンジ・白・緑」の縦3色旗だよ！（アイルランドと左右が逆！）",
+    trivia: "西アフリカの国コートジボワールの国旗は、左から「オレンジ・白・緑」。オレンジは北部の大地（サバンナ）、緑は南部の森林を表します。",
+    variants: [
+      {
+        id: "ci_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#f77f00" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#009e60" />
+          </>
+        ),
+      },
+      {
+        id: "ci_fake_ie",
+        isReal: false,
+        fakeReason: "左が緑で右がオレンジ（アイルランド国旗）！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#009e60" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#f77f00" />
+          </>
+        ),
+      },
+      {
+        id: "ci_fake_horiz",
+        isReal: false,
+        fakeReason: "縦しまではなく横しまになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#f77f00" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#009e60" />
+          </>
+        ),
+      },
+      {
+        id: "ci_fake_midorange",
+        isReal: false,
+        fakeReason: "真ん中が白ではなくオレンジになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="100" height="200" fill="#f77f00" />
+            <rect x="200" y="0" width="100" height="200" fill="#009e60" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 26. ポーランド
+  {
+    id: "pl",
+    countryCode: "pl",
+    countryName: "ポーランド",
+    countryRuby: "ぽーらんど",
+    difficulty: 1,
+    hint: "上が「白」、下が「赤」の横2色旗だよ！（インドネシアやモナコと上下が逆！）",
+    trivia: "ポーランドの国旗は「上が白・下が赤」。インドネシアやモナコの国旗（上が赤・下が白）とちょうど上下が逆です！",
+    variants: [
+      {
+        id: "pl_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#ffffff" />
+            <rect x="0" y="100" width="300" height="100" fill="#dc143c" />
+          </>
+        ),
+      },
+      {
+        id: "pl_fake_id",
+        isReal: false,
+        fakeReason: "上が赤で下が白（インドネシア・モナコ）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#dc143c" />
+            <rect x="0" y="100" width="300" height="100" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "pl_fake_vert",
+        isReal: false,
+        fakeReason: "横2色ではなく縦2色（マルタ風）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="150" height="200" fill="#ffffff" />
+            <rect x="150" y="0" width="150" height="200" fill="#dc143c" />
+          </>
+        ),
+      },
+      {
+        id: "pl_fake_blue",
+        isReal: false,
+        fakeReason: "下が赤ではなく青になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#ffffff" />
+            <rect x="0" y="100" width="300" height="100" fill="#0039a6" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 27. オーストリア
+  {
+    id: "at",
+    countryCode: "at",
+    countryName: "オーストリア",
+    countryRuby: "おーすとりあ",
+    difficulty: 1,
+    hint: "上から「赤・白・赤」の横3本しまだよ！（縦しまはペルー！）",
+    trivia: "オーストリアの国旗は上から「赤・白・赤」の横三色旗。世界最古級の国旗デザインのひとつとして知られています。",
+    variants: [
+      {
+        id: "at_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ed2939" />
+            <rect x="0" y="67" width="300" height="66" fill="#ffffff" />
+            <rect x="0" y="133" width="300" height="67" fill="#ed2939" />
+          </>
+        ),
+      },
+      {
+        id: "at_fake_peru",
+        isReal: false,
+        fakeReason: "横しまではなく縦しま（ペルーの国旗）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ed2939" />
+            <rect x="100" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="200" y="0" width="100" height="200" fill="#ed2939" />
+          </>
+        ),
+      },
+      {
+        id: "at_fake_inv",
+        isReal: false,
+        fakeReason: "赤と白が逆（白・赤・白）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ffffff" />
+            <rect x="0" y="67" width="300" height="66" fill="#ed2939" />
+            <rect x="0" y="133" width="300" height="67" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "at_fake_blue",
+        isReal: false,
+        fakeReason: "真ん中が白ではなく青になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="67" fill="#ed2939" />
+            <rect x="0" y="67" width="300" height="66" fill="#0039a6" />
+            <rect x="0" y="133" width="300" height="67" fill="#ed2939" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 28. フィンランド
+  {
+    id: "fi",
+    countryCode: "fi",
+    countryName: "フィンランド",
+    countryRuby: "ふぃんらんど",
+    difficulty: 2,
+    hint: "白い背景に、左寄りの太い「青い北欧十字」があるよ！",
+    trivia: "フィンランドの国旗は、雪を表す「白地」に、湖と空を表す「青い北欧十字（交点が左寄り）」が描かれています。",
+    variants: [
+      {
+        id: "fi_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="85" y="0" width="48" height="200" fill="#002f6c" />
+            <rect x="0" y="76" width="300" height="48" fill="#002f6c" />
+          </>
+        ),
+      },
+      {
+        id: "fi_fake_inv",
+        isReal: false,
+        fakeReason: "白と青の色が逆（青地に白十字）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#002f6c" />
+            <rect x="85" y="0" width="48" height="200" fill="#ffffff" />
+            <rect x="0" y="76" width="300" height="48" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "fi_fake_right",
+        isReal: false,
+        fakeReason: "十字の交点が左寄りではなく右寄りになっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="167" y="0" width="48" height="200" fill="#002f6c" />
+            <rect x="0" y="76" width="300" height="48" fill="#002f6c" />
+          </>
+        ),
+      },
+      {
+        id: "fi_fake_x",
+        isReal: false,
+        fakeReason: "縦横の十字ではなく斜めクロス（×）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <line x1="0" y1="0" x2="300" y2="200" stroke="#002f6c" strokeWidth="42" />
+            <line x1="300" y1="0" x2="0" y2="200" stroke="#002f6c" strokeWidth="42" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 29. デンマーク
+  {
+    id: "dk",
+    countryCode: "dk",
+    countryName: "デンマーク",
+    countryRuby: "でんまーく",
+    difficulty: 2,
+    hint: "赤い背景に、端まで届く「左寄りの白い北欧十字」だよ！（端まで届かないのはスイス！）",
+    trivia: "デンマークの国旗「ダンネブロ」は現存する世界最古の国旗。赤地に端まで届く左寄りの白い十字です。",
+    variants: [
+      {
+        id: "dk_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c8102e" />
+            <rect x="90" y="0" width="34" height="200" fill="#ffffff" />
+            <rect x="0" y="83" width="300" height="34" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "dk_fake_right",
+        isReal: false,
+        fakeReason: "十字の交点が左寄りではなく右寄りになっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c8102e" />
+            <rect x="176" y="0" width="34" height="200" fill="#ffffff" />
+            <rect x="0" y="83" width="300" height="34" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "dk_fake_inv",
+        isReal: false,
+        fakeReason: "白地に赤い十字（イングランド風）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="90" y="0" width="34" height="200" fill="#c8102e" />
+            <rect x="0" y="83" width="300" height="34" fill="#c8102e" />
+          </>
+        ),
+      },
+      {
+        id: "dk_fake_yellow",
+        isReal: false,
+        fakeReason: "十字が白ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c8102e" />
+            <rect x="90" y="0" width="34" height="200" fill="#ffce00" />
+            <rect x="0" y="83" width="300" height="34" fill="#ffce00" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 30. アイスランド
+  {
+    id: "is",
+    countryCode: "is",
+    countryName: "アイスランド",
+    countryRuby: "あいすらんど",
+    difficulty: 3,
+    hint: "青い背景に、白いふちどりの「赤い北欧十字（左寄り）」だよ！（ノルウェーと青・赤が逆！）",
+    trivia: "アイスランドの国旗は「青地に白ふちの赤い十字」。青は大西洋、白は氷河と雪、赤は火山のマグマを表しています。",
+    variants: [
+      {
+        id: "is_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#02529c" />
+            <rect x="80" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="0" y="75" width="300" height="50" fill="#ffffff" />
+            <rect x="92" y="0" width="26" height="200" fill="#dc1e35" />
+            <rect x="0" y="87" width="300" height="26" fill="#dc1e35" />
+          </>
+        ),
+      },
+      {
+        id: "is_fake_no",
+        isReal: false,
+        fakeReason: "赤と青が逆（ノルウェーの国旗）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#dc1e35" />
+            <rect x="80" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="0" y="75" width="300" height="50" fill="#ffffff" />
+            <rect x="92" y="0" width="26" height="200" fill="#02529c" />
+            <rect x="0" y="87" width="300" height="26" fill="#02529c" />
+          </>
+        ),
+      },
+      {
+        id: "is_fake_right",
+        isReal: false,
+        fakeReason: "十字の交点が左寄りではなく右寄りになっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#02529c" />
+            <rect x="170" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="0" y="75" width="300" height="50" fill="#ffffff" />
+            <rect x="182" y="0" width="26" height="200" fill="#dc1e35" />
+            <rect x="0" y="87" width="300" height="26" fill="#dc1e35" />
+          </>
+        ),
+      },
+      {
+        id: "is_fake_swapborder",
+        isReal: false,
+        fakeReason: "赤ふちに白い十字（内側とふちの色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#02529c" />
+            <rect x="80" y="0" width="50" height="200" fill="#dc1e35" />
+            <rect x="0" y="75" width="300" height="50" fill="#dc1e35" />
+            <rect x="92" y="0" width="26" height="200" fill="#ffffff" />
+            <rect x="0" y="87" width="300" height="26" fill="#ffffff" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 31. タイ
+  {
+    id: "th",
+    countryCode: "th",
+    countryName: "タイ",
+    countryRuby: "たい",
+    difficulty: 2,
+    hint: "外側から「赤・白・真ん中が太い紺色・白・赤」の横しまだよ！",
+    trivia: "タイの国旗は、真ん中が一番太い「紺色（青）」で、その上下に白、一番外側の上下が赤です。赤と紺が逆になるとコスタリカの国旗になります！",
+    variants: [
+      {
+        id: "th_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#a51931" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#2d2a4a" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#a51931" />
+          </>
+        ),
+      },
+      {
+        id: "th_fake_cr",
+        isReal: false,
+        fakeReason: "赤と紺が逆（真ん中が赤＝コスタリカ国旗）！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#2d2a4a" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#a51931" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#2d2a4a" />
+          </>
+        ),
+      },
+      {
+        id: "th_fake_midwhite",
+        isReal: false,
+        fakeReason: "真ん中の太い帯が白になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#a51931" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#2d2a4a" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#ffffff" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#2d2a4a" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#a51931" />
+          </>
+        ),
+      },
+      {
+        id: "th_fake_vert",
+        isReal: false,
+        fakeReason: "横しまではなく縦しまになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="50" height="200" fill="#a51931" />
+            <rect x="50" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="100" height="200" fill="#2d2a4a" />
+            <rect x="200" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="250" y="0" width="50" height="200" fill="#a51931" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 32. コスタリカ
+  {
+    id: "cr",
+    countryCode: "cr",
+    countryName: "コスタリカ",
+    countryRuby: "こすたりか",
+    difficulty: 3,
+    hint: "外側から「青・白・真ん中が太い赤・白・青」の横しまだよ！（タイと赤・青が逆！）",
+    trivia: "中米の国コスタリカの国旗は、真ん中が太い「赤」で上下が白、一番外側が「青」です。タイの国旗と赤・青の配置がちょうど逆になっています！",
+    variants: [
+      {
+        id: "cr_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#002b7f" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#ce1126" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#002b7f" />
+          </>
+        ),
+      },
+      {
+        id: "cr_fake_th",
+        isReal: false,
+        fakeReason: "赤と青が逆（真ん中が青＝タイの国旗）！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#ce1126" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#002b7f" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#ffffff" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#ce1126" />
+          </>
+        ),
+      },
+      {
+        id: "cr_fake_yellow",
+        isReal: false,
+        fakeReason: "白い帯が黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="33.3" fill="#002b7f" />
+            <rect x="0" y="33.3" width="300" height="33.3" fill="#fcd116" />
+            <rect x="0" y="66.6" width="300" height="66.8" fill="#ce1126" />
+            <rect x="0" y="133.4" width="300" height="33.3" fill="#fcd116" />
+            <rect x="0" y="166.7" width="300" height="33.3" fill="#002b7f" />
+          </>
+        ),
+      },
+      {
+        id: "cr_fake_vert",
+        isReal: false,
+        fakeReason: "横しまではなく縦しまになっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="50" height="200" fill="#002b7f" />
+            <rect x="50" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="100" height="200" fill="#ce1126" />
+            <rect x="200" y="0" width="50" height="200" fill="#ffffff" />
+            <rect x="250" y="0" width="50" height="200" fill="#002b7f" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 33. コロンビア
+  {
+    id: "co",
+    countryCode: "co",
+    countryName: "コロンビア",
+    countryRuby: "ころんびあ",
+    difficulty: 2,
+    hint: "上半分が「太い黄色（2倍）」、その下が「青」、一番下が「赤」だよ！",
+    trivia: "南米コロンビアの国旗は、上から「黄・青・赤」の横三色ですが、一番上の黄色だけ幅が2倍（全体の半分）になっているのが特徴です！",
+    variants: [
+      {
+        id: "co_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#fcd116" />
+            <rect x="0" y="100" width="300" height="50" fill="#003893" />
+            <rect x="0" y="150" width="300" height="50" fill="#ce1126" />
+          </>
+        ),
+      },
+      {
+        id: "co_fake_swapbr",
+        isReal: false,
+        fakeReason: "下の青と赤の順番が逆（黄・赤・青）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#fcd116" />
+            <rect x="0" y="100" width="300" height="50" fill="#ce1126" />
+            <rect x="0" y="150" width="300" height="50" fill="#003893" />
+          </>
+        ),
+      },
+      {
+        id: "co_fake_upside",
+        isReal: false,
+        fakeReason: "上下が逆（下が太い黄色）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="50" fill="#ce1126" />
+            <rect x="0" y="50" width="300" height="50" fill="#003893" />
+            <rect x="0" y="100" width="300" height="100" fill="#fcd116" />
+          </>
+        ),
+      },
+      {
+        id: "co_fake_vert",
+        isReal: false,
+        fakeReason: "横しまではなく縦しま（ルーマニア風）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#003893" />
+            <rect x="100" y="0" width="100" height="200" fill="#fcd116" />
+            <rect x="200" y="0" width="100" height="200" fill="#ce1126" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 34. チェコ
+  {
+    id: "cz",
+    countryCode: "cz",
+    countryName: "チェコ",
+    countryRuby: "ちぇこ",
+    difficulty: 2,
+    hint: "左側に「青い三角形」、上が「白」、下が「赤」だよ！",
+    trivia: "チェコの国旗は、ポーランドと同じ「上白・下赤」に、左側から「青い二等辺三角形」が真ん中まで差し込まれたデザインです。",
+    variants: [
+      {
+        id: "cz_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#ffffff" />
+            <rect x="0" y="100" width="300" height="100" fill="#d7141a" />
+            <polygon points="0,0 150,100 0,200" fill="#11457e" />
+          </>
+        ),
+      },
+      {
+        id: "cz_fake_upside",
+        isReal: false,
+        fakeReason: "上が赤で下が白（白と赤が上下逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#d7141a" />
+            <rect x="0" y="100" width="300" height="100" fill="#ffffff" />
+            <polygon points="0,0 150,100 0,200" fill="#11457e" />
+          </>
+        ),
+      },
+      {
+        id: "cz_fake_right",
+        isReal: false,
+        fakeReason: "青い三角形が左ではなく右にある！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#ffffff" />
+            <rect x="0" y="100" width="300" height="100" fill="#d7141a" />
+            <polygon points="300,0 150,100 300,200" fill="#11457e" />
+          </>
+        ),
+      },
+      {
+        id: "cz_fake_redtri",
+        isReal: false,
+        fakeReason: "左の三角形が赤で、下が青になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="100" fill="#ffffff" />
+            <rect x="0" y="100" width="300" height="100" fill="#11457e" />
+            <polygon points="0,0 150,100 0,200" fill="#d7141a" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 35. ジャマイカ
+  {
+    id: "jm",
+    countryCode: "jm",
+    countryName: "ジャマイカ",
+    countryRuby: "じゃまいか",
+    difficulty: 2,
+    hint: "黄色の斜めクロス（×）で分けられた、上下が「緑」、左右が「黒」だよ！",
+    trivia: "ジャマイカの国旗は、世界で唯一「赤・白・青」のどれも使われていない国旗のひとつ！上下が緑、左右が黒、斜め十字が黄金色です。",
+    variants: [
+      {
+        id: "jm_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#fed100" />
+            <polygon points="35,0 265,0 150,76" fill="#007749" />
+            <polygon points="35,200 265,200 150,124" fill="#007749" />
+            <polygon points="0,23 0,177 115,100" fill="#000000" />
+            <polygon points="300,23 300,177 185,100" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "jm_fake_swap",
+        isReal: false,
+        fakeReason: "緑と黒の位置が逆（上下が黒、左右が緑）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#fed100" />
+            <polygon points="35,0 265,0 150,76" fill="#000000" />
+            <polygon points="35,200 265,200 150,124" fill="#000000" />
+            <polygon points="0,23 0,177 115,100" fill="#007749" />
+            <polygon points="300,23 300,177 185,100" fill="#007749" />
+          </>
+        ),
+      },
+      {
+        id: "jm_fake_plus",
+        isReal: false,
+        fakeReason: "斜めクロス（×）ではなく縦横の十字（＋）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#007749" />
+            <rect x="0" y="0" width="130" height="80" fill="#000000" />
+            <rect x="170" y="120" width="130" height="80" fill="#000000" />
+            <rect x="130" y="0" width="40" height="200" fill="#fed100" />
+            <rect x="0" y="80" width="300" height="40" fill="#fed100" />
+          </>
+        ),
+      },
+      {
+        id: "jm_fake_white",
+        isReal: false,
+        fakeReason: "斜めクロスが黄色ではなく白になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <polygon points="35,0 265,0 150,76" fill="#007749" />
+            <polygon points="35,200 265,200 150,124" fill="#007749" />
+            <polygon points="0,23 0,177 115,100" fill="#000000" />
+            <polygon points="300,23 300,177 185,100" fill="#000000" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 36. バングラデシュ
+  {
+    id: "bd",
+    countryCode: "bd",
+    countryName: "バングラデシュ",
+    countryRuby: "ばんぐらでしゅ",
+    difficulty: 2,
+    hint: "深い緑の背景に、真ん中より少し「左寄り」の赤い太陽があるよ！",
+    trivia: "バングラデシュの国旗は、旗が風ではためいた時にちょうど真ん中に見えるよう、赤い丸（太陽）が少し左（ポール側）に寄せて描かれています！",
+    variants: [
+      {
+        id: "bd_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#006a4e" />
+            <circle cx="135" cy="100" r="60" fill="#f42a41" />
+          </>
+        ),
+      },
+      {
+        id: "bd_fake_right",
+        isReal: false,
+        fakeReason: "赤い太陽が左寄りではなく右端にズレている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#006a4e" />
+            <circle cx="195" cy="100" r="60" fill="#f42a41" />
+          </>
+        ),
+      },
+      {
+        id: "bd_fake_yellow",
+        isReal: false,
+        fakeReason: "丸の色が赤ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#006a4e" />
+            <circle cx="135" cy="100" r="60" fill="#ffce00" />
+          </>
+        ),
+      },
+      {
+        id: "bd_fake_inv",
+        isReal: false,
+        fakeReason: "緑と赤の色が逆（赤地に緑の丸）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#f42a41" />
+            <circle cx="135" cy="100" r="60" fill="#006a4e" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 37. パラオ
+  {
+    id: "pw",
+    countryCode: "pw",
+    countryName: "パラオ",
+    countryRuby: "ぱらお",
+    difficulty: 2,
+    hint: "水色（青い海）の背景に、少し左寄りの「黄色い満月」があるよ！",
+    trivia: "太平洋の島国パラオの国旗は、青い海に浮かぶ黄金色の「満月」（太陽ではなく月！）が、少し左寄りに描かれています。",
+    variants: [
+      {
+        id: "pw_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#0099cc" />
+            <circle cx="130" cy="100" r="60" fill="#ffce00" />
+          </>
+        ),
+      },
+      {
+        id: "pw_fake_right",
+        isReal: false,
+        fakeReason: "黄色い満月が右端に大きくズレている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#0099cc" />
+            <circle cx="195" cy="100" r="60" fill="#ffce00" />
+          </>
+        ),
+      },
+      {
+        id: "pw_fake_white",
+        isReal: false,
+        fakeReason: "満月が黄色ではなく白色になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#0099cc" />
+            <circle cx="130" cy="100" r="60" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "pw_fake_inv",
+        isReal: false,
+        fakeReason: "水色と黄色の配色が逆（黄色地に青い丸）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffce00" />
+            <circle cx="130" cy="100" r="60" fill="#0099cc" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 38. ソマリア
+  {
+    id: "so",
+    countryCode: "so",
+    countryName: "ソマリア",
+    countryRuby: "そまりあ",
+    difficulty: 2,
+    hint: "水色の背景のど真ん中に、真っ白な五角星が1つあるよ！",
+    trivia: "東アフリカの国ソマリアの国旗は、国連の旗にちなんだ水色の地に、5つの地域を表す白い五角星が1つ描かれています。",
+    variants: [
+      {
+        id: "so_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#4189dd" />
+            <polygon
+              points="150.0,42.0 163.0,82.1 205.2,82.1 171.1,106.8 184.1,146.9 150.0,122.2 115.9,146.9 128.9,106.8 94.8,82.1 137.0,82.1"
+              fill="#ffffff"
+            />
+          </>
+        ),
+      },
+      {
+        id: "so_fake_yellow",
+        isReal: false,
+        fakeReason: "真ん中の星が白ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#4189dd" />
+            <polygon
+              points="150.0,42.0 163.0,82.1 205.2,82.1 171.1,106.8 184.1,146.9 150.0,122.2 115.9,146.9 128.9,106.8 94.8,82.1 137.0,82.1"
+              fill="#ffce00"
+            />
+          </>
+        ),
+      },
+      {
+        id: "so_fake_upside",
+        isReal: false,
+        fakeReason: "白い星が上下逆さまになっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#4189dd" />
+            <g transform="rotate(180 150 100)">
+              <polygon
+                points="150.0,42.0 163.0,82.1 205.2,82.1 171.1,106.8 184.1,146.9 150.0,122.2 115.9,146.9 128.9,106.8 94.8,82.1 137.0,82.1"
+                fill="#ffffff"
+              />
+            </g>
+          </>
+        ),
+      },
+      {
+        id: "so_fake_inv",
+        isReal: false,
+        fakeReason: "白地に水色の星（色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <polygon
+              points="150.0,42.0 163.0,82.1 205.2,82.1 171.1,106.8 184.1,146.9 150.0,122.2 115.9,146.9 128.9,106.8 94.8,82.1 137.0,82.1"
+              fill="#4189dd"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 39. モロッコ
+  {
+    id: "ma",
+    countryCode: "ma",
+    countryName: "モロッコ",
+    countryRuby: "もろっこ",
+    difficulty: 3,
+    hint: "赤い背景の真ん中に、「緑色の線」で描かれた五芒星（一筆書きの星）があるよ！",
+    trivia: "モロッコの国旗は、赤地に「ソロモンの印」と呼ばれる緑色の五芒星（一筆書きのように線が交差する星）が描かれています。ベトナムのような塗りつぶしの黄色い星ではありません！",
+    variants: [
+      {
+        id: "ma_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c1272d" />
+            <polygon
+              points="150,55 176.5,136.4 107.2,86.1 192.8,86.1 123.5,136.4"
+              fill="none"
+              stroke="#006233"
+              strokeWidth="6.5"
+              strokeLinejoin="miter"
+            />
+          </>
+        ),
+      },
+      {
+        id: "ma_fake_yellow",
+        isReal: false,
+        fakeReason: "星の線が緑ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c1272d" />
+            <polygon
+              points="150,55 176.5,136.4 107.2,86.1 192.8,86.1 123.5,136.4"
+              fill="none"
+              stroke="#ffce00"
+              strokeWidth="6.5"
+              strokeLinejoin="miter"
+            />
+          </>
+        ),
+      },
+      {
+        id: "ma_fake_solid",
+        isReal: false,
+        fakeReason: "線画の五芒星ではなく、中がベタ塗りされている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#c1272d" />
+            <polygon
+              points="150,55 160.1,86.1 192.8,86.1 166.3,105.3 176.5,136.4 150,117.2 123.5,136.4 133.7,105.3 107.2,86.1 139.9,86.1"
+              fill="#006233"
+            />
+          </>
+        ),
+      },
+      {
+        id: "ma_fake_inv",
+        isReal: false,
+        fakeReason: "緑と赤が逆（緑の背景に赤い星）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#006233" />
+            <polygon
+              points="150,55 176.5,136.4 107.2,86.1 192.8,86.1 123.5,136.4"
+              fill="none"
+              stroke="#c1272d"
+              strokeWidth="6.5"
+              strokeLinejoin="miter"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 40. イスラエル
+  {
+    id: "il",
+    countryCode: "il",
+    countryName: "イスラエル",
+    countryRuby: "いすらえる",
+    difficulty: 3,
+    hint: "白地に上下2本の青い帯と、真ん中に青い「六芒星（三角形2つを重ねた6つの角の星）」があるよ！",
+    trivia: "イスラエルの国旗の中央にあるのは「ダビデの星」と呼ばれる青い六芒星（正三角形を上下に2つ重ねた6つの角の星）です。",
+    variants: [
+      {
+        id: "il_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="0" y="18" width="300" height="28" fill="#0038b8" />
+            <rect x="0" y="154" width="300" height="28" fill="#0038b8" />
+            <polygon
+              points="150,64 181.2,118 118.8,118"
+              fill="none"
+              stroke="#0038b8"
+              strokeWidth="6"
+            />
+            <polygon
+              points="150,136 181.2,82 118.8,82"
+              fill="none"
+              stroke="#0038b8"
+              strokeWidth="6"
+            />
+          </>
+        ),
+      },
+      {
+        id: "il_fake_5star",
+        isReal: false,
+        fakeReason: "六芒星（6角）ではなく五角星（5角）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="0" y="18" width="300" height="28" fill="#0038b8" />
+            <rect x="0" y="154" width="300" height="28" fill="#0038b8" />
+            <polygon
+              points="150,64 169.9,125.1 117.9,87.3 182.1,87.3 130.1,125.1"
+              fill="none"
+              stroke="#0038b8"
+              strokeWidth="5.5"
+            />
+          </>
+        ),
+      },
+      {
+        id: "il_fake_inv",
+        isReal: false,
+        fakeReason: "白と青の色がすべて逆になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#0038b8" />
+            <rect x="0" y="18" width="300" height="28" fill="#ffffff" />
+            <rect x="0" y="154" width="300" height="28" fill="#ffffff" />
+            <polygon
+              points="150,64 181.2,118 118.8,118"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="6"
+            />
+            <polygon
+              points="150,136 181.2,82 118.8,82"
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="6"
+            />
+          </>
+        ),
+      },
+      {
+        id: "il_fake_vert",
+        isReal: false,
+        fakeReason: "青いラインが上下の横帯ではなく左右の縦帯になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="20" y="0" width="30" height="200" fill="#0038b8" />
+            <rect x="250" y="0" width="30" height="200" fill="#0038b8" />
+            <polygon
+              points="150,64 181.2,118 118.8,118"
+              fill="none"
+              stroke="#0038b8"
+              strokeWidth="6"
+            />
+            <polygon
+              points="150,136 181.2,82 118.8,82"
+              fill="none"
+              stroke="#0038b8"
+              strokeWidth="6"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 41. キューバ
+  {
+    id: "cu",
+    countryCode: "cu",
+    countryName: "キューバ",
+    countryRuby: "きゅーば",
+    difficulty: 3,
+    hint: "「青・白・青・白・青」の5本しまに、左側に「赤い三角形＋白い星」だよ！",
+    trivia: "キューバの国旗は「青い3本しま＋赤い三角形」。青と赤がまるごと逆（赤い3本しま＋青い三角形）になるとプエルトリコの旗になります！",
+    variants: [
+      {
+        id: "cu_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="40" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="80" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="120" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="160" width="300" height="40" fill="#002a8f" />
+            <polygon points="0,0 173,100 0,200" fill="#cf142b" />
+            <polygon
+              points="58,70 64.8,90.7 86.5,90.7 69.0,103.6 75.6,124.3 58,111.5 40.4,124.3 47.0,103.6 29.5,90.7 51.2,90.7"
+              fill="#ffffff"
+            />
+          </>
+        ),
+      },
+      {
+        id: "cu_fake_pr",
+        isReal: false,
+        fakeReason: "青と赤が逆（プエルトリコの旗）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="40" fill="#cf142b" />
+            <rect x="0" y="40" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="80" width="300" height="40" fill="#cf142b" />
+            <rect x="0" y="120" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="160" width="300" height="40" fill="#cf142b" />
+            <polygon points="0,0 173,100 0,200" fill="#002a8f" />
+            <polygon
+              points="58,70 64.8,90.7 86.5,90.7 69.0,103.6 75.6,124.3 58,111.5 40.4,124.3 47.0,103.6 29.5,90.7 51.2,90.7"
+              fill="#ffffff"
+            />
+          </>
+        ),
+      },
+      {
+        id: "cu_fake_right",
+        isReal: false,
+        fakeReason: "赤い三角形が左ではなく右向きになっている！",
+        renderSvg: () => (
+          <g transform="scale(-1, 1) translate(-300, 0)">
+            <rect x="0" y="0" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="40" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="80" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="120" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="160" width="300" height="40" fill="#002a8f" />
+            <polygon points="0,0 173,100 0,200" fill="#cf142b" />
+            <polygon
+              points="58,70 64.8,90.7 86.5,90.7 69.0,103.6 75.6,124.3 58,111.5 40.4,124.3 47.0,103.6 29.5,90.7 51.2,90.7"
+              fill="#ffffff"
+            />
+          </g>
+        ),
+      },
+      {
+        id: "cu_fake_yellowstar",
+        isReal: false,
+        fakeReason: "三角形の中の星が白ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="40" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="80" width="300" height="40" fill="#002a8f" />
+            <rect x="0" y="120" width="300" height="40" fill="#ffffff" />
+            <rect x="0" y="160" width="300" height="40" fill="#002a8f" />
+            <polygon points="0,0 173,100 0,200" fill="#cf142b" />
+            <polygon
+              points="58,70 64.8,90.7 86.5,90.7 69.0,103.6 75.6,124.3 58,111.5 40.4,124.3 47.0,103.6 29.5,90.7 51.2,90.7"
+              fill="#ffce00"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 42. パナマ
+  {
+    id: "pa",
+    countryCode: "pa",
+    countryName: "パナマ",
+    countryRuby: "ぱなま",
+    difficulty: 3,
+    hint: "4分割！左上は「白地に青い星」、右上は「赤」、左下は「青」、右下は「白地に赤い星」だよ！",
+    trivia: "パナマ運河で有名なパナマの国旗は4つに分かれており、左上に青い星、右上に赤い四角、左下に青い四角、右下に赤い星が描かれています。",
+    variants: [
+      {
+        id: "pa_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="150" y="0" width="150" height="100" fill="#da121a" />
+            <rect x="0" y="100" width="150" height="100" fill="#072357" />
+            <polygon
+              points="75,28 79.9,43.2 95.9,43.2 83.0,52.6 87.9,67.8 75,58.4 62.1,67.8 67.0,52.6 54.1,43.2 70.1,43.2"
+              fill="#072357"
+            />
+            <polygon
+              points="225,128 229.9,143.2 245.9,143.2 233.0,152.6 237.9,167.8 225,158.4 212.1,167.8 217.0,152.6 204.1,143.2 220.1,143.2"
+              fill="#da121a"
+            />
+          </>
+        ),
+      },
+      {
+        id: "pa_fake_swapstars",
+        isReal: false,
+        fakeReason: "左上の星が赤、右下の星が青（星の色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="150" y="0" width="150" height="100" fill="#da121a" />
+            <rect x="0" y="100" width="150" height="100" fill="#072357" />
+            <polygon
+              points="75,28 79.9,43.2 95.9,43.2 83.0,52.6 87.9,67.8 75,58.4 62.1,67.8 67.0,52.6 54.1,43.2 70.1,43.2"
+              fill="#da121a"
+            />
+            <polygon
+              points="225,128 229.9,143.2 245.9,143.2 233.0,152.6 237.9,167.8 225,158.4 212.1,167.8 217.0,152.6 204.1,143.2 220.1,143.2"
+              fill="#072357"
+            />
+          </>
+        ),
+      },
+      {
+        id: "pa_fake_swapblocks",
+        isReal: false,
+        fakeReason: "右上が青、左下が赤（四角の色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="150" y="0" width="150" height="100" fill="#072357" />
+            <rect x="0" y="100" width="150" height="100" fill="#da121a" />
+            <polygon
+              points="75,28 79.9,43.2 95.9,43.2 83.0,52.6 87.9,67.8 75,58.4 62.1,67.8 67.0,52.6 54.1,43.2 70.1,43.2"
+              fill="#072357"
+            />
+            <polygon
+              points="225,128 229.9,143.2 245.9,143.2 233.0,152.6 237.9,167.8 225,158.4 212.1,167.8 217.0,152.6 204.1,143.2 220.1,143.2"
+              fill="#da121a"
+            />
+          </>
+        ),
+      },
+      {
+        id: "pa_fake_mirror",
+        isReal: false,
+        fakeReason: "左右の配置がまるごと逆になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ffffff" />
+            <rect x="0" y="0" width="150" height="100" fill="#da121a" />
+            <rect x="150" y="100" width="150" height="100" fill="#072357" />
+            <polygon
+              points="225,28 229.9,43.2 245.9,43.2 233.0,52.6 237.9,67.8 225,58.4 212.1,67.8 217.0,52.6 204.1,43.2 220.1,43.2"
+              fill="#072357"
+            />
+            <polygon
+              points="75,128 79.9,143.2 95.9,143.2 83.0,152.6 87.9,167.8 75,158.4 62.1,167.8 67.0,152.6 54.1,143.2 70.1,143.2"
+              fill="#da121a"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 43. マダガスカル
+  {
+    id: "mg",
+    countryCode: "mg",
+    countryName: "マダガスカル",
+    countryRuby: "まだがすかる",
+    difficulty: 2,
+    hint: "左端の縦帯が「白」、右側の上半分が「赤」、下半分が「緑」だよ！",
+    trivia: "マダガスカルの国旗は、左側に白い縦帯があり、右側は上が赤、下が緑の3色で構成されています。",
+    variants: [
+      {
+        id: "mg_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="200" height="100" fill="#fc3d32" />
+            <rect x="100" y="100" width="200" height="100" fill="#007e3a" />
+          </>
+        ),
+      },
+      {
+        id: "mg_fake_upside",
+        isReal: false,
+        fakeReason: "右側の赤と緑が上下逆（上が緑・下が赤）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="100" y="0" width="200" height="100" fill="#007e3a" />
+            <rect x="100" y="100" width="200" height="100" fill="#fc3d32" />
+          </>
+        ),
+      },
+      {
+        id: "mg_fake_rightwhite",
+        isReal: false,
+        fakeReason: "白い縦帯が左ではなく右端にある！",
+        renderSvg: () => (
+          <>
+            <rect x="200" y="0" width="100" height="200" fill="#ffffff" />
+            <rect x="0" y="0" width="200" height="100" fill="#fc3d32" />
+            <rect x="0" y="100" width="200" height="100" fill="#007e3a" />
+          </>
+        ),
+      },
+      {
+        id: "mg_fake_leftgreen",
+        isReal: false,
+        fakeReason: "左の縦帯が白ではなく緑になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="100" height="200" fill="#007e3a" />
+            <rect x="100" y="0" width="200" height="100" fill="#fc3d32" />
+            <rect x="100" y="100" width="200" height="100" fill="#ffffff" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 44. ベナン
+  {
+    id: "bj",
+    countryCode: "bj",
+    countryName: "ベナン",
+    countryRuby: "べなん",
+    difficulty: 3,
+    hint: "左端の縦帯が「緑」、右側の上半分が「黄色」、下半分が「赤」だよ！",
+    trivia: "西アフリカのベナンの国旗は、アフリカ伝統のパン・アフリカンカラー（緑・黄・赤）を使ったデザイン。左が緑、右上が黄、右下が赤です。",
+    variants: [
+      {
+        id: "bj_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="115" height="200" fill="#008751" />
+            <rect x="115" y="0" width="185" height="100" fill="#fcd116" />
+            <rect x="115" y="100" width="185" height="100" fill="#e8112d" />
+          </>
+        ),
+      },
+      {
+        id: "bj_fake_upside",
+        isReal: false,
+        fakeReason: "右側の黄色と赤が上下逆（上が赤・下が黄色）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="115" height="200" fill="#008751" />
+            <rect x="115" y="0" width="185" height="100" fill="#e8112d" />
+            <rect x="115" y="100" width="185" height="100" fill="#fcd116" />
+          </>
+        ),
+      },
+      {
+        id: "bj_fake_leftred",
+        isReal: false,
+        fakeReason: "左の縦帯が緑ではなく赤になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="115" height="200" fill="#e8112d" />
+            <rect x="115" y="0" width="185" height="100" fill="#fcd116" />
+            <rect x="115" y="100" width="185" height="100" fill="#008751" />
+          </>
+        ),
+      },
+      {
+        id: "bj_fake_rightgreen",
+        isReal: false,
+        fakeReason: "緑の縦帯が左ではなく右端にある！",
+        renderSvg: () => (
+          <>
+            <rect x="185" y="0" width="115" height="200" fill="#008751" />
+            <rect x="0" y="0" width="185" height="100" fill="#fcd116" />
+            <rect x="0" y="100" width="185" height="100" fill="#e8112d" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 45. アラブ首長国連邦
+  {
+    id: "ae",
+    countryCode: "ae",
+    countryName: "アラブ首長国連邦",
+    countryRuby: "あらぶしゅちょうこくれんぽう",
+    difficulty: 3,
+    hint: "左端の縦帯が「赤」、右側は上から「緑・白・黒」の3段だよ！",
+    trivia: "ドバイなどで知られるアラブ首長国連邦（UAE）の国旗は、アラブ伝統の4色（赤・緑・白・黒）を組み合わせたデザインです。",
+    variants: [
+      {
+        id: "ae_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="75" y="0" width="225" height="66.7" fill="#00732f" />
+            <rect x="75" y="66.7" width="225" height="66.6" fill="#ffffff" />
+            <rect x="75" y="133.3" width="225" height="66.7" fill="#000000" />
+            <rect x="0" y="0" width="75" height="200" fill="#ff0000" />
+          </>
+        ),
+      },
+      {
+        id: "ae_fake_upside",
+        isReal: false,
+        fakeReason: "右側の緑と黒が上下逆（上が黒・下が緑）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="75" y="0" width="225" height="66.7" fill="#000000" />
+            <rect x="75" y="66.7" width="225" height="66.6" fill="#ffffff" />
+            <rect x="75" y="133.3" width="225" height="66.7" fill="#00732f" />
+            <rect x="0" y="0" width="75" height="200" fill="#ff0000" />
+          </>
+        ),
+      },
+      {
+        id: "ae_fake_leftgreen",
+        isReal: false,
+        fakeReason: "左の縦帯が赤ではなく緑になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="75" y="0" width="225" height="66.7" fill="#ff0000" />
+            <rect x="75" y="66.7" width="225" height="66.6" fill="#ffffff" />
+            <rect x="75" y="133.3" width="225" height="66.7" fill="#000000" />
+            <rect x="0" y="0" width="75" height="200" fill="#00732f" />
+          </>
+        ),
+      },
+      {
+        id: "ae_fake_rightred",
+        isReal: false,
+        fakeReason: "赤い縦帯が左ではなく右端にある！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="225" height="66.7" fill="#00732f" />
+            <rect x="0" y="66.7" width="225" height="66.6" fill="#ffffff" />
+            <rect x="0" y="133.3" width="225" height="66.7" fill="#000000" />
+            <rect x="225" y="0" width="75" height="200" fill="#ff0000" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 46. クウェート
+  {
+    id: "kw",
+    countryCode: "kw",
+    countryName: "クウェート",
+    countryRuby: "くうぇーと",
+    difficulty: 3,
+    hint: "左側に「黒い台形」、横しまは上から「緑・白・赤」の順番だよ！",
+    trivia: "クウェートの国旗は、左側に黒い台形があるユニークな形！横縞は上から「緑（大地）・白（清らかさ）・赤（勇気）」です。",
+    variants: [
+      {
+        id: "kw_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#007a3d" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffffff" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#ce1126" />
+            <polygon points="0,0 85,66.7 85,133.3 0,200" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "kw_fake_upside",
+        isReal: false,
+        fakeReason: "上の緑と下の赤が逆（上から赤・白・緑）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#ce1126" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffffff" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#007a3d" />
+            <polygon points="0,0 85,66.7 85,133.3 0,200" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "kw_fake_redtrap",
+        isReal: false,
+        fakeReason: "左の台形が黒ではなく赤になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#007a3d" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffffff" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#000000" />
+            <polygon points="0,0 85,66.7 85,133.3 0,200" fill="#ce1126" />
+          </>
+        ),
+      },
+      {
+        id: "kw_fake_right",
+        isReal: false,
+        fakeReason: "黒い台形が左ではなく右端にある！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#007a3d" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffffff" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#ce1126" />
+            <polygon points="300,0 215,66.7 215,133.3 300,200" fill="#000000" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 47. バハマ
+  {
+    id: "bs",
+    countryCode: "bs",
+    countryName: "バハマ",
+    countryRuby: "ばはま",
+    difficulty: 2,
+    hint: "「水色・黄色・水色」の横しまに、左側に「黒い三角形」があるよ！",
+    trivia: "カリブ海の島国バハマの国旗は、美しいカリブ海を表す水色と黄金の砂浜を表す黄色、そして国民の力強さを表す黒い三角形でできています。",
+    variants: [
+      {
+        id: "bs_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#00778b" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffc72c" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#00778b" />
+            <polygon points="0,0 130,100 0,200" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "bs_fake_swap",
+        isReal: false,
+        fakeReason: "黒と黄色の位置が逆（黄色い三角形＋黒い帯）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#00778b" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#000000" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#00778b" />
+            <polygon points="0,0 130,100 0,200" fill="#ffc72c" />
+          </>
+        ),
+      },
+      {
+        id: "bs_fake_right",
+        isReal: false,
+        fakeReason: "黒い三角形が左ではなく右にある！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#00778b" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#ffc72c" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#00778b" />
+            <polygon points="300,0 170,100 300,200" fill="#000000" />
+          </>
+        ),
+      },
+      {
+        id: "bs_fake_inv",
+        isReal: false,
+        fakeReason: "水色と黄色のしまが逆（黄・水色・黄）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="66.7" fill="#ffc72c" />
+            <rect x="0" y="66.7" width="300" height="66.6" fill="#00778b" />
+            <rect x="0" y="133.3" width="300" height="66.7" fill="#ffc72c" />
+            <polygon points="0,0 130,100 0,200" fill="#000000" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 48. ラオス
+  {
+    id: "la",
+    countryCode: "la",
+    countryName: "ラオス",
+    countryRuby: "らおす",
+    difficulty: 2,
+    hint: "上下が「赤」、真ん中が太い「紺（青）」で、中央に「白い満月」があるよ！",
+    trivia: "東南アジアのラオスの国旗は、メコン川に浮かぶ真っ白な満月を表しています。上下が赤、真ん中が太い青、中央に白い丸です。",
+    variants: [
+      {
+        id: "la_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="50" fill="#ce1126" />
+            <rect x="0" y="50" width="300" height="100" fill="#002868" />
+            <rect x="0" y="150" width="300" height="50" fill="#ce1126" />
+            <circle cx="150" cy="100" r="40" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "la_fake_swap",
+        isReal: false,
+        fakeReason: "赤と青の帯が逆（上下が青・真ん中が赤）になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="50" fill="#002868" />
+            <rect x="0" y="50" width="300" height="100" fill="#ce1126" />
+            <rect x="0" y="150" width="300" height="50" fill="#002868" />
+            <circle cx="150" cy="100" r="40" fill="#ffffff" />
+          </>
+        ),
+      },
+      {
+        id: "la_fake_yellow",
+        isReal: false,
+        fakeReason: "真ん中の丸（満月）が白ではなく黄色になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="50" fill="#ce1126" />
+            <rect x="0" y="50" width="300" height="100" fill="#002868" />
+            <rect x="0" y="150" width="300" height="50" fill="#ce1126" />
+            <circle cx="150" cy="100" r="40" fill="#ffce00" />
+          </>
+        ),
+      },
+      {
+        id: "la_fake_star",
+        isReal: false,
+        fakeReason: "白い丸ではなく白い星になっている！",
+        renderSvg: () => (
+          <>
+            <rect x="0" y="0" width="300" height="50" fill="#ce1126" />
+            <rect x="0" y="50" width="300" height="100" fill="#002868" />
+            <rect x="0" y="150" width="300" height="50" fill="#ce1126" />
+            <polygon
+              points="150,62 159,89 187,89 164,105 173,132 150,115 127,132 136,105 113,89 141,89"
+              fill="#ffffff"
+            />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 49. タンザニア
+  {
+    id: "tz",
+    countryCode: "tz",
+    countryName: "タンザニア",
+    countryRuby: "たんざにあ",
+    difficulty: 3,
+    hint: "左下から右上へ伸びる黄色ふちの黒い帯！左上が「緑」、右下が「水色」だよ！",
+    trivia: "タンザニアの国旗は、左下から右上への斜め帯で分けられ、左上が豊かな大地を表す「緑」、右下がインド洋を表す「水色（青）」です。",
+    variants: [
+      {
+        id: "tz_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <polygon points="0,0 300,0 0,200" fill="#1eb53a" />
+            <polygon points="300,0 300,200 0,200" fill="#00a3dd" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#fcd116" strokeWidth="72" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#000000" strokeWidth="50" />
+          </>
+        ),
+      },
+      {
+        id: "tz_fake_swap",
+        isReal: false,
+        fakeReason: "左上が水色で右下が緑（緑と水色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <polygon points="0,0 300,0 0,200" fill="#00a3dd" />
+            <polygon points="300,0 300,200 0,200" fill="#1eb53a" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#fcd116" strokeWidth="72" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#000000" strokeWidth="50" />
+          </>
+        ),
+      },
+      {
+        id: "tz_fake_dir",
+        isReal: false,
+        fakeReason: "斜めの帯が左上から右下へ（向きが逆）になっている！",
+        renderSvg: () => (
+          <>
+            <polygon points="0,0 300,0 300,200" fill="#1eb53a" />
+            <polygon points="0,0 0,200 300,200" fill="#00a3dd" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#fcd116" strokeWidth="72" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#000000" strokeWidth="50" />
+          </>
+        ),
+      },
+      {
+        id: "tz_fake_yellowband",
+        isReal: false,
+        fakeReason: "黒ふちに黄色い帯（黒と黄色が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <polygon points="0,0 300,0 0,200" fill="#1eb53a" />
+            <polygon points="300,0 300,200 0,200" fill="#00a3dd" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#000000" strokeWidth="72" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#fcd116" strokeWidth="50" />
+          </>
+        ),
+      },
+    ],
+  },
+
+  // 50. トリニダード・トバゴ
+  {
+    id: "tt",
+    countryCode: "tt",
+    countryName: "トリニダード・トバゴ",
+    countryRuby: "とりにだーど・とばご",
+    difficulty: 3,
+    hint: "赤い背景に、「左上から右下」へ伸びる白ふちの黒い斜め帯があるよ！",
+    trivia: "カリブ海の島国トリニダード・トバゴの国旗は、赤地に「左上から右下」へ向かう白ふちの黒い帯が描かれています。",
+    variants: [
+      {
+        id: "tt_real",
+        isReal: true,
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ce1126" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#ffffff" strokeWidth="60" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#000000" strokeWidth="40" />
+          </>
+        ),
+      },
+      {
+        id: "tt_fake_dir",
+        isReal: false,
+        fakeReason: "斜めの帯が左下から右上（向きが逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ce1126" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#ffffff" strokeWidth="60" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#000000" strokeWidth="40" />
+          </>
+        ),
+      },
+      {
+        id: "tt_fake_inv",
+        isReal: false,
+        fakeReason: "黒い背景に赤い斜め帯（赤と黒が逆）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#000000" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#ffffff" strokeWidth="60" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#ce1126" strokeWidth="40" />
+          </>
+        ),
+      },
+      {
+        id: "tt_fake_x",
+        isReal: false,
+        fakeReason: "斜め1本ではなくバッテン（×）になっている！",
+        renderSvg: () => (
+          <>
+            <rect width="300" height="200" fill="#ce1126" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#ffffff" strokeWidth="46" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#ffffff" strokeWidth="46" />
+            <line x1="-20" y1="-13.3" x2="320" y2="213.3" stroke="#000000" strokeWidth="30" />
+            <line x1="-20" y1="213.3" x2="320" y2="-13.3" stroke="#000000" strokeWidth="30" />
+          </>
+        ),
+      },
+    ],
+  },
 ];
