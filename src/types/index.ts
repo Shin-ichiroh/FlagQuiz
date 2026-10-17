@@ -10,7 +10,8 @@ export type AppScreen =
   | "coloring"
   | "capital_match"
   | "domino"
-  | "akinator";
+  | "akinator"
+  | "fake_flag";
 
 export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location" | "compare" | "capital";
 

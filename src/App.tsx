@@ -10,6 +10,7 @@ import { ColoringScreen } from "./components/ColoringScreen";
 import { CapitalMatchingScreen } from "./components/CapitalMatchingScreen";
 import { FlagDominoScreen } from "./components/FlagDominoScreen";
 import { FlagAkinatorScreen } from "./components/FlagAkinatorScreen";
+import { FakeFlagScreen } from "./components/FakeFlagScreen";
 import { generateQuizQuestions } from "./utils/quizGenerator";
 import { getSavedPlayerName } from "./utils/ranking";
 
@@ -61,6 +62,7 @@ export function App() {
           onStartCapitalMatch={() => setScreen("capital_match")}
           onStartDomino={() => setScreen("domino")}
           onStartAkinator={() => setScreen("akinator")}
+          onStartFakeFlag={() => setScreen("fake_flag")}
         />
       )}
 
@@ -123,6 +125,13 @@ export function App() {
 
       {screen === "akinator" && (
         <FlagAkinatorScreen
+          onBack={() => setScreen("settings")}
+          showRuby={settings.showRuby}
+        />
+      )}
+
+      {screen === "fake_flag" && (
+        <FakeFlagScreen
           onBack={() => setScreen("settings")}
           showRuby={settings.showRuby}
         />
