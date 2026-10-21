@@ -66,7 +66,6 @@ export function App() {
           onStartAkinator={() => setScreen("akinator")}
           onStartFakeFlag={() => setScreen("fake_flag")}
           onStartSugoroku={() => setScreen("sugoroku")}
-          onStartFlashlight={() => setScreen("flashlight")}
         />
       )}
 

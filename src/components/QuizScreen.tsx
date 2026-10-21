@@ -7,7 +7,7 @@ import { speech } from "../utils/speech";
 import { COUNTRY_FACTS } from "../data/countryFacts";
 import { getCountryCapital } from "../data/countryCapitals";
 import { calculateQuestionScore } from "../utils/ranking";
-import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap, ArrowRight, Mic, MicOff } from "lucide-react";
+import { X, Volume2, VolumeX, CheckCircle, XCircle, AlertCircle, Zap, ArrowRight, Mic, MicOff, Flashlight, ZoomIn, Compass } from "lucide-react";
 
 interface QuizScreenProps {
   questions: QuizQuestion[];
@@ -32,9 +32,62 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
   const [speechOn, setSpeechOn] = useState(settings.speechEnabled);
   const [lastScoreGain, setLastScoreGain] = useState<{ total: number; speedBonus: number } | null>(null);
 
+  // くらやみ国旗たんけん（スポットライト）ステート
+  const [lightPos, setLightPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [extraRadius, setExtraRadius] = useState<number>(0);
+  const [isAutoPatrol, setIsAutoPatrol] = useState<boolean>(true);
+  const flashlightContainerRef = useRef<HTMLDivElement>(null);
+  const patrolAngleRef = useRef<number>(0);
+  const currentRadius = Math.min(85, 36 + extraRadius);
+
   const currentQuestion = questions[currentIndex];
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoNextTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 問題切り替え時にスポットライト状態を初期化
+  useEffect(() => {
+    setExtraRadius(0);
+    setIsAutoPatrol(true);
+    const initAngle = Math.random() * Math.PI * 2;
+    patrolAngleRef.current = initAngle;
+    setLightPos({
+      x: 50 + Math.cos(initAngle) * 22,
+      y: 50 + Math.sin(initAngle) * 18,
+    });
+  }, [currentIndex]);
+
+  // くらやみ国旗たんけんの自動巡回アニメーション
+  useEffect(() => {
+    if (isAnswered || !isAutoPatrol || currentQuestion.type !== "flashlight") return;
+
+    const timer = setInterval(() => {
+      patrolAngleRef.current += 0.055;
+      const a = patrolAngleRef.current;
+      setLightPos({
+        x: 50 + Math.sin(a) * 30,
+        y: 50 + Math.sin(a * 2) * 24,
+      });
+    }, 40);
+
+    return () => clearInterval(timer);
+  }, [isAnswered, isAutoPatrol, currentQuestion.type]);
+
+  // スポットライトの座標更新（マウス・タッチ）
+  const updateLightFromClientXY = (clientX: number, clientY: number) => {
+    if (!flashlightContainerRef.current || isAnswered) return;
+    const rect = flashlightContainerRef.current.getBoundingClientRect();
+    const x = Math.max(5, Math.min(95, ((clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(5, Math.min(95, ((clientY - rect.top) / rect.height) * 100));
+    setIsAutoPatrol(false);
+    setLightPos({ x, y });
+  };
+
+  // ライト拡大（ヒント機能）
+  const handleExpandBeam = () => {
+    if (isAnswered || currentRadius >= 85) return;
+    soundEffect.playTap();
+    setExtraRadius((r) => r + 18);
+  };
 
   // 音声読み上げの設定同期
   useEffect(() => {
@@ -352,6 +405,89 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </div>
         )}
 
+        {/* 1.5. パターン: くらやみ国旗たんけん（暗闇スポットライト） */}
+        {currentQuestion.type === "flashlight" && (
+          <div className="w-full flex flex-col items-center justify-center my-1 max-w-xs">
+            {/* 操作補助バー */}
+            {!isAnswered && (
+              <div className="w-full flex items-center justify-between mb-1 px-1">
+                <span className="text-[10px] font-black text-amber-700 flex items-center gap-1">
+                  <Flashlight className="w-3.5 h-3.5 text-amber-600" />
+                  <span>暗闇をなぞって照らそう！</span>
+                </span>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setIsAutoPatrol((p) => !p)}
+                    className={`px-2 py-0.5 rounded-lg text-[10px] font-black border transition-all cursor-pointer flex items-center gap-0.5 ${
+                      isAutoPatrol
+                        ? "bg-sky-100 border-sky-300 text-sky-800"
+                        : "bg-slate-100 border-slate-300 text-slate-600"
+                    }`}
+                  >
+                    <Compass className="w-3 h-3" />
+                    <span>{isAutoPatrol ? "自動ON" : "自動OFF"}</span>
+                  </button>
+                  <button
+                    onClick={handleExpandBeam}
+                    disabled={currentRadius >= 85}
+                    className="px-2 py-0.5 rounded-lg bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 text-[10px] font-black transition-all active:scale-95 disabled:opacity-40 cursor-pointer flex items-center gap-0.5"
+                  >
+                    <ZoomIn className="w-3 h-3" />
+                    <span>ライト拡大</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 国旗キャンバス（四隅直角） */}
+            <div
+              ref={flashlightContainerRef}
+              onMouseMove={(e) => updateLightFromClientXY(e.clientX, e.clientY)}
+              onMouseDown={(e) => updateLightFromClientXY(e.clientX, e.clientY)}
+              onTouchMove={(e) => {
+                if (e.touches[0]) {
+                  updateLightFromClientXY(e.touches[0].clientX, e.touches[0].clientY);
+                }
+              }}
+              onTouchStart={(e) => {
+                if (e.touches[0]) {
+                  updateLightFromClientXY(e.touches[0].clientX, e.touches[0].clientY);
+                }
+              }}
+              className={`relative rounded-none overflow-hidden shadow-md border-4 transition-all duration-300 w-64 h-38 max-w-full flex items-center justify-center cursor-crosshair touch-none ${
+                isAnswered
+                  ? "border-amber-400 ring-2 ring-amber-300/60 bg-white"
+                  : "border-slate-800 bg-slate-950"
+              }`}
+            >
+              <img
+                src={getFlagUrl(currentQuestion.country.code, 640)}
+                alt="国旗"
+                className="w-full h-full object-contain pointer-events-none select-none"
+                loading="eager"
+                draggable={false}
+              />
+
+              {/* 暗闇スポットライトマスク */}
+              {!isAnswered && (
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background: `radial-gradient(circle ${currentRadius}px at ${lightPos.x}% ${lightPos.y}%, rgba(255,255,255,0) 0%, rgba(255,255,220,0.05) 78%, rgba(251,191,36,0.85) 94%, rgba(2,6,23,0.995) 100%)`,
+                  }}
+                />
+              )}
+
+              {/* 右下ガイド */}
+              {!isAnswered && (
+                <div className="pointer-events-none absolute bottom-1 right-1 text-[9px] font-bold text-slate-400/80">
+                  🔦 なぞって照らそう
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
 
         {/* 2. パターン: 周辺地図（ロケーション）から国名当て */}
         {currentQuestion.type === "location_to_name" && (
@@ -581,8 +717,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
           </div>
         )}
 
-        {/* パターンD: テキスト4択（国名当て、首都当て、トリビア） */}
-        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "location_to_name" || currentQuestion.type === "trivia" || currentQuestion.type === "flag_to_capital") && (
+        {/* パターンD: テキスト4択（国名当て、首都当て、トリビア、くらやみたんけん） */}
+        {(currentQuestion.type === "flag_to_name" || currentQuestion.type === "shape_to_name" || currentQuestion.type === "location_to_name" || currentQuestion.type === "trivia" || currentQuestion.type === "flag_to_capital" || currentQuestion.type === "flashlight") && (
           <div className="flex flex-col gap-2">
             {currentQuestion.options.map((option, idx) => {
               let btnClass = "bg-white border-2 border-slate-200 hover:border-indigo-200 text-slate-800";

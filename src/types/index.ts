@@ -15,7 +15,7 @@ export type AppScreen =
   | "sugoroku"
   | "flashlight";
 
-export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "trivia" | "shape" | "location" | "compare" | "capital";
+export type GameMode = "random" | "flag_to_name" | "name_to_flag" | "capital" | "trivia" | "shape" | "location" | "compare" | "flashlight";
 
 export interface TriviaQuestion {
   question: string;
@@ -35,7 +35,7 @@ export interface Country {
 
 export interface QuizQuestion {
   id: number;
-  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag";
+  type: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag" | "flashlight";
   country: Country;
   prompt: string;
   promptRuby?: string;

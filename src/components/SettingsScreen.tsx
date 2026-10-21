@@ -18,7 +18,6 @@ interface SettingsModalProps {
   onStartAkinator: () => void;
   onStartFakeFlag: () => void;
   onStartSugoroku: () => void;
-  onStartFlashlight: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsModalProps> = ({
@@ -34,7 +33,6 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
   onStartAkinator,
   onStartFakeFlag,
   onStartSugoroku,
-  onStartFlashlight,
 }) => {
   const modes: { id: GameMode; label: string; sub: string }[] = [
     { id: "random", label: "🎲 ランダム", sub: "ぜんぶミックス！" },
@@ -45,6 +43,7 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
     { id: "shape", label: "🗺️ かたちあて", sub: "ちずのシルエットクイズ" },
     { id: "location", label: "📍 かたちあて（ちず）", sub: "まわりの国と いっしょに出題！" },
     { id: "compare", label: "⚔️ 国くらべ", sub: "どっちが大きい？ 人口が多い？" },
+    { id: "flashlight", label: "🔦 くらやみたんけん", sub: "暗闇を照らして推理！" },
   ];
 
 
@@ -342,38 +341,6 @@ export const SettingsScreen: React.FC<SettingsModalProps> = ({
                 <p className="text-[11px] text-slate-500 font-semibold mt-1">サイコロと空港ワープで世界一周レースに出発！</p>
               </div>
               <div className="mt-3 flex items-center gap-1 text-xs font-black text-sky-600">
-                <span>あそぶ</span>
-                <span>➔</span>
-              </div>
-            </button>
-
-            {/* 9. くらやみ国旗たんけん（暗闇スポットライト） */}
-            <button
-              onClick={() => {
-                soundEffect.playTap();
-                onStartFlashlight();
-              }}
-              className="col-span-2 p-3.5 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-400/80 hover:border-amber-300 active:scale-95 transition-all shadow-md flex items-center justify-between text-left cursor-pointer group hover:shadow-lg gap-3"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-3xl p-2.5 rounded-2xl bg-amber-400/20 border border-amber-400/40 group-hover:scale-110 transition-transform shrink-0">
-                  🔦
-                </span>
-                <div>
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <h3 className="text-base font-black text-white leading-tight">
-                      くらやみ国旗たんけん
-                    </h3>
-                    <span className="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
-                      サーチライト推理
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-300 font-semibold">
-                    真っ暗な画面を懐中電灯で照らして、隠れた国旗を早押しで見抜こう！
-                  </p>
-                </div>
-              </div>
-              <div className="shrink-0 flex items-center gap-1 text-xs font-black text-slate-950 bg-amber-400 px-3 py-1.5 rounded-2xl shadow-xs">
                 <span>あそぶ</span>
                 <span>➔</span>
               </div>

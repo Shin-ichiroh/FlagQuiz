@@ -336,7 +336,7 @@ export function generateQuizQuestions(
     });
   }
 
-  // 7. 国旗当て / 国名当て / ランダムモード
+  // 7. 国旗当て / 国名当て / くらやみ国旗たんけん / ランダムモード
   const shuffledCountries = shuffle(regionPool);
   const selectedCountries: Country[] = [];
   while (selectedCountries.length < count) {
@@ -347,11 +347,12 @@ export function generateQuizQuestions(
   }
 
   return selectedCountries.map((country, idx) => {
-    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag" = "flag_to_name";
+    let qType: "flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag" | "flashlight" = "flag_to_name";
     if (mode === "random") {
-      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag")[] = [
+      const candidates: ("flag_to_name" | "name_to_flag" | "trivia" | "shape_to_name" | "name_to_shape" | "location_to_name" | "compare" | "flag_to_capital" | "capital_to_flag" | "flashlight")[] = [
         "flag_to_name",
         "name_to_flag",
+        "flashlight",
       ];
 
       if (country.trivia && country.trivia.length > 0) {
@@ -554,6 +555,28 @@ export function generateQuizQuestions(
           isCorrect: c.code === country.code,
         })),
         explanation: `正解は「${capital.capital}」が首都の「${country.name}」の国旗です！`,
+      };
+    } else if (qType === "flashlight") {
+      const sameRegion = regionPool.filter((c) => c.region === country.region && c.code !== country.code);
+      const otherRegion = regionPool.filter((c) => c.region !== country.region && c.code !== country.code);
+      const dummyCandidates = [...shuffle(sameRegion), ...shuffle(otherRegion)];
+      const otherCountries = dummyCandidates.slice(0, 3);
+      const optionCountries = shuffle([country, ...otherCountries]);
+
+      return {
+        id: idx + 1,
+        type: "flashlight",
+        country,
+        prompt: "暗闇を照らして 国旗をさがそう！",
+        promptRuby: "くらやみをてらして こっきをさがそう！",
+        options: optionCountries.map((c) => ({
+          text: c.name,
+          ruby: c.ruby,
+          flagCode: c.code,
+          countryCode: c.code,
+          isCorrect: c.code === country.code,
+        })),
+        explanation: `正解は「${country.name}」の国旗です！`,
       };
     } else if (qType === "name_to_flag") {
       const otherCountries = shuffle(COUNTRIES.filter((c) => c.code !== country.code)).slice(0, 3);

@@ -7,6 +7,18 @@ interface RankingScreenProps {
   onBack: () => void;
 }
 
+const MODE_NAMES: Record<string, string> = {
+  random: "🎲 ランダム",
+  flag_to_name: "🚩 国旗あて",
+  name_to_flag: "🔤 なまえあて",
+  capital: "🏛️ 首都",
+  trivia: "📖 ゆらい",
+  shape: "🗺️ かたち",
+  location: "📍 かたち(ちず)",
+  compare: "⚔️ 国くらべ",
+  flashlight: "🔦 くらやみ",
+};
+
 export const RankingScreen: React.FC<RankingScreenProps> = ({ onBack }) => {
   const rankings = getWeeklyRankings();
   const weekLabel = getWeeklyRangeLabel();
@@ -88,8 +100,13 @@ export const RankingScreen: React.FC<RankingScreenProps> = ({ onBack }) => {
                       <div className="font-black text-base text-slate-900 leading-tight">
                         {entry.playerName || "ななしさん"}
                       </div>
-                      <div className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                        {entry.correctCount}/{entry.totalQuestions}もん正解 ({entry.date})
+                      <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-semibold mt-0.5">
+                        {entry.mode && MODE_NAMES[entry.mode] && (
+                          <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded font-black text-[9px]">
+                            {MODE_NAMES[entry.mode]}
+                          </span>
+                        )}
+                        <span>{entry.correctCount}/{entry.totalQuestions}もん正解 ({entry.date})</span>
                       </div>
                     </div>
                   </div>
