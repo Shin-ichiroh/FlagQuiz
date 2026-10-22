@@ -10,6 +10,7 @@ import {
   Plane,
   Stamp,
   Dices,
+  HelpCircle,
 } from "lucide-react";
 import { SUGOROKU_BOARD, type SugorokuSquare, type SugorokuQuiz } from "../data/sugorokuData";
 import { getFlagUrl } from "../utils/quizGenerator";
@@ -56,6 +57,9 @@ export const FlagSugorokuScreen: React.FC<FlagSugorokuScreenProps> = ({
 
   // ゴール結果モーダル
   const [winner, setWinner] = useState<"player" | "cpu" | null>(null);
+
+  // あそびかたヘルプモーダル
+  const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
   const maxIndex = SUGOROKU_BOARD.length - 1; // 20
 
@@ -341,13 +345,25 @@ export const FlagSugorokuScreen: React.FC<FlagSugorokuScreenProps> = ({
           </button>
         </div>
 
-        <button
-          onClick={() => startNewGame(mode)}
-          className="p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 active:scale-95 transition-all shadow-2xs cursor-pointer"
-          title="はじめから"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              soundEffect.playTap();
+              setShowHelpModal(true);
+            }}
+            className="p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 active:scale-95 transition-all shadow-2xs cursor-pointer"
+            title="あそびかた"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => startNewGame(mode)}
+            className="p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 active:scale-95 transition-all shadow-2xs cursor-pointer"
+            title="はじめから"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </header>
 
       {/* 2. ステータス＆パスポートスタンプバー */}
@@ -708,6 +724,94 @@ export const FlagSugorokuScreen: React.FC<FlagSugorokuScreenProps> = ({
                 メニューへ
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. あそびかたルール説明モーダル */}
+      {showHelpModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl p-5 max-w-sm w-full shadow-2xl border-2 border-indigo-200 text-left max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-black text-slate-900 mb-2 flex items-center gap-1.5">
+              <span>🎲</span>
+              <span>こっきすごろくのあそびかた</span>
+            </h3>
+
+            <div className="space-y-2.5 text-xs text-slate-600 font-medium">
+              <p>
+                スタートの日本からサイコロをふって世界各国を旅し、<strong className="text-indigo-600 font-bold">20番マスの日本（ゴール）</strong>を目指すゲームです！
+              </p>
+
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                <div className="font-bold text-slate-800 text-xs">🏁 2つのモード:</div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">🤖</span>
+                  <div>
+                    <strong className="text-slate-900">CPU対戦レース</strong>
+                    <div className="text-[11px] text-slate-500">
+                      ロボットと競争！先に20番マスの日本にゴールしたほうが勝ち！
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">🎒</span>
+                  <div>
+                    <strong className="text-slate-900">ひとり世界旅</strong>
+                    <div className="text-[11px] text-slate-500">
+                      じっくり自分のペースで世界一周。パスポートにスタンプを集めて高得点を目指そう！
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+                <div className="font-bold text-slate-800 text-xs">🗺️ マスとルールのポイント:</div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">🎲</span>
+                  <div>
+                    <strong className="text-slate-900">サイコロ（1〜4）</strong>
+                    <div className="text-[11px] text-slate-500">「サイコロをふる」を押すと1〜4マス進みます。</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">✈️</span>
+                  <div>
+                    <strong className="text-sky-600">空港クイズマス（大逆転！）</strong>
+                    <div className="text-[11px] text-slate-500">
+                      クイズに正解すると、飛行機に乗って一気に <strong>+3マス ワープ</strong> ＆ボーナスポイント獲得！
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">⚡</span>
+                  <div>
+                    <strong className="text-amber-600">イベントマス</strong>
+                    <div className="text-[11px] text-slate-500">
+                      「特急列車で前進」「砂嵐で戻る」「もう1回サイコロ」など様々な旅のハプニングが発生します。
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-1.5">
+                  <span className="text-base">🛂</span>
+                  <div>
+                    <strong className="text-emerald-600">国旗スタンプ</strong>
+                    <div className="text-[11px] text-slate-500">
+                      止まった国の国旗スタンプが自動的にパスポートにコレクションされます！
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                soundEffect.playTap();
+                setShowHelpModal(false);
+              }}
+              className="mt-4 w-full py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-sm cursor-pointer transition-colors"
+            >
+              わかった！
+            </button>
           </div>
         </div>
       )}
