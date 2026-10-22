@@ -27,6 +27,8 @@ export interface SugorokuSquare {
   bonusPoints?: number;
   icon: string;
   quiz?: SugorokuQuiz;
+  mapX: number; // 0〜1000 世界地図上のX座標
+  mapY: number; // 0〜600 世界地図上のY座標
 }
 
 export const SUGOROKU_BOARD: SugorokuSquare[] = [
@@ -40,6 +42,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventTitle: "🇯🇵 世界一周の旅へ出発！",
     eventDesc: "日本から東へ西へ、世界の国旗をめぐる大冒険に出発しよう！",
     icon: "🛫",
+    mapX: 895,
+    mapY: 195,
   },
   {
     index: 1,
@@ -52,6 +56,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "おいしい韓国料理で元気モリモリ！旅ポイント +150P！",
     bonusPoints: 150,
     icon: "🍲",
+    mapX: 835,
+    mapY: 195,
   },
   {
     index: 2,
@@ -71,6 +77,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
       correctIndex: 0,
       explanation: "中国の国旗は、赤い地に黄色い星が5つ（大きな星1つ＋小さな星4つ）描かれています！",
     },
+    mapX: 775,
+    mapY: 205,
   },
   {
     index: 3,
@@ -84,6 +92,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: 1,
     bonusPoints: 100,
     icon: "🐘",
+    mapX: 775,
+    mapY: 315,
   },
   {
     index: 4,
@@ -97,6 +107,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: 2,
     bonusPoints: 150,
     icon: "🦘",
+    mapX: 865,
+    mapY: 470,
   },
   {
     index: 5,
@@ -109,6 +121,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "タージ・マハルを見学してカレーを堪能！旅ポイント +200P！",
     bonusPoints: 200,
     icon: "🍛",
+    mapX: 700,
+    mapY: 310,
   },
   {
     index: 6,
@@ -121,6 +135,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "空からの追い風に乗って、もう1回サイコロをふれるよ！",
     bonusPoints: 150,
     icon: "🎈",
+    mapX: 625,
+    mapY: 220,
   },
   {
     index: 7,
@@ -140,6 +156,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
       correctIndex: 0,
       explanation: "エジプトの国旗の中央には、黄金の「サラディンの鷲（ワシ）」が描かれています！",
     },
+    mapX: 585,
+    mapY: 285,
   },
   {
     index: 8,
@@ -153,6 +171,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: 1,
     bonusPoints: 100,
     icon: "🐆",
+    mapX: 635,
+    mapY: 385,
   },
   {
     index: 9,
@@ -165,6 +185,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "6色のカラフルな国旗の国で宝物ゲット！旅ポイント +250P！",
     bonusPoints: 250,
     icon: "💎",
+    mapX: 575,
+    mapY: 510,
   },
   {
     index: 10,
@@ -177,6 +199,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "オリンピック発祥の国で聖火リレー！旅ポイント +150P！",
     bonusPoints: 150,
     icon: "🏛️",
+    mapX: 560,
+    mapY: 215,
   },
   {
     index: 11,
@@ -190,6 +214,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: -1,
     bonusPoints: 200,
     icon: "🍕",
+    mapX: 515,
+    mapY: 205,
   },
   {
     index: 12,
@@ -202,6 +228,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "さわやかな山の空気で元気100倍！もう1回サイコロをふれるよ！",
     bonusPoints: 150,
     icon: "🚞",
+    mapX: 500,
+    mapY: 165,
   },
   {
     index: 13,
@@ -215,6 +243,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: 1,
     bonusPoints: 100,
     icon: "🚗",
+    mapX: 505,
+    mapY: 120,
   },
   {
     index: 14,
@@ -234,6 +264,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
       correctIndex: 0,
       explanation: "フランスの国旗は左から「青・白・赤」の順番です！（緑・白・赤はイタリア）",
     },
+    mapX: 455,
+    mapY: 160,
   },
   {
     index: 15,
@@ -247,6 +279,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: -1,
     bonusPoints: 100,
     icon: "🕰️",
+    mapX: 440,
+    mapY: 110,
   },
   {
     index: 16,
@@ -259,6 +293,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "あま〜いメイプルパンケーキで旅ポイント +200P！",
     bonusPoints: 200,
     icon: "🥞",
+    mapX: 235,
+    mapY: 120,
   },
   {
     index: 17,
@@ -272,6 +308,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     moveDelta: 2,
     bonusPoints: 150,
     icon: "🚀",
+    mapX: 205,
+    mapY: 210,
   },
   {
     index: 18,
@@ -284,6 +322,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "ノリノリの音楽でテンション最高潮！もう1回サイコロをふれるよ！",
     bonusPoints: 150,
     icon: "🎸",
+    mapX: 185,
+    mapY: 300,
   },
   {
     index: 19,
@@ -303,6 +343,8 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
       correctIndex: 0,
       explanation: "ブラジル国旗の緑は「豊かな森林（アマゾン）」、黄色は「鉱物資源（金）」を表しています！",
     },
+    mapX: 285,
+    mapY: 430,
   },
   {
     index: 20,
@@ -315,5 +357,7 @@ export const SUGOROKU_BOARD: SugorokuSquare[] = [
     eventDesc: "おめでとう！世界の国旗をめぐる大冒険を制覇したよ！",
     bonusPoints: 500,
     icon: "👑",
+    mapX: 940,
+    mapY: 240,
   },
 ];
